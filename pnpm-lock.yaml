@@ -17,17 +17,21 @@ importers:
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
       '@types/glob': 8.0.0
+      '@types/moo': 0.5.5
       '@types/node': 18.11.10
       eslint: 7.32.0
       glob: 8.0.3
+      moo: 0.5.2
       typescript: 4.9.3
       vitest: 0.25.3
     dependencies:
       glob: 8.0.3
+      moo: 0.5.2
     devDependencies:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
       '@svarta/tsconfig': link:../tsconfig
       '@types/glob': 8.0.0
+      '@types/moo': 0.5.5
       '@types/node': 18.11.10
       eslint: 7.32.0
       typescript: 4.9.3
@@ -197,6 +201,10 @@ packages:
 
   /@types/minimatch/5.1.2:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
+    dev: true
+
+  /@types/moo/0.5.5:
+    resolution: {integrity: sha512-eXQpwnkI4Ntw5uJg6i2PINdRFWLr55dqjuYQaLHNjvqTzF14QdNWbCbml9sza0byyXNA0hZlHtcdN+VNDcgVHA==}
     dev: true
 
   /@types/node/18.11.10:
@@ -1772,6 +1780,10 @@ packages:
   /minimist/1.2.7:
     resolution: {integrity: sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==}
     dev: true
+
+  /moo/0.5.2:
+    resolution: {integrity: sha512-iSAJLHYKnX41mKcJKjqvnAN9sf0LMDTXDEvFv+ffuRR9a1MIuXLjMNL6EsnDHSkKLTWNqQQ5uo61P4EbU4NU+Q==}
+    dev: false
 
   /ms/2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}

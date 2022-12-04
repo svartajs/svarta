@@ -10,15 +10,17 @@
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
     "@types/glob": "8.0.0",
+    "@types/moo": "0.5.5",
     "@types/node": "18.11.10",
     "eslint": "7.32.0",
     "typescript": "4.9.3",
     "vitest": "0.25.3"
   },
   "engines": {
-    "node": ">=14.18"
+    "node": ">=16.6.0"
   },
   "dependencies": {
-    "glob": "8.0.3"
+    "glob": "8.0.3",
+    "moo": "0.5.2"
   }
 }
