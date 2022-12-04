@@ -1,0 +1,25 @@
+{
+  "name": "svarta",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "fmt": "prettier --write \"**/*.ts\"",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "@svarta/eslint-config-custom": "workspace:*",
+    "prettier": "2.8.0",
+    "turbo": "1.6.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {},
+  "packageManager": "pnpm@7.17.0"
+}

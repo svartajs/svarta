@@ -1,0 +1,24 @@
+{
+  "name": "@svarta/core",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint *.ts*",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@svarta/eslint-config-custom": "workspace:*",
+    "@svarta/tsconfig": "workspace:*",
+    "@types/glob": "8.0.0",
+    "@types/node": "18.11.10",
+    "eslint": "7.32.0",
+    "typescript": "4.9.3",
+    "vitest": "0.25.3"
+  },
+  "engines": {
+    "node": ">=14.18"
+  },
+  "dependencies": {
+    "glob": "8.0.3"
+  }
+}

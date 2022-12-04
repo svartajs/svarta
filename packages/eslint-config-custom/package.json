@@ -1,0 +1,20 @@
+{
+  "name": "@svarta/eslint-config-custom",
+  "private": true,
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "7.23.0",
+    "eslint-config-next": "13.0.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-config-turbo": "latest",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-react": "7.31.8",
+    "eslint-plugin-simple-import-sort": "8.0.0",
+    "typescript": "4.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
