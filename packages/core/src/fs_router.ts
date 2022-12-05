@@ -1,4 +1,4 @@
-import { basename, relative } from "node:path";
+import { basename, normalize, relative } from "node:path";
 import { sep as posixSeperator } from "node:path/posix";
 import { sep as windowsSeparator } from "node:path/win32";
 
@@ -43,7 +43,7 @@ export async function gatherRouteFiles(
         .replace(basename(path), "")}`;
 
       return {
-        path,
+        path: normalize(path),
         method,
         routeSegments: tokenizeRoute(normalized),
       };
