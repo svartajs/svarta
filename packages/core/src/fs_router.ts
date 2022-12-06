@@ -2,37 +2,27 @@ import { basename, normalize, relative } from "node:path";
 import { sep as posixSeperator } from "node:path/posix";
 import { sep as windowsSeparator } from "node:path/win32";
 
-import glob from "glob";
 import moo from "moo";
+import { walkFiles } from "walk-it";
 
-const SUPPORTED_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE"] as const;
+import { RouteMethod, SUPPORTED_METHODS } from "./method";
+import { RouteSegment } from "./types";
 
-type RouteMethod = typeof SUPPORTED_METHODS[number];
-
-type RouteSegment =
-  | {
-      type: "sep";
-    }
-  | {
-      type: "static";
-      value: string;
-    }
-  | {
-      type: "param";
-      name: string;
-    }
-  | {
-      type: "variadic";
-      name: string;
-    };
-
-export async function gatherRouteFiles(
+export async function collectRouteFiles(
   folder: string,
 ): Promise<{ path: string; routeSegments: RouteSegment[]; method: RouteMethod }[]> {
-  const files = glob.sync("./**/{get,post,put,patch,delete}.ts", {
-    absolute: true,
-    cwd: folder,
-  });
+  const ROUTE_FILE_PATTERN = new RegExp(`${SUPPORTED_METHODS.join("|").toLowerCase()}}.ts$`);
+
+  const files: string[] = [];
+  for await (const file of walkFiles(folder, {
+    recursive: true,
+  })) {
+    if (ROUTE_FILE_PATTERN.test(basename(file))) {
+      files.push(file);
+    } else {
+      console.error(`Unsupported file in routes folder: ${file}`);
+    }
+  }
 
   return files
     .map((path) => {
@@ -53,12 +43,12 @@ export async function gatherRouteFiles(
 
 let lexer = moo.compile({
   sep: "/",
-  param: /\[[a-zA-Z0-9_.\-~]+\]/,
-  variadic: /\[[.]{3}[a-zA-Z0-9_.\-~]+\]/,
+  catchAll: /\[[.]{3}[a-zA-Z0-9_\-~]+\]/,
+  param: /\[[a-zA-Z0-9_\-~]+\]/,
   static: /[a-zA-Z0-9_.\-~]+/,
 });
 
-export function tokenizeRoute(str: string): RouteSegment[] {
+export function tokenizeRoute(str: string, removeTrailingSlash = true): RouteSegment[] {
   const tokens = Array.from(lexer.reset(str));
 
   const segments = tokens.map(({ type, value }) => {
@@ -68,11 +58,16 @@ export function tokenizeRoute(str: string): RouteSegment[] {
     if (type === "static") {
       return { type, value } as RouteSegment;
     }
-    return { type, name: value.replace(/[\[\].]/g, "") } as RouteSegment;
+    if (type === "param") {
+      return { type, name: value.replace(/[\[\]]/g, "") } as RouteSegment;
+    }
+    return { type, name: value.replace("[...", "").replace("]", "") } as RouteSegment;
   });
 
-  if (segments.length > 1 && segments.at(-1)?.type === "sep") {
-    segments.pop();
+  if (removeTrailingSlash) {
+    if (segments.length > 1 && segments.at(-1)?.type === "sep") {
+      segments.pop();
+    }
   }
 
   return segments;

@@ -1,5 +1,5 @@
 {
-  "name": "@svarta/core",
+  "name": "@svarta/adapter-standalone",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -10,8 +10,6 @@
   "devDependencies": {
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
-    "@types/glob": "8.0.0",
-    "@types/moo": "0.5.5",
     "@types/node": "18.11.10",
     "eslint": "7.32.0",
     "tsup": "^6.5.0",
@@ -22,8 +20,18 @@
     "node": ">=16.6.0"
   },
   "dependencies": {
-    "moo": "0.5.2",
-    "walk-it": "^0.0.1"
+    "@rollup/plugin-commonjs": "23.0.3",
+    "@rollup/plugin-json": "5.0.2",
+    "@rollup/plugin-node-resolve": "15.0.1",
+    "@rollup/plugin-typescript": "10.0.1",
+    "@svarta/core": "workspace:*",
+    "@tinyhttp/app": "2.0.25",
+    "chalk": "5.1.2",
+    "esbuild": "0.15.18",
+    "milliparsec": "2.2.2",
+    "rollup": "3.6.0",
+    "rollup-plugin-esbuild": "5.0.0",
+    "zod": "3.19.1"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

@@ -8,3 +8,10 @@ updates:
     target-branch: "dev"
     labels:
       - "dependencies"
+  - package-ecosystem: "npm"
+    directory: "/packages/adapter-standalone"
+    schedule:
+      interval: "daily"
+    target-branch: "dev"
+    labels:
+      - "dependencies"

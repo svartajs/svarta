@@ -1,8 +1,6 @@
-import { resolve } from "node:path";
-
 import { describe, expect, it } from "vitest";
 
-import { gatherRouteFiles, tokenizeRoute } from "../src/fs_router";
+import { tokenizeRoute } from "../../src/fs_router";
 
 describe("fs_router", () => {
   describe("tokenizeRoute", () => {
@@ -33,6 +31,15 @@ describe("fs_router", () => {
       ]);
     });
 
+    it("should work for /hello/[...rest]/", () => {
+      expect(tokenizeRoute("/hello/[...rest]/")).to.deep.equal([
+        { type: "sep" },
+        { type: "static", value: "hello" },
+        { type: "sep" },
+        { type: "catchAll", name: "rest" },
+      ]);
+    });
+
     it("should work for /[first]/[last]", () => {
       expect(tokenizeRoute("/[first]/[last]")).to.deep.equal([
         { type: "sep" },
@@ -41,32 +48,24 @@ describe("fs_router", () => {
         { type: "param", name: "last" },
       ]);
     });
-  });
 
-  describe("gatherRouteFiles", () => {
-    const FIXTURE_PATH = resolve(__dirname, ".fixture/routes");
+    it("should remove trailing slash for /[first]/[last]/", () => {
+      expect(tokenizeRoute("/[first]/[last]")).to.deep.equal([
+        { type: "sep" },
+        { type: "param", name: "first" },
+        { type: "sep" },
+        { type: "param", name: "last" },
+      ]);
+    });
 
-    const expectedRoutes = [
-      {
-        path: resolve(FIXTURE_PATH, "get.ts"),
-        routeSegments: [{ type: "sep" }],
-        method: "GET",
-      },
-      {
-        path: resolve(FIXTURE_PATH, "post.ts"),
-        routeSegments: [{ type: "sep" }],
-        method: "POST",
-      },
-      {
-        path: resolve(FIXTURE_PATH, "[id]/get.ts"),
-        routeSegments: [{ type: "sep" }, { type: "param", name: "id" }],
-        method: "GET",
-      },
-    ].sort((a, b) => a.path.localeCompare(b.path));
-
-    it("should get correct files from folder", async () => {
-      const foundRoutes = await gatherRouteFiles(FIXTURE_PATH);
-      expect(foundRoutes).to.deep.equal(expectedRoutes);
+    it("should keep trailing slash for /[first]/[last]/", () => {
+      expect(tokenizeRoute("/[first]/[last]/", false)).to.deep.equal([
+        { type: "sep" },
+        { type: "param", name: "first" },
+        { type: "sep" },
+        { type: "param", name: "last" },
+        { type: "sep" },
+      ]);
     });
   });
 });

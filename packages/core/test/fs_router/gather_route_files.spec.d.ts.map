@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "collect_route_files.spec.d.ts",
+  "sourceRoot": "",
+  "sources": [
+    "collect_route_files.spec.ts"
+  ],
+  "names": [],
+  "mappings": ""
+}
