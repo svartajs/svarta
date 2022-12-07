@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "moo": "0.5.2",
-    "walk-it": "^0.0.1"
+    "walk-it": "^0.0.1",
+    "zod": "3.19.1"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

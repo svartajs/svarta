@@ -1,5 +1,4 @@
-import type { RouteMethod } from "@svarta/core";
-import type { RouteSegment } from "@svarta/core/dist/types";
+import type { RouteMethod, RouteSegment } from "@svarta/core";
 
 function mapRoute(
   route: {
@@ -26,50 +25,11 @@ function mapRoute(
   /***** body parsers *****/
   json(),
   /***** svarta handler *****/
-  async (req,res)=>{
-    try {
-      const inputSchema = ${importName}.input;
-      if (inputSchema) {
-        // Validate via Zod
-        const validation = inputSchema.safeParse(req.body);
-        if (!validation.success) {
-          res.status(422);
-          res.set("x-powered-by", "svarta");
-          res.send("Unprocessable Entity");
-          return;
-        }
-      }
-
-      const headers = {
-        get: (key) => req.get(key),
-        set: (key, value) => res.set(key, value),
-        // TODO: entries
-      };
-
-      const response = await ${importName}.handler({
-        query: req.query,
-        params: req.params,
-        input: req.body,
-        headers,
-        fullPath: req.path,
-        method: req.method,
-      });
-
-      res.set("x-powered-by", "svarta");
-      res.status(response._status);
-      if (response._body) {
-        res.send(response._body);
-      }
-      else {
-        res.end();
-      }
-    }
-    catch(error) {
-      console.error("svarta caught an error while handling route (${routePath}): " + (error?.message || error || "Unknown error"));
-      res.status(500);
-      res.send("Internal Server Error");
-    }
-  }
+  __svartaTinyHttpHandler({ 
+    handler: ${importName}.handler,
+    input: ${importName}.input,
+    routePath: "${routePath}"
+  }),
 )`;
 }
 
@@ -80,6 +40,53 @@ export function buildTemplate(
 import { json } from "milliparsec";
 /***** routes *****/
 ${routes.map(({ path }, index) => `import r${index} from "${path}";`).join("\n")}
+
+function __svartaTinyHttpHandler({ input, handler, routePath }) {
+  return async (req, res) => {
+    try {
+      if (input) {
+        // Validate via Zod
+        const validation = input.safeParse(req.body);
+        if (!validation.success) {
+          res.status(422);
+          res.set("x-powered-by", "svarta");
+          res.send("Unprocessable Entity");
+          return;
+        }
+      }
+  
+      const headers = {
+        get: (key) => req.get(key),
+        set: (key, value) => res.set(key, value),
+        // TODO: entries
+      };
+  
+      const response = await handler({
+        ctx: {},
+        query: req.query,
+        params: req.params,
+        input: req.body,
+        headers,
+        fullPath: req.path,
+        method: req.method,
+      });
+  
+      res.set("x-powered-by", "svarta");
+      res.status(response._status);
+      if (response._body) {
+        res.send(response._body);
+      }
+      else {
+        res.end();
+      }
+    }
+    catch(error) {
+      console.error(\`svarta caught an error while handling route (\${routePath}): \` + (error?.message || error || "Unknown error"));
+      res.status(500);
+      res.send("Internal Server Error");
+    }
+  }
+}
 
 const app = new App();
 ${routes.map(mapRoute).join(";\n")};

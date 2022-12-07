@@ -31,5 +31,6 @@ yarn-error.log*
 .turbo
 
 demo
+server.js
 server.mjs
 .svarta

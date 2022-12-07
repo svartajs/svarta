@@ -1,6 +1,7 @@
 import type { default as Status } from "./status";
 
 export default class Response {
+  __svartaResponse = true;
   _status: number;
   _body?: string;
 

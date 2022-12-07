@@ -5,6 +5,7 @@ import { relative, resolve } from "node:path";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
+import terser from "@rollup/plugin-terser";
 import { collectRouteFiles } from "@svarta/core";
 import chalk from "chalk";
 import esbuild from "esbuild";
@@ -15,7 +16,7 @@ import { buildTemplate } from "./template";
 import { Timer } from "./timer";
 
 const routeFolder = resolve("./demo/routes");
-const output = resolve("../../server.mjs");
+const output = resolve("../../server.js");
 
 export async function buildStandaloneServer(
   folder: string,
@@ -49,7 +50,7 @@ export async function buildStandaloneServer(
 
   for (const route of routes) {
     const routeSize = statSync(route.path).size;
-    const tmpFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.mjs`);
+    const tmpFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.js`);
     console.error(
       `Transforming ${chalk.blueBright(relative(folder, route.path))} ${chalk.gray(
         `[${(routeSize / 1000).toFixed(2)} kB]`,
@@ -64,32 +65,10 @@ export async function buildStandaloneServer(
       entryPoints: [route.path],
       outfile: tmpFile,
       platform: "node",
-      format: "esm",
+      format: "cjs",
       target: "es2019",
     });
 
-    /* const bundle = await rollup({
-      input: route.path,
-      plugins: [
-        function resolver() {
-          return {
-            resolveId: (file: string) => {
-              return resolve(file);
-            },
-          };
-        },
-        esbuild({
-          exclude: ["*"],
-        }),
-        commonjs(),
-        json(),
-      ],
-      onwarn: () => {},
-    });
-    await bundle.write({
-      file: tmpFile,
-      format: "esm",
-    }); */
     route.path = tmpFile; // TODO:
   }
 
@@ -97,23 +76,21 @@ export async function buildStandaloneServer(
 
   const buildTimer = new Timer();
 
-  const tmpFile = resolve(`.svarta/tmp/app-${randomBytes(4).toString("hex")}.mjs`);
+  const tmpFile = resolve(`.svarta/tmp/app-${randomBytes(4).toString("hex")}.js`);
   console.error(`Building app\n`);
   writeFileSync(tmpFile, buildTemplate(routes), "utf-8");
 
   const plugins = [esbuildPlugin(), nodeResolve(), commonjs(), json()];
-  /*   if (minify) {
-    // TODO: https://github.com/rollup/plugins/issues/1366
-    // use @rollup/terser when fixed
+  if (minify) {
     plugins.push(terser());
-  } */
+  }
   const bundle = await rollup({
     input: tmpFile,
     plugins,
   });
   await bundle.write({
     file: output,
-    format: "esm",
+    format: "cjs",
   });
 
   const appSize = statSync(output).size;
