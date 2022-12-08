@@ -6,7 +6,50 @@ import moo from "moo";
 import { walkFiles } from "walk-it";
 
 import { RouteMethod, SUPPORTED_METHODS } from "./method";
-import { RouteSegment } from "./types";
+import type { RouteSegment } from "./types";
+
+export function formatRoutePath(routeSegments: RouteSegment[]): string {
+  return routeSegments.reduce((buf, seg) => {
+    if (seg.type === "sep") {
+      return buf + "/";
+    }
+    if (seg.type === "static") {
+      return buf + seg.value;
+    }
+    if (seg.type === "param") {
+      return buf + `:${seg.name}`;
+    }
+    throw new Error("Route Not supported");
+  }, "");
+}
+
+export async function checkRoute(path: string, routeSegments: RouteSegment[]): Promise<void> {
+  const { params } = await import(path);
+  if (params) {
+    if (!Array.isArray(params)) {
+      throw new Error("Invalid params export");
+    }
+
+    const nonExhaustedParams = params.filter(
+      (param: string) =>
+        !routeSegments.some((seg) => {
+          if (seg.type === "param" && seg.name === param) {
+            return true;
+          }
+          if (seg.type === "catchAll" && seg.name === param) {
+            return true;
+          }
+          return false;
+        }),
+    );
+
+    const routePath = formatRoutePath(routeSegments);
+
+    if (nonExhaustedParams.length) {
+      throw new Error(`Params not defined in route ${routePath}: ${nonExhaustedParams.join(", ")}`);
+    }
+  }
+}
 
 export async function collectRouteFiles(
   folder: string,

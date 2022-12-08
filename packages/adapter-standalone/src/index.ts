@@ -1,12 +1,13 @@
 import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, statSync, unlinkSync, writeFileSync } from "node:fs";
-import { relative, resolve } from "node:path";
+import { resolve } from "node:path";
 
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
-import { collectRouteFiles } from "@svarta/core";
+import { checkRoute, collectRouteFiles } from "@svarta/core";
+import { formatRoutePath } from "@svarta/core";
 import chalk from "chalk";
 import esbuild from "esbuild";
 import { rollup } from "rollup";
@@ -33,6 +34,10 @@ export async function buildStandaloneServer(
 
   const routes = await collectRouteFiles(folder);
 
+  for (const { path, routeSegments } of routes) {
+    await checkRoute(path, routeSegments);
+  }
+
   collectTimer.stop();
 
   const transformTimer = new Timer();
@@ -49,13 +54,7 @@ export async function buildStandaloneServer(
   console.error("Transforming routes\n");
 
   for (const route of routes) {
-    const routeSize = statSync(route.path).size;
     const tmpFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.js`);
-    console.error(
-      `Transforming ${chalk.blueBright(relative(folder, route.path))} ${chalk.gray(
-        `[${(routeSize / 1000).toFixed(2)} kB]`,
-      )}\n`,
-    );
 
     await esbuild.build({
       bundle: true,
@@ -93,13 +92,6 @@ export async function buildStandaloneServer(
     format: "cjs",
   });
 
-  const appSize = statSync(output).size;
-  console.error(
-    `${"Output ready at"} ${chalk.blueBright(output)} ${chalk.gray(
-      `[${(appSize / 1000).toFixed(2)} kB]`,
-    )}\n`,
-  );
-
   /* if (existsSync(".svarta/tmp")) {
     rmSync(".svarta/tmp", { recursive: true });
   } */
@@ -108,8 +100,32 @@ export async function buildStandaloneServer(
 
   timer.stop();
 
+  const longestRoutePath = Math.max(
+    ...routes.map(({ routeSegments }) => formatRoutePath(routeSegments).length),
+  );
+
+  console.error("Routes");
+
+  for (const route of routes) {
+    const routeSize = statSync(route.path).size;
+    const routePath = formatRoutePath(route.routeSegments);
+
+    console.error(
+      `${chalk.grey("├")} ${chalk.blueBright(routePath)}${" ".repeat(
+        longestRoutePath - routePath.length + 1,
+      )}${chalk.grey(`[${(routeSize / 1000).toFixed(2)} kB]`)}`,
+    );
+  }
+
+  const appSize = statSync(output).size;
   console.error(
-    `Done in ${timer.asSeconds()}s ${chalk.grey(
+    `\n${"Output ready at"} ${chalk.blueBright(output)} ${chalk.grey(
+      `[${(appSize / 1000).toFixed(2)} kB]`,
+    )}`,
+  );
+
+  console.error(
+    `\nDone in ${timer.asSeconds()}s ${chalk.grey(
       `(collect ${collectTimer.asMilli()}ms, transform ${transformTimer.asMilli()}ms, build ${buildTimer.asMilli()}ms)`,
     )}`,
   );

@@ -3,12 +3,12 @@ import * as zod from "zod";
 import RouteInput from "./context";
 import Response from "./response";
 
-type HandlerFunction<Schema, Context> = (
+type HandlerFunction<Schema, Context, Output> = (
   routeInput: RouteInput<Schema, Context>,
-) => Promise<Response>;
+) => Promise<Response<Output>>;
 
-function buildHandler<Schema, Context>(
-  fn: HandlerFunction<Schema, Context>,
+function buildHandler<Schema, Context, Output>(
+  fn: HandlerFunction<Schema, Context, Output>,
   middlewares: Function[],
 ) {
   return async (routeInput: RouteInput<Schema, Context>) => {
@@ -30,8 +30,8 @@ function buildHandler<Schema, Context>(
 class RouteBuilder<Context = {}> {
   private _middlewares: Function[] = [];
 
-  middleware<NewContext>(
-    fn: (routeInput: RouteInput<null, Context>) => Promise<Response | NewContext>,
+  middleware<NewContext, Output>(
+    fn: (routeInput: RouteInput<null, Context>) => Promise<Response<Output> | NewContext>,
   ): RouteBuilder<NewContext> {
     const newRouteBuilder = new RouteBuilder<NewContext>();
     newRouteBuilder._middlewares.push(...this._middlewares, fn);
@@ -44,7 +44,7 @@ class RouteBuilder<Context = {}> {
     return newRouteBuilder;
   }
 
-  handle(fn: HandlerFunction<null, Context>) {
+  handle<Output>(fn: HandlerFunction<null, Context, Output>) {
     return {
       handler: buildHandler(fn, this._middlewares),
       input: null,
@@ -60,7 +60,7 @@ class ValidatedRouteBuilder<Schema, Context = {}> {
     this._inputSchema = schema;
   }
 
-  handle(fn: HandlerFunction<Schema, Context>) {
+  handle<Output>(fn: HandlerFunction<Schema, Context, Output>) {
     return {
       handler: buildHandler(fn, this._middlewares),
       input: this._inputSchema,
