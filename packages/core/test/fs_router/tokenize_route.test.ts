@@ -15,6 +15,14 @@ describe("fs_router", () => {
       ]);
     });
 
+    it("should work for [rest]", () => {
+      expect(tokenizeRoute("[rest]")).to.deep.equal([{ type: "param", name: "rest" }]);
+    });
+
+    it("should work for [...rest]", () => {
+      expect(tokenizeRoute("[...rest]")).to.deep.equal([{ type: "catchAll", name: "rest" }]);
+    });
+
     it("should work for /[name]", () => {
       expect(tokenizeRoute("/[name]")).to.deep.equal([
         { type: "sep" },

@@ -56,7 +56,7 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
           return;
         }
       }
-  
+
       const headers = {
         get: (key) => req.get(key),
         set: (key, value) => res.set(key, value),
@@ -64,7 +64,7 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
         keys: Object.keys(req.headers),
         values: Object.values(req.headers),
       };
-  
+
       /***** call handler *****/
       const response = await handler({
         ctx: {},
@@ -75,12 +75,12 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
         fullPath: req.path,
         method: req.method,
       });
-  
+
       /***** respond *****/
       res.set("x-powered-by", "svarta");
       res.status(response._status);
-
       const resBody = response._body;
+
       if (resBody) {
         if (typeof resBody === "string") {
           res.send(resBody);
@@ -103,6 +103,15 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
 }
 
 const app = new App();
+
+/***** logger and header *****/
+app.use((req, res, next) => {
+  const now = new Date();
+  console.error(\`[\${now.toISOString()}] \${req.method} \${req.path}\`);
+  res.set("x-powered-by", "svarta");
+  next();
+});
+
 ${routes.map(mapRoute).join(";\n")};
 
 /***** startup *****/

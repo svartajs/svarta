@@ -24,7 +24,12 @@ describe("fs_router", () => {
         routeSegments: [{ type: "sep" }, { type: "param", name: "id" }],
         method: "GET",
       },
-    ].sort((a, b) => a.path.localeCompare(b.path));
+      {
+        path: resolve(FIXTURE_PATH, "[...rest]/get.ts"),
+        routeSegments: [{ type: "sep" }, { type: "catchAll", name: "rest" }],
+        method: "GET",
+      },
+    ];
 
     it("should get correct files from folder", async () => {
       const foundRoutes = await collectRouteFiles(FIXTURE_PATH);

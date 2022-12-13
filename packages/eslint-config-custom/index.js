@@ -6,6 +6,7 @@ module.exports = {
     "camelcase": "error",
     "yoda": "error",
     "eqeqeq": "error",
+    "prefer-const": "error",
 
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
