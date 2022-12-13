@@ -14,7 +14,7 @@ function buildHandler<Schema, Context, Output>(
   return async (routeInput: RouteInput<Schema, Context>) => {
     let transformedContext = routeInput.ctx;
     for (const mw of middlewares) {
-      let mwInput = { ...routeInput, ctx: { ...transformedContext } };
+      const mwInput = { ...routeInput, ctx: { ...transformedContext } };
       const result = await mw(mwInput);
 
       if (result.__svartaResponse) {
