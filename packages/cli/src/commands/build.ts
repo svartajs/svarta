@@ -1,13 +1,16 @@
-import { Config } from "../config";
+import { Config } from "@svarta/core";
 
 export async function build(config: Config): Promise<void> {
   if (config.adapter.type === "standalone") {
-    const standaloneAdapter = await import("@svarta/adapter-standalone");
-    standaloneAdapter.buildStandaloneServer(
-      config.routeFolder,
-      config.adapter.outputFile,
-      config.minify,
-    );
+    const { adapter } = await import("@svarta/adapter-standalone");
+    if (adapter.validateOptions(config.adapter)) {
+      await adapter.build({
+        projectFolder: process.cwd(),
+        routeFolder: config.routeFolder,
+        minify: config.minify ?? true,
+        opts: config.adapter,
+      });
+    }
   } else {
     console.error("Unsupported adapter", config.adapter.type);
     process.exit(1);

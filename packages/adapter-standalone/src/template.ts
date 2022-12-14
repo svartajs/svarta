@@ -67,13 +67,14 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
 
       /***** call handler *****/
       const response = await handler({
-        ctx: {},
+        ctx: {} /* context starts empty */,
         query: req.query,
         params: req.params,
         input: req.body,
         headers,
-        fullPath: req.path,
+        fullPath: req.path, // TODO: this should include query, also add basePath
         method: req.method,
+        isDev: false,
       });
 
       /***** respond *****/

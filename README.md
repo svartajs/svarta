@@ -19,7 +19,7 @@ Svarta abstracts the underlying backend, to allow deployment to different platfo
 | Feature | svarta | Express | Koa | fastify | tRPC | Next.js | nitropack |
 |---|---|---|---|---|---|---|---|
 | Type | REST | REST | REST | REST | RPC | React full-stack framework | REST |
-| Middlewares | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ |
+| Middlewares | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ⚠️ Simplified |
 | Typesafe middlewares | ✔️ | ❌ | ❌ | ❌ | ✔️ | ❌ | ❌ |
 | Async support | ✔️ | ⚠️ v5 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 | File-based routing | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |

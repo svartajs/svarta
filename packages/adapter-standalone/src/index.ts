@@ -2,18 +2,57 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, statSync, unlinkSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { checkRoute, collectRouteFiles, formatRoutePath } from "@svarta/core";
+import {
+  Adapter,
+  AdapterOptions,
+  checkRoute,
+  collectRouteFiles,
+  formatRoutePath,
+} from "@svarta/core";
 import chalk from "chalk";
 import esbuild from "esbuild";
+import * as zod from "zod";
 
 import { buildTemplate } from "./template";
 import { Timer } from "./timer";
 
-export async function buildStandaloneServer(
-  routeFolder: string,
-  outputFile: string,
+const optionsSchema = zod.object({
+  outputFile: zod.string(),
+});
+type Options = zod.TypeOf<typeof optionsSchema>;
+
+export default function ({ outputFile }: Options) {
+  return {
+    type: "standalone",
+    outputFile,
+  };
+}
+
+class StandaloneAdapter implements Adapter<Options> {
+  async build({ minify, routeFolder, opts }: AdapterOptions<Options>): Promise<void> {
+    return buildStandaloneServer({
+      routeFolder,
+      minify,
+      outputFile: opts.outputFile,
+    });
+  }
+
+  validateOptions(opts: unknown): opts is Options {
+    return optionsSchema.safeParse(opts).success;
+  }
+}
+
+export const adapter = new StandaloneAdapter();
+
+async function buildStandaloneServer({
+  routeFolder,
+  outputFile,
   minify = false,
-): Promise<void> {
+}: {
+  routeFolder: string;
+  outputFile: string;
+  minify?: boolean;
+}): Promise<void> {
   const timer = new Timer();
 
   const outputModuleFormat = outputFile.endsWith(".mjs") ? "esm" : "cjs";

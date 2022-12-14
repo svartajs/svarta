@@ -27,4 +27,5 @@ yargs(hideBin(process.argv))
       await build(config);
     },
   )
+  .demandCommand()
   .help().argv;

@@ -35,3 +35,5 @@ server.js
 server.mjs
 .svarta
 packages/**/svarta.config.js
+.output
+.nitro

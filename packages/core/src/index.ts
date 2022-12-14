@@ -1,3 +1,6 @@
+export type { Adapter, AdapterOptions } from "./adapter";
+export type { Config } from "./config";
+export { configSchema } from "./config";
 export type { default as Context } from "./context";
 export { checkRoute, collectRouteFiles, formatRoutePath, tokenizeRoute } from "./fs_router";
 export type { default as Headers } from "./headers";
