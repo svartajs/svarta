@@ -1,0 +1,122 @@
+import { randomBytes } from "node:crypto";
+import { existsSync, mkdirSync, rmSync, statSync, unlinkSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+import { checkRoute, collectRouteFiles, formatRoutePath } from "@svarta/core";
+import chalk from "chalk";
+import esbuild from "esbuild";
+
+import { buildTemplate } from "./template";
+import { Timer } from "./timer";
+
+export async function buildStandaloneServer(
+  routeFolder: string,
+  outputFile: string,
+  minify = false,
+): Promise<void> {
+  const timer = new Timer();
+
+  const collectTimer = new Timer();
+
+  const outputModuleFormat = outputFile.endsWith(".mjs") ? "esm" : "cjs";
+  if (existsSync(".svarta/tmp")) {
+    rmSync(".svarta/tmp", { recursive: true });
+  }
+  mkdirSync(".svarta/tmp", { recursive: true });
+
+  console.error("Creating a standalone server\n");
+
+  console.error("Collecting routes\n");
+
+  const routes = await collectRouteFiles(routeFolder);
+
+  for (const route of routes) {
+    const tmpFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.js`);
+
+    await esbuild.build({
+      bundle: true,
+      banner: {
+        js: "/***** svarta route *****/",
+      },
+      entryPoints: [route.path],
+      outfile: tmpFile,
+      platform: "node",
+      format: outputModuleFormat,
+      target: "es2019",
+    });
+
+    try {
+      await checkRoute(tmpFile, route.routeSegments);
+    } catch (error) {
+      const { message } = error as Error;
+      console.error(chalk.yellowBright(message));
+      process.exit(1);
+    }
+  }
+
+  collectTimer.stop();
+
+  if (existsSync(outputFile)) {
+    unlinkSync(outputFile);
+  }
+
+  const buildTimer = new Timer();
+
+  const tmpFile = resolve(`.svarta/tmp/app-${randomBytes(4).toString("hex")}.js`);
+  console.error(`Building app\n`);
+  writeFileSync(tmpFile, buildTemplate(routes), "utf-8");
+
+  await esbuild.build({
+    minify,
+    bundle: true,
+    banner: {
+      js: "/***** svarta app *****/",
+    },
+    entryPoints: [tmpFile],
+    outfile: outputFile,
+    platform: "node",
+    format: outputModuleFormat,
+    target: "es2019",
+  });
+
+  /* if (existsSync(".svarta/tmp")) {
+    rmSync(".svarta/tmp", { recursive: true });
+  } */
+
+  buildTimer.stop();
+
+  timer.stop();
+
+  const longestRoutePath = Math.max(
+    ...routes.map(({ routeSegments }) => formatRoutePath(routeSegments).length),
+  );
+  const longestRouteMethod = Math.max(...routes.map(({ method }) => method.length));
+
+  console.error("Routes");
+
+  for (const route of routes) {
+    const routeSize = statSync(route.path).size;
+    const routePath = formatRoutePath(route.routeSegments);
+
+    console.error(
+      `${chalk.grey("├")} ${chalk.yellow(route.method)}${" ".repeat(
+        longestRouteMethod - route.method.length + 1,
+      )}${chalk.blueBright(routePath)}${" ".repeat(
+        longestRoutePath - routePath.length + 1,
+      )}${chalk.grey(`[${(routeSize / 1000).toFixed(2)} kB]`)}`,
+    );
+  }
+
+  const appSize = statSync(outputFile).size;
+  console.error(
+    `\n${"Output ready at"} ${chalk.blueBright(outputFile)} ${chalk.grey(
+      `[${(appSize / 1000).toFixed(2)} kB]`,
+    )}`,
+  );
+
+  console.error(
+    `\nDone in ${timer.asSeconds()}s ${chalk.grey(
+      `(collect ${collectTimer.asMilli()}ms, build ${buildTimer.asMilli()}ms)`,
+    )}`,
+  );
+}

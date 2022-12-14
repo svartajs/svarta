@@ -1,5 +1,5 @@
 {
-  "name": "@svarta/core",
+  "name": "@svarta/cli",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -10,31 +10,32 @@
   "devDependencies": {
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
-    "@types/glob": "8.0.0",
     "@types/node": "18.11.10",
+    "@types/yargs": "^17.0.17",
     "eslint": "7.32.0",
     "tsup": "6.5.0",
     "typescript": "4.9.3",
-    "vitest": "0.25.3"
+    "vitest": "0.25.3",
+    "@svarta/adapter-standalone": "workspace:*"
   },
   "engines": {
     "node": ">=14.8.0"
   },
   "dependencies": {
-    "walk-it": "1.1.0",
+    "@svarta/core": "workspace:*",
+    "yargs": "^17.6.2",
     "zod": "3.19.1"
+  },
+  "peerDependencies": {
+    "@svarta/adapter-standalone": "workspace:*"
+  },
+  "bin": {
+    "svarta": "./bin.mjs"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "typings": "./dist/index.d.ts",
   "files": [
     "dist"
-  ],
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  }
+  ]
 }
