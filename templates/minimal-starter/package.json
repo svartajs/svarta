@@ -1,0 +1,24 @@
+{
+  "name": "my-svarta-app",
+  "version": "1.0.0",
+  "description": "My great REST API",
+  "scripts": {
+    "start": "node .output/server.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "svarta build",
+    "dev": "svarta dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tinyhttp/app": "2",
+    "milliparsec": "2"
+  },
+  "devDependencies": {
+    "@svarta/cli": "latest",
+    "@svarta/core": "latest",
+    "@types/node": "14.18"
+  },
+  "type": "module"
+}

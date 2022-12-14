@@ -8,6 +8,7 @@
     "build": "tsup src/index.ts --format cjs,esm --dts --clean"
   },
   "devDependencies": {
+    "@svarta/adapter-standalone": "workspace:*",
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
     "@types/node": "18.11.10",
@@ -15,14 +16,14 @@
     "eslint": "7.32.0",
     "tsup": "6.5.0",
     "typescript": "4.9.3",
-    "vitest": "0.25.3",
-    "@svarta/adapter-standalone": "workspace:*"
+    "vitest": "0.25.3"
   },
   "engines": {
     "node": ">=14.8.0"
   },
   "dependencies": {
     "@svarta/core": "workspace:*",
+    "chalk": "5.1.2",
     "yargs": "^17.6.2",
     "zod": "3.19.1"
   },

@@ -53,6 +53,7 @@ importers:
       '@svarta/tsconfig': workspace:*
       '@types/node': 18.11.10
       '@types/yargs': ^17.0.17
+      chalk: 5.1.2
       eslint: 7.32.0
       tsup: 6.5.0
       typescript: 4.9.3
@@ -61,6 +62,7 @@ importers:
       zod: 3.19.1
     dependencies:
       '@svarta/core': link:../core
+      chalk: 5.1.2
       yargs: 17.6.2
       zod: 3.19.1
     devDependencies:
