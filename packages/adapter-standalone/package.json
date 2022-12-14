@@ -14,19 +14,23 @@
     "eslint": "7.32.0",
     "tsup": "6.5.0",
     "typescript": "4.9.3",
-    "vitest": "0.25.3"
+    "vitest": "0.25.3",
+    "@tinyhttp/app": "2",
+    "milliparsec": "2"
   },
   "engines": {
     "node": ">=14.8.0"
   },
   "dependencies": {
     "@svarta/core": "workspace:*",
-    "@tinyhttp/app": "2.0.25",
     "chalk": "5.1.2",
     "esbuild": "0.15.18",
-    "milliparsec": "2.2.2",
     "walk-it": "1.1.0",
     "zod": "3.19.1"
+  },
+  "peerDependencies": {
+    "@tinyhttp/app": "2",
+    "milliparsec": "2"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
