@@ -9,49 +9,26 @@ import esbuild from "esbuild";
 import { buildTemplate } from "./template";
 import { Timer } from "./timer";
 
-const routeFolder = resolve("./demo/routes");
-const output = resolve("../../server.mjs");
-
 export async function buildStandaloneServer(
-  folder: string,
-  output: string,
+  routeFolder: string,
+  outputFile: string,
   minify = false,
 ): Promise<void> {
   const timer = new Timer();
 
   const collectTimer = new Timer();
 
-  console.error("Creating a standalone server\n");
-
-  console.error("Collecting routes\n");
-
-  const routes = await collectRouteFiles(folder);
-
-  for (const { path, routeSegments } of routes) {
-    try {
-      await checkRoute(path, routeSegments);
-    } catch (error) {
-      const { message } = error as Error;
-      console.error(chalk.yellowBright(message));
-      process.exit(1);
-    }
-  }
-
-  collectTimer.stop();
-
-  const transformTimer = new Timer();
-
-  const outputModuleFormat = output.endsWith(".mjs") ? "esm" : "cjs";
-  if (existsSync(output)) {
-    unlinkSync(output);
-  }
-
+  const outputModuleFormat = outputFile.endsWith(".mjs") ? "esm" : "cjs";
   if (existsSync(".svarta/tmp")) {
     rmSync(".svarta/tmp", { recursive: true });
   }
   mkdirSync(".svarta/tmp", { recursive: true });
 
-  console.error("Transforming routes\n");
+  console.error("Creating a standalone server\n");
+
+  console.error("Collecting routes\n");
+
+  const routes = await collectRouteFiles(routeFolder);
 
   for (const route of routes) {
     const tmpFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.js`);
@@ -68,10 +45,20 @@ export async function buildStandaloneServer(
       target: "es2019",
     });
 
-    route.path = tmpFile; // TODO:
+    try {
+      await checkRoute(tmpFile, route.routeSegments);
+    } catch (error) {
+      const { message } = error as Error;
+      console.error(chalk.yellowBright(message));
+      process.exit(1);
+    }
   }
 
-  transformTimer.stop();
+  collectTimer.stop();
+
+  if (existsSync(outputFile)) {
+    unlinkSync(outputFile);
+  }
 
   const buildTimer = new Timer();
 
@@ -86,7 +73,7 @@ export async function buildStandaloneServer(
       js: "/***** svarta app *****/",
     },
     entryPoints: [tmpFile],
-    outfile: output,
+    outfile: outputFile,
     platform: "node",
     format: outputModuleFormat,
     target: "es2019",
@@ -120,18 +107,16 @@ export async function buildStandaloneServer(
     );
   }
 
-  const appSize = statSync(output).size;
+  const appSize = statSync(outputFile).size;
   console.error(
-    `\n${"Output ready at"} ${chalk.blueBright(output)} ${chalk.grey(
+    `\n${"Output ready at"} ${chalk.blueBright(outputFile)} ${chalk.grey(
       `[${(appSize / 1000).toFixed(2)} kB]`,
     )}`,
   );
 
   console.error(
     `\nDone in ${timer.asSeconds()}s ${chalk.grey(
-      `(collect ${collectTimer.asMilli()}ms, transform ${transformTimer.asMilli()}ms, build ${buildTimer.asMilli()}ms)`,
+      `(collect ${collectTimer.asMilli()}ms, build ${buildTimer.asMilli()}ms)`,
     )}`,
   );
 }
-
-buildStandaloneServer(routeFolder, output, true).then(() => process.exit(0));

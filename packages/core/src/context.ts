@@ -9,4 +9,5 @@ export default interface RouteInput<T, Context /*,Q extends Record<string, strin
   input: T;
   params: Record<string, string>;
   // query: Q;
+  // TODO: isDev
 }

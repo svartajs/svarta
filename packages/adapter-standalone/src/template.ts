@@ -77,10 +77,14 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
       });
 
       /***** respond *****/
+      for(const [key, value] of Object.entries(response._headers)) {
+        res.set(key, value);
+      }
+
       res.set("x-powered-by", "svarta");
       res.status(response._status);
-      const resBody = response._body;
 
+      const resBody = response._body;
       if (resBody) {
         if (typeof resBody === "string") {
           res.send(resBody);
@@ -115,7 +119,7 @@ app.use((req, res, next) => {
 ${routes.map(mapRoute).join(";\n")};
 
 /***** startup *****/
-const port = +(process.env.PORT || "3000");
+const port = +(process.env.SVARTA_PORT || process.env.PORT || "3000");
 console.error("Starting server on port " + port);
 app.listen(port, () => {
   console.error("Server running on http://localhost:" + port);
