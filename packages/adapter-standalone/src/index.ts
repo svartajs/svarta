@@ -16,17 +16,16 @@ export async function buildStandaloneServer(
 ): Promise<void> {
   const timer = new Timer();
 
-  const collectTimer = new Timer();
-
   const outputModuleFormat = outputFile.endsWith(".mjs") ? "esm" : "cjs";
+
+  const collectTimer = new Timer();
+  console.error("[@svarta/adapter-standalone] Creating a standalone server\n");
+  console.error("[@svarta/adapter-standalone] Collecting routes\n");
+
   if (existsSync(".svarta/tmp")) {
     rmSync(".svarta/tmp", { recursive: true });
   }
   mkdirSync(".svarta/tmp", { recursive: true });
-
-  console.error("Creating a standalone server\n");
-
-  console.error("Collecting routes\n");
 
   const routes = await collectRouteFiles(routeFolder);
 
@@ -61,9 +60,9 @@ export async function buildStandaloneServer(
   }
 
   const buildTimer = new Timer();
+  console.error("[@svarta/adapter-standalone] Building app\n");
 
   const tmpFile = resolve(`.svarta/tmp/app-${randomBytes(4).toString("hex")}.js`);
-  console.error(`Building app\n`);
   writeFileSync(tmpFile, buildTemplate(routes), "utf-8");
 
   await esbuild.build({
@@ -78,10 +77,6 @@ export async function buildStandaloneServer(
     format: outputModuleFormat,
     target: "es2019",
   });
-
-  /* if (existsSync(".svarta/tmp")) {
-    rmSync(".svarta/tmp", { recursive: true });
-  } */
 
   buildTimer.stop();
 
@@ -119,4 +114,8 @@ export async function buildStandaloneServer(
       `(collect ${collectTimer.asMilli()}ms, build ${buildTimer.asMilli()}ms)`,
     )}`,
   );
+
+  if (existsSync(".svarta/tmp")) {
+    rmSync(".svarta/tmp", { recursive: true });
+  }
 }

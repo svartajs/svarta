@@ -34,4 +34,4 @@ demo
 server.js
 server.mjs
 .svarta
-svarta.config.js
+packages/**/svarta.config.js

@@ -18,7 +18,7 @@ export function formatRoutePath(routeSegments: RouteSegment[]): string {
     if (seg.type === "param") {
       return acc + `:${seg.name}`;
     }
-    throw new Error(`Route Not supported: ${JSON.stringify(seg)}`);
+    throw new Error(`Route not supported: ${JSON.stringify(seg)}`);
   }, "");
 }
 
@@ -55,7 +55,7 @@ export async function checkRoute(path: string, routeSegments: RouteSegment[]): P
 export async function collectRouteFiles(
   folder: string,
 ): Promise<{ path: string; routeSegments: RouteSegment[]; method: RouteMethod }[]> {
-  const ROUTE_FILE_PATTERN = new RegExp(`${SUPPORTED_METHODS.join("|").toLowerCase()}}.ts$`);
+  const ROUTE_FILE_PATTERN = new RegExp(`${SUPPORTED_METHODS.join("|").toLowerCase()}.ts$`);
 
   const files: string[] = [];
   for await (const { path } of walkFiles(folder, {
