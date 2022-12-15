@@ -15,7 +15,9 @@ export async function buildTinyHttpStandaloneServer(
   logger = true,
 ): Promise<string> {
   console.error(
-    `[@svarta/adapter-standalone] Building standalone app based on ${chalk.red("tinyhttp")}\n`,
+    `[@svarta/adapter-standalone] Building standalone app based on ${chalk.blueBright(
+      "tinyhttp",
+    )}\n`,
   );
 
   const outputModuleFormat = outputFile.endsWith(".mjs") ? "esm" : "cjs";

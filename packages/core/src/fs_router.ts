@@ -58,11 +58,11 @@ export async function checkRoute(path: string, routeSegments: RouteSegment[]): P
   }
 }
 
+const ROUTE_FILE_PATTERN = new RegExp(`^${SUPPORTED_METHODS.join("|").toLowerCase()}\.ts$`);
+
 export async function collectRouteFiles(
   folder: string,
 ): Promise<{ path: string; routeSegments: RouteSegment[]; method: RouteMethod }[]> {
-  const ROUTE_FILE_PATTERN = new RegExp(`${SUPPORTED_METHODS.join("|").toLowerCase()}.ts$`);
-
   const files: string[] = [];
   for await (const { path } of walkFiles(folder, {
     recursive: true,

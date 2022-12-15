@@ -39,7 +39,7 @@ export async function buildStandaloneServer({
   const routes = await collectRouteFiles(routeFolder);
 
   for (const route of routes) {
-    const tmpFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.js`);
+    const tmpFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.mjs`);
 
     await esbuild.build({
       bundle: true,
@@ -49,7 +49,7 @@ export async function buildStandaloneServer({
       entryPoints: [route.path],
       outfile: tmpFile,
       platform: "node",
-      format: outputModuleFormat,
+      format: "esm",
       target: "es2019",
     });
 

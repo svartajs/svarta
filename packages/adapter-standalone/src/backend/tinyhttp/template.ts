@@ -111,7 +111,7 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
 const app = new App();
 
 /***** header *****/
-app.use((_, __, next) => {
+app.use((_, res, next) => {
   res.set("x-powered-by", "svarta");
   next();
 });
