@@ -1,6 +1,5 @@
-import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
-import { basename, dirname, resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 
 import { collectRouteFiles } from "@svarta/core";
 import { build, createDevServer, prepare } from "nitropack";
@@ -8,6 +7,8 @@ import { build, createDevServer, prepare } from "nitropack";
 import createNitro from "./nitro";
 
 export async function startSvartaDevServer(routesFolder: string) {
+  process.env["NODE_ENV"] = "development";
+
   console.error(`Starting dev server for ${routesFolder}`);
 
   const routes = await collectRouteFiles(routesFolder);
@@ -124,7 +125,7 @@ export default defineEventHandler(async (event) => {
 
   const devServer = createDevServer(nitro);
 
-  await devServer.listen(3000);
+  await devServer.listen(+(process.env["PORT"] || 3000));
   await prepare(nitro);
   await build(nitro);
 }
