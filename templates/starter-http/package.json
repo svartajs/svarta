@@ -11,14 +11,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@tinyhttp/app": "2",
-    "milliparsec": "2"
-  },
   "devDependencies": {
     "@svarta/cli": "latest",
     "@svarta/core": "latest",
-    "@types/node": "14.18"
+    "@types/node": "14.18",
+    "@tinyhttp/app": "2",
+    "milliparsec": "2"
   },
   "type": "module"
 }
