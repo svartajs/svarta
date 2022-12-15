@@ -23,7 +23,7 @@ COPY . .
 RUN pnpm build
 
 # Run server
-FROM node:16-alpine AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 
 COPY --from=builder /app/.output ./.output
