@@ -52,13 +52,13 @@ importers:
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
       '@types/node': 18.11.10
-      '@types/yargs': ^17.0.17
+      '@types/yargs': 17.0.17
       chalk: 5.1.2
       eslint: 7.32.0
       tsup: 6.5.0
       typescript: 4.9.3
       vitest: 0.25.3
-      yargs: ^17.6.2
+      yargs: 17.6.2
       zod: 3.19.1
     dependencies:
       '@svarta/core': link:../core
@@ -101,15 +101,43 @@ importers:
       typescript: 4.9.3
       vitest: 0.25.3
 
+  packages/create-svarta-app:
+    specifiers:
+      '@svarta/eslint-config-custom': workspace:*
+      '@svarta/tsconfig': workspace:*
+      '@types/node': 18.11.10
+      '@types/prompts': 2.4.2
+      '@types/yargs': 17.0.17
+      chalk: 5.1.2
+      eslint: 7.32.0
+      giget: 1.0.0
+      prompts: 2.4.2
+      tsup: 6.5.0
+      typescript: 4.9.3
+      vitest: 0.25.3
+    dependencies:
+      chalk: 5.1.2
+      giget: 1.0.0
+      prompts: 2.4.2
+    devDependencies:
+      '@svarta/eslint-config-custom': link:../eslint-config-custom
+      '@svarta/tsconfig': link:../tsconfig
+      '@types/node': 18.11.10
+      '@types/prompts': 2.4.2
+      '@types/yargs': 17.0.17
+      eslint: 7.32.0
+      tsup: 6.5.0_typescript@4.9.3
+      typescript: 4.9.3
+      vitest: 0.25.3
+
   packages/dev-server:
     specifiers:
       '@svarta/core': workspace:*
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
       '@types/node': 18.11.10
-      '@types/yargs': ^17.0.17
       eslint: 7.32.0
-      nitropack: ^1.0.0
+      nitropack: 1.0.0
       tsup: 6.5.0
       typescript: 4.9.3
       vitest: 0.25.3
@@ -120,7 +148,6 @@ importers:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
       '@svarta/tsconfig': link:../tsconfig
       '@types/node': 18.11.10
-      '@types/yargs': 17.0.17
       eslint: 7.32.0
       tsup: 6.5.0_typescript@4.9.3
       typescript: 4.9.3
@@ -600,6 +627,13 @@ packages:
 
   /@types/node/18.11.10:
     resolution: {integrity: sha512-juG3RWMBOqcOuXC643OAdSA525V44cVgGV6dUDuiFtss+8Fk5x1hI93Rsld43VeJVIeqlP9I7Fn9/qaVqoEAuQ==}
+
+  /@types/prompts/2.4.2:
+    resolution: {integrity: sha512-TwNx7qsjvRIUv/BCx583tqF5IINEVjCNqg9ofKHRlSoUHE62WBHrem4B1HGXcIrG511v29d1kJ9a/t2Esz7MIg==}
+    dependencies:
+      '@types/node': 18.11.10
+      kleur: 3.0.3
+    dev: true
 
   /@types/resolve/1.20.2:
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -2767,6 +2801,10 @@ packages:
       object.assign: 4.1.4
     dev: true
 
+  /kleur/3.0.3:
+    resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
+    engines: {node: '>=6'}
+
   /klona/2.0.5:
     resolution: {integrity: sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==}
     engines: {node: '>= 8'}
@@ -3389,6 +3427,14 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: true
 
+  /prompts/2.4.2:
+    resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
+    engines: {node: '>= 6'}
+    dependencies:
+      kleur: 3.0.3
+      sisteransi: 1.0.5
+    dev: false
+
   /prop-types/15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
     dependencies:
@@ -3703,6 +3749,10 @@ packages:
 
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
+
+  /sisteransi/1.0.5:
+    resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
+    dev: false
 
   /slash/3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
