@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@svarta/core": "workspace:*",
+    "@svarta/dev-server": "workspace:*",
     "chalk": "5.1.2",
     "yargs": "17.6.2",
     "zod": "3.19.1"
@@ -39,5 +40,12 @@
   "files": [
     "bin.mjs",
     "dist"
-  ]
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  }
 }

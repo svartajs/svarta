@@ -1,25 +1,44 @@
-import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { randomBytes } from "node:crypto";
+import { existsSync, mkdirSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
-import { collectRouteFiles } from "@svarta/core";
+import { checkRoute, collectRouteFiles } from "@svarta/core";
+import chokidar from "chokidar";
+import esbuild from "esbuild";
+import debounce from "lodash.debounce";
 import { build, createDevServer, prepare } from "nitropack";
 
 import createNitro from "./nitro";
 
-export async function startSvartaDevServer(routesFolder: string) {
-  process.env["NODE_ENV"] = "development";
-
-  console.error(`Starting dev server for ${routesFolder}`);
-
+async function nitrofyRoutes(routesFolder: string): Promise<void> {
   const routes = await collectRouteFiles(routesFolder);
-  console.log(routes.map((route) => route.path).join("\n"));
-
-  if (existsSync(".svarta/dev")) {
-    rmSync(".svarta/dev", { recursive: true });
-  }
-  mkdirSync(".svarta/dev/nitro/routes", { recursive: true });
+  console.error(`[@svarta/dev-server] Loading ${routes.length} routes`);
 
   for (const route of routes) {
+    const jsFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.mjs`);
+
+    await esbuild.build({
+      bundle: true,
+      banner: {
+        js: "/***** svarta route *****/",
+      },
+      entryPoints: [route.path],
+      outfile: jsFile,
+      platform: "node",
+      format: "esm",
+      target: "es2019",
+    });
+
+    try {
+      await checkRoute(jsFile, route.routeSegments);
+      unlinkSync(jsFile);
+    } catch (error) {
+      const { message } = error as Error;
+      console.error(message);
+      unlinkSync(jsFile);
+      continue;
+    }
+
     const tmpFile = resolve(
       `.svarta/dev/nitro/routes${route.routeSegments.reduce((path, seg) => {
         if (seg.type === "sep") {
@@ -120,14 +139,42 @@ export default defineEventHandler(async (event) => {
       "utf-8",
     );
   }
+}
+
+export async function startSvartaDevServer(routesFolder: string) {
+  process.env["NODE_ENV"] = "development";
+
+  console.error(`[@svarta/dev-server] Starting dev server for ${routesFolder}`);
+
+  if (existsSync(".svarta/dev")) {
+    rmSync(".svarta/dev", { recursive: true });
+  }
+  mkdirSync(".svarta/dev/nitro/routes", { recursive: true });
+
+  await nitrofyRoutes(routesFolder);
 
   const nitro = await createNitro(true);
-
   const devServer = createDevServer(nitro);
-
   await devServer.listen(+(process.env["PORT"] || 3000));
   await prepare(nitro);
   await build(nitro);
-}
 
-startSvartaDevServer("demo/routes");
+  const reloadRoutes = debounce(async () => {
+    if (existsSync(".svarta/dev")) {
+      rmSync(".svarta/dev", { recursive: true });
+    }
+    mkdirSync(".svarta/dev/nitro/routes", { recursive: true });
+
+    await nitrofyRoutes(routesFolder);
+    await build(nitro);
+  }, 1000);
+
+  chokidar
+    .watch(routesFolder, {
+      persistent: false,
+    })
+    .on("change", reloadRoutes)
+    .on("add", reloadRoutes)
+    .on("unlink", reloadRoutes)
+    .on("unlinkDir", reloadRoutes);
+}

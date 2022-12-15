@@ -4,7 +4,10 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import { build } from "./commands/build";
+import { startDevelopmentServer } from "./commands/dev";
 import { loadConfig } from "./config";
+
+const DEFAULT_CONFIG_PATH = resolve("./svarta.config.mjs");
 
 yargs(hideBin(process.argv))
   .scriptName("svarta")
@@ -17,7 +20,7 @@ yargs(hideBin(process.argv))
         config: {
           alias: ["c"],
           type: "string",
-          default: resolve("./svarta.config.js"),
+          default: DEFAULT_CONFIG_PATH,
         },
       }),
     async (argv) => {
@@ -25,6 +28,23 @@ yargs(hideBin(process.argv))
       const config = await loadConfig(argv.config);
       console.error(`[@svarta/cli] Using adapter ${config.adapter.type}\n`);
       await build(config);
+    },
+  )
+  .command(
+    "dev",
+    "Run development server",
+    (argv) =>
+      argv.option({
+        config: {
+          alias: ["c"],
+          type: "string",
+          default: DEFAULT_CONFIG_PATH,
+        },
+      }),
+    async (argv) => {
+      console.error(`[@svarta/cli] Starting development server\n`);
+      const config = await loadConfig(argv.config);
+      await startDevelopmentServer(config);
     },
   )
   .demandCommand()

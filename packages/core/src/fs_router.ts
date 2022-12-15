@@ -23,7 +23,13 @@ export function formatRoutePath(routeSegments: RouteSegment[]): string {
 }
 
 export async function checkRoute(path: string, routeSegments: RouteSegment[]): Promise<void> {
-  const { params } = await import(path);
+  const route = await import(path);
+  const { default: def, params } = route;
+
+  if (!def?.handler) {
+    throw new Error("Route is not exporting handler");
+  }
+
   if (params) {
     if (!Array.isArray(params)) {
       throw new Error("Invalid params export");

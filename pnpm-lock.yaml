@@ -49,6 +49,7 @@ importers:
     specifiers:
       '@svarta/adapter-standalone': workspace:*
       '@svarta/core': workspace:*
+      '@svarta/dev-server': workspace:*
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
       '@types/node': 18.11.10
@@ -62,6 +63,7 @@ importers:
       zod: 3.19.1
     dependencies:
       '@svarta/core': link:../core
+      '@svarta/dev-server': link:../dev-server
       chalk: 5.1.2
       yargs: 17.6.2
       zod: 3.19.1
@@ -135,18 +137,26 @@ importers:
       '@svarta/core': workspace:*
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
+      '@types/lodash.debounce': ^4.0.7
       '@types/node': 18.11.10
+      chokidar: ^3.5.3
+      esbuild: 0.15.18
       eslint: 7.32.0
+      lodash.debounce: ^4.0.8
       nitropack: 1.0.0
       tsup: 6.5.0
       typescript: 4.9.3
       vitest: 0.25.3
     dependencies:
       '@svarta/core': link:../core
+      chokidar: 3.5.3
+      esbuild: 0.15.18
+      lodash.debounce: 4.0.8
       nitropack: 1.0.0
     devDependencies:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
       '@svarta/tsconfig': link:../tsconfig
+      '@types/lodash.debounce': 4.0.7
       '@types/node': 18.11.10
       eslint: 7.32.0
       tsup: 6.5.0_typescript@4.9.3
@@ -619,6 +629,16 @@ packages:
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+    dev: true
+
+  /@types/lodash.debounce/4.0.7:
+    resolution: {integrity: sha512-X1T4wMZ+gT000M2/91SYj0d/7JfeNZ9PeeOldSNoE/lunLeQXKvkmIumI29IaKMotU/ln/McOIvgzZcQ/3TrSA==}
+    dependencies:
+      '@types/lodash': 4.14.191
+    dev: true
+
+  /@types/lodash/4.14.191:
+    resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
     dev: true
 
   /@types/minimatch/5.1.2:
@@ -2869,6 +2889,10 @@ packages:
   /local-pkg/0.4.2:
     resolution: {integrity: sha512-mlERgSPrbxU3BP4qBqAvvwlgW4MTg78iwJdGGnv7kibKjWcJksrG3t6LB5lXI93wXRDvG4NpUgJFmTG4T6rdrg==}
     engines: {node: '>=14'}
+
+  /lodash.debounce/4.0.8:
+    resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
+    dev: false
 
   /lodash.defaults/4.2.0:
     resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
