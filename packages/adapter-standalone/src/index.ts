@@ -18,6 +18,11 @@ import { Timer } from "./timer";
 
 const optionsSchema = zod.object({
   outputFile: zod.string(),
+  logger: zod
+    .object({
+      enabled: zod.boolean(),
+    })
+    .optional(),
 });
 type Options = zod.TypeOf<typeof optionsSchema>;
 
@@ -34,6 +39,7 @@ class StandaloneAdapter implements Adapter<Options> {
       routeFolder,
       minify,
       outputFile: opts.outputFile,
+      logger: opts.logger?.enabled ?? true,
     });
   }
 
@@ -48,10 +54,12 @@ async function buildStandaloneServer({
   routeFolder,
   outputFile,
   minify = false,
+  logger = true,
 }: {
   routeFolder: string;
   outputFile: string;
   minify?: boolean;
+  logger?: boolean;
 }): Promise<void> {
   const timer = new Timer();
 
@@ -102,7 +110,7 @@ async function buildStandaloneServer({
   console.error("[@svarta/adapter-standalone] Building app\n");
 
   const tmpFile = resolve(`.svarta/tmp/app-${randomBytes(4).toString("hex")}.js`);
-  writeFileSync(tmpFile, buildTemplate(routes), "utf-8");
+  writeFileSync(tmpFile, buildTemplate(routes, logger), "utf-8");
 
   await esbuild.build({
     minify,

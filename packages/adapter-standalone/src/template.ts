@@ -35,6 +35,7 @@ function mapRoute(
 
 export function buildTemplate(
   routes: { path: string; routeSegments: RouteSegment[]; method: RouteMethod }[],
+  logger = true,
 ) {
   return `/***** imports *****/
 import { App } from "@tinyhttp/app";
@@ -109,13 +110,22 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
 
 const app = new App();
 
-/***** logger and header *****/
-app.use((req, res, next) => {
-  const now = new Date();
-  console.error(\`[\${now.toISOString()}] \${req.method} \${req.path}\`);
+/***** header *****/
+app.use((_, __, next) => {
   res.set("x-powered-by", "svarta");
   next();
 });
+
+${
+  logger
+    ? `/***** logger *****/
+app.use((req, res, next) => {
+  const now = new Date();
+  console.error(\`[\${now.toISOString()}] \${req.method} \${req.path}\`);
+  next();
+});`
+    : ""
+}
 
 ${routes.map(mapRoute).join(";\n")};
 
