@@ -9,7 +9,9 @@
 
 A Typescript-native, ESM-native REST API framework.
 
-Svarta abstracts the underlying backend, to allow deployment to different platforms without changing your code. Routes are organized using file-based routing, commonly used in fullstack frameworks like Next.js, Nuxt, SvelteKit or Solid Start:
+Svarta abstracts the underlying backend, to allow deployment to different platforms without changing your code. Routes are organized using file-based routing, commonly used in fullstack frameworks like Next.js, Nuxt, SvelteKit or Solid Start.
+
+Currently, supported deployment targets include:
 
 - Standalone (default): Uses tinyhttp to provide a tiny, ESM-based HTTP server
 - AWS Lambda: Uses API Gateway & AWS Lambda to provide a serverless API
