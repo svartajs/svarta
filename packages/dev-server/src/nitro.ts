@@ -4,7 +4,7 @@ const nitro = (dev: boolean) =>
   createNitro({
     dev,
     rootDir: ".svarta/dev/nitro",
-    logLevel: 3,
+    logLevel: 1,
   });
 
 export default nitro;
