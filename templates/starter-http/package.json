@@ -12,11 +12,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@svarta/adapter-standalone": "latest",
     "@svarta/cli": "latest",
     "@svarta/core": "latest",
-    "@types/node": "14.18",
-    "@tinyhttp/app": "2",
-    "milliparsec": "2"
+    "@types/node": "14.18"
   },
   "type": "module"
 }
