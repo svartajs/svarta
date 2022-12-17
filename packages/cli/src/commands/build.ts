@@ -12,7 +12,7 @@ export async function build(config: Config): Promise<void> {
       });
     }
   } else {
-    console.error("Unsupported adapter", config.adapter.type);
+    console.log("Unsupported adapter", config.adapter.type);
     process.exit(1);
   }
 }

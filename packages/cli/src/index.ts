@@ -24,9 +24,9 @@ yargs(hideBin(process.argv))
         },
       }),
     async (argv) => {
-      console.error(`[@svarta/cli] Starting build\n`);
+      console.log(`[@svarta/cli] Starting build\n`);
       const config = await loadConfig(argv.config);
-      console.error(`[@svarta/cli] Using adapter ${config.adapter.type}\n`);
+      console.log(`[@svarta/cli] Using adapter ${config.adapter.type}\n`);
       await build(config);
     },
   )
@@ -42,7 +42,7 @@ yargs(hideBin(process.argv))
         },
       }),
     async (argv) => {
-      console.error(`[@svarta/cli] Starting development server\n`);
+      console.log(`[@svarta/cli] Starting development server\n`);
       const config = await loadConfig(argv.config);
       await startDevelopmentServer(config);
     },

@@ -14,7 +14,7 @@ export async function buildTinyHttpStandaloneServer(
   minify = true,
   logger = true,
 ): Promise<string> {
-  console.error(
+  console.log(
     `[@svarta/adapter-standalone] Building standalone app based on ${chalk.blueBright(
       "tinyhttp",
     )}\n`,

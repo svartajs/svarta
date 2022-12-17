@@ -70,7 +70,7 @@ export async function collectRouteFiles(
     if (ROUTE_FILE_PATTERN.test(basename(path))) {
       files.push(path);
     } else {
-      console.error(`Unsupported file in routes folder: ${path}`);
+      console.log(`Unsupported file in routes folder: ${path}`);
     }
   }
 

@@ -12,7 +12,7 @@ import createNitro from "./nitro";
 
 async function nitrofyRoutes(routesFolder: string): Promise<void> {
   const routes = await collectRouteFiles(routesFolder);
-  console.error(`[@svarta/dev-server] Loading ${routes.length} routes`);
+  console.log(`[@svarta/dev-server] Loading ${routes.length} routes`);
 
   for (const route of routes) {
     const jsFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.mjs`);
@@ -34,9 +34,8 @@ async function nitrofyRoutes(routesFolder: string): Promise<void> {
       unlinkSync(jsFile);
     } catch (error) {
       const { message } = error as Error;
-      console.error(message);
+      console.log(message);
       unlinkSync(jsFile);
-      continue;
     }
 
     const tmpFile = resolve(
@@ -144,7 +143,7 @@ export default defineEventHandler(async (event) => {
 export async function startSvartaDevServer(routesFolder: string) {
   process.env["NODE_ENV"] = "development";
 
-  console.error(`[@svarta/dev-server] Starting dev server for ${routesFolder}`);
+  console.log(`[@svarta/dev-server] Starting dev server for ${routesFolder}`);
 
   if (existsSync(".svarta/dev")) {
     rmSync(".svarta/dev", { recursive: true });
@@ -173,7 +172,7 @@ export async function startSvartaDevServer(routesFolder: string) {
     .watch(routesFolder, {
       persistent: false,
     })
-    .on("change", reloadRoutes)
+    //.on("change", reloadRoutes)
     .on("add", reloadRoutes)
     .on("unlink", reloadRoutes)
     .on("unlinkDir", reloadRoutes);

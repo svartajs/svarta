@@ -48,7 +48,7 @@ async function cloneTemplate(appDir: string, template: Template): Promise<void> 
   ]);
 
   if (!appDir || !template) {
-    console.error("Aborting...");
+    console.log("Aborting...");
     process.exit(0);
   }
 

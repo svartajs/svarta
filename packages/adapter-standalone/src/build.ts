@@ -25,11 +25,9 @@ export async function buildStandaloneServer({
 }: BuildOptions): Promise<void> {
   const timer = new Timer();
 
-  const outputModuleFormat = outputFile.endsWith(".mjs") ? "esm" : "cjs";
-
   const collectTimer = new Timer();
-  console.error("[@svarta/adapter-standalone] Creating a standalone server\n");
-  console.error("[@svarta/adapter-standalone] Collecting routes\n");
+  console.log("[@svarta/adapter-standalone] Creating a standalone server\n");
+  console.log("[@svarta/adapter-standalone] Collecting routes\n");
 
   if (existsSync(".svarta/tmp")) {
     rmSync(".svarta/tmp", { recursive: true });
@@ -57,7 +55,7 @@ export async function buildStandaloneServer({
       await checkRoute(tmpFile, route.routeSegments);
     } catch (error) {
       const { message } = error as Error;
-      console.error(chalk.yellowBright(message));
+      console.log(chalk.yellowBright(message));
       process.exit(1);
     }
   }

@@ -25,13 +25,13 @@ export function printBuildResult({
   );
   const longestRouteMethod = Math.max(...routes.map(({ method }) => method.length));
 
-  console.error("Routes");
+  console.log("Routes");
 
   for (const route of routes) {
     const routeSize = statSync(route.path).size;
     const routePath = formatRoutePath(route.routeSegments);
 
-    console.error(
+    console.log(
       `${chalk.grey("├")} ${chalk.yellow(route.method)}${" ".repeat(
         longestRouteMethod - route.method.length + 1,
       )}${chalk.blueBright(routePath)}${" ".repeat(
@@ -41,13 +41,13 @@ export function printBuildResult({
   }
 
   const appSize = statSync(outputFile).size;
-  console.error(
+  console.log(
     `\n${"Output ready at"} ${chalk.blueBright(outputFile)} ${chalk.grey(
       `[${(appSize / 1000).toFixed(2)} kB]`,
     )}`,
   );
 
-  console.error(
+  console.log(
     `\nDone in ${timer.asSeconds()}s ${chalk.grey(
       `(collect ${collectTimer.asMilli()}ms, build ${buildTimer.asMilli()}ms)`,
     )}`,
