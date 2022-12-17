@@ -20,20 +20,20 @@ Currently, supported deployment targets include:
 
 | Feature | svarta | Express | Koa | fastify | tRPC | Next.js | nitropack |
 |---|---|---|---|---|---|---|---|
-| Type | REST | REST | REST | REST | RPC | React full-stack framework | REST |
+| Type | REST | REST | REST | REST | RPC | React full-stack | REST |
 | Middlewares | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ⚠️ Simplified |
 | Typesafe middlewares | ✔️ | ❌ | ❌ | ❌ | ✔️ | ❌ | ❌ |
 | Async support | ✔️ | ⚠️ v5 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 | File-based routing | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
-| REST doc generation | ❌ planned | ❌ | ❌ | ❌ | - | ❌ | ❌ |
 | Input validation | ✔️ zod | ❌ | ❌ | ✔️ | ✔️ zod | ❌ | ❌ |
-| Dependency-bundling | ✔️ | ❌ | ❌ | ❌ | _ | ✔️ | ✔️ |
-| CLI | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ❌ |
-| Serverless ready | ⚠️ WIP | ❌ | ❌ | ⚠️ Not trivial | ✔️ | ⚠️ Not trivial | ✔️ |
-| Typescript | ✔️ native | ✔️ with @types | ✔️ with @types | ✔️ types included | ✔️ native | ✔️ native | ✔️ native |
+| Dependency-bundling | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
+| CLI | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
+| Serverless ready | ✔️ | ❌ | ❌ | ⚠️ Not trivial | ✔️ | ⚠️ Not trivial | ✔️ |
+| Typescript | ✔️ native | ✔️ with @types | ✔️ with @types | ✔️ included | ✔️ native | ✔️ included | ✔️ native |
 | ESM ready | ✔️ | ❌ | ✔️ | ❌ | ✔️ | ✔️ | ✔️ |
 | Dev server w/ HMR | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
-| Full-stack | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ | ❌ |
+| Full-stack | ❌ | ❌ | ❌ | ❌ | - | ✔️ | ❌ |
+| REST doc generation | ❌ planned | ❌ | ❌ | ❌ | - | ❌ | ❌ |
 
 ## Bootstrap new project
 
