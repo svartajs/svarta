@@ -18,6 +18,7 @@ importers:
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
       '@tinyhttp/app': '2'
+      '@tinyhttp/cookie': ^2.0.5
       '@types/node': 18.11.10
       chalk: 5.1.2
       esbuild: 0.15.18
@@ -30,6 +31,7 @@ importers:
       zod: 3.19.1
     dependencies:
       '@svarta/core': link:../core
+      '@tinyhttp/cookie': 2.0.5
       chalk: 5.1.2
       esbuild: 0.15.18
       walk-it: 1.1.0
@@ -528,7 +530,6 @@ packages:
   /@tinyhttp/cookie/2.0.5:
     resolution: {integrity: sha512-fQxpzkD4pe9hv401DC5981RB1+T57bNCAh5Y/4Y1+AfaPcKUnyeSRHy1v6NkT0qF51PlXYPPpzm2X84PZIhKJw==}
     engines: {node: '>=12.4.0'}
-    dev: true
 
   /@tinyhttp/encode-url/2.0.6:
     resolution: {integrity: sha512-bpzgdQTwWnFd2+/wB4P8n8iX7vGGa4H0NePUhjb7VPBRfciCIq9fwzQTrDzTUMLs++qsBqG9q5RFaP0AgeWnmA==}

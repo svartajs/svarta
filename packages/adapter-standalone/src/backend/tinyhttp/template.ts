@@ -40,6 +40,7 @@ export function buildTemplate(
   return `/***** imports *****/
 import { App } from "@tinyhttp/app";
 import { json } from "milliparsec";
+import { parse, serialize } from "@tinyhttp/cookie";
 /***** routes *****/
 ${routes.map(({ path }, index) => `import r${index} from "${path}";`).join("\n")}
 
@@ -66,6 +67,18 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
         values: Object.values(req.headers),
       };
 
+      const cookieObj = parse(req.get("cookie") || '');
+
+      const cookies = {
+        get: (key) => cookieObj[key],
+        set: (key, value, opts) => { // TODO: test
+          res.set("Set-Cookie", serialize(key, value, opts));
+        },
+        entries: Object.entries(cookieObj),
+        keys: Object.keys(cookieObj),
+        values: Object.values(cookieObj),
+      };
+
       /***** call handler *****/
       const response = await handler({
         ctx: {} /* context starts empty */,
@@ -73,9 +86,10 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
         params: req.params,
         input: req.body,
         headers,
-        fullPath: req.path, // TODO: this should include query, also add basePath
+        fullPath: req.path, // TODO: also add basePath, test
         method: req.method,
         isDev: false,
+        cookies,
       });
 
       /***** respond *****/

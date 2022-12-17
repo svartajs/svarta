@@ -5,6 +5,7 @@ import { buildStandaloneServer } from "./build";
 
 const optionsSchema = zod.object({
   outputFile: zod.string(),
+  provider: zod.enum(["tinyhttp"]),
   logger: zod
     .object({
       enabled: zod.boolean(),
