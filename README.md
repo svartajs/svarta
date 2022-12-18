@@ -25,7 +25,7 @@ Currently, supported deployment targets include:
 | Typesafe middlewares | ✔️ | ❌ | ❌ | ❌ | ✔️ | ❌ | ❌ |
 | Async support | ✔️ | ⚠️ v5 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 | File-based routing | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
-| Input validation | ✔️ zod | ❌ | ❌ | ✔️ | ✔️ zod | ❌ | ❌ |
+| Input validation | ✔️ zod | ❌ | ❌ | ✔️ | ✔️ | ❌ | ❌ |
 | Dependency-bundling | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
 | CLI | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
 | Serverless ready | ✔️ | ❌ | ❌ | ⚠️ Not trivial | ✔️ | ⚠️ Not trivial | ✔️ |
