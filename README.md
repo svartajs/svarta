@@ -21,6 +21,7 @@ Currently, supported deployment targets include:
 | Feature | svarta | Express | Koa | fastify | tRPC | Next.js | nitropack |
 |---|---|---|---|---|---|---|---|
 | Type | REST | REST | REST | REST | RPC | React framework | REST |
+| Typescript | ✔️ native | ✔️ with @types | ✔️ with @types | ✔️ included | ✔️ native | ✔️ included | ✔️ native |
 | Middlewares | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ⚠️ Simplified |
 | Typesafe middlewares | ✔️ | ❌ | ❌ | ❌ | ✔️ | ❌ | ❌ |
 | Async support | ✔️ | ⚠️ v5 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
@@ -29,7 +30,6 @@ Currently, supported deployment targets include:
 | Dependency-bundling | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
 | CLI | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
 | Serverless ready | ✔️ | ❌ | ❌ | ⚠️ Not trivial | ✔️ | ⚠️ Not trivial | ✔️ |
-| Typescript | ✔️ native | ✔️ with @types | ✔️ with @types | ✔️ included | ✔️ native | ✔️ included | ✔️ native |
 | ESM ready | ✔️ | ❌ | ✔️ | ❌ | ✔️ | ✔️ | ✔️ |
 | Dev server w/ HMR | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
 | Full-stack | ❌ | ❌ | ❌ | ❌ | - | ✔️ | ❌ |
