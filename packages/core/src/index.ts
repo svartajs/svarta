@@ -7,7 +7,7 @@ export { checkRoute, collectRouteFiles, formatRoutePath, tokenizeRoute } from ".
 export type { default as Headers } from "./headers";
 export type { RouteMethod } from "./method";
 export { default as Redirect } from "./redirect";
-export { Response, RouteError } from "./response";
+export { default as Response } from "./response";
 export { defaultRoute as route } from "./route";
 export { default as Status } from "./status";
 export type { RouteSegment } from "./types";

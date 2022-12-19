@@ -1,4 +1,4 @@
-export class Response<T> {
+export default class Response<T> {
   __svartaResponse = true;
   _status: number;
   _body?: T;
