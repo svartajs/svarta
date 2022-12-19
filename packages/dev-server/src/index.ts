@@ -65,6 +65,10 @@ export default defineEventHandler(async (event) => {
   const req = event.node.req;
   const res = event.node.res;
 
+  /***** dev logger *****/
+  const now = new Date();
+  console.error(\`[\${now.toISOString()}] \${req.method} \${req.url}\`);
+
   try {
     // https://github.com/tinyhttp/milliparsec/blob/master/src/index.ts
     if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
@@ -88,22 +92,28 @@ export default defineEventHandler(async (event) => {
         return "Unprocessable Entity";
       }
     }
+
+    const headers = {
+      set: (key, value) => res.setHeader(key.toLowerCase(), value),
+      get: (key) => req.headers[key.toLowerCase()],
+      entries: Object.entries(req.headers),
+      keys: Object.keys(req.headers),
+      values: Object.values(req.headers),
+    };
+
+    const cookies = {}; // TODO:
   
     const response = await svartaRoute.handler({
       ctx: {},
       params: getRouterParams(event),
       query: url.parse(req.url, true).query,
-      headers: {
-        set: (key, value) => res.setHeader(key.toLowerCase(), value),
-        get: (key) => req.headers[key.toLowerCase()],
-        entries: Object.entries(req.headers),
-        keys: Object.keys(req.headers),
-        values: Object.values(req.headers),
-      },
+      headers,
       input: req.body,
-      fullPath: req.originalUrl,
+      fullPath: req.url,
       method: req.method,
       isDev: true,
+      cookies,
+      // TODO: basePath
     });
     
     /***** respond *****/
@@ -131,6 +141,7 @@ export default defineEventHandler(async (event) => {
     /***** error handler *****/
     console.error(\`svarta caught an error while handling route (\${req.originalUrl}): \` + (error?.message || error || "Unknown error"));
     res.statusCode = 500;
+    res.setHeader("x-powered-by", "svarta");
     return "Internal Server Error";
   }
 });
