@@ -41,9 +41,11 @@ export function buildTemplate(
 import { App } from "@tinyhttp/app";
 import { json } from "milliparsec";
 import { parse, serialize } from "@tinyhttp/cookie";
+
 /***** routes *****/
 ${routes.map(({ path }, index) => `import r${index} from "${path}";`).join("\n")}
 
+/***** handler *****/
 function __svartaTinyHttpHandler({ input, handler, routePath }) {
   return async (req, res) => {
     try {
@@ -117,6 +119,7 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
       /***** error handler *****/
       console.error(\`svarta caught an error while handling route (\${routePath}): \` + (error?.message || error || "Unknown error"));
       res.status(500);
+      res.set("x-powered-by", "svarta");
       res.send("Internal Server Error");
     }
   }

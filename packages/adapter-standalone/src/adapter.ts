@@ -25,7 +25,12 @@ class StandaloneAdapter implements Adapter<Options> {
   }
 
   validateOptions(opts: unknown): opts is Options {
-    return optionsSchema.safeParse(opts).success;
+    const validation = optionsSchema.safeParse(opts);
+    if (!validation.success) {
+      console.log(validation.error);
+      throw new Error("Invalid schema");
+    }
+    return true;
   }
 }
 
