@@ -16,31 +16,12 @@ Currently, supported deployment targets include:
 - Standalone (default): Uses tinyhttp to provide a tiny, ESM-based HTTP server
 - AWS Lambda: Uses API Gateway & AWS Lambda to provide a serverless API
 
-## Comparison to other libraries/frameworks
-
-| Feature | svarta | Express | Koa | fastify | tRPC | Next.js | nitropack |
-|---|---|---|---|---|---|---|---|
-| Type | REST | REST | REST | REST | RPC | React framework | REST |
-| Typescript | ✔️ native | ✔️ with @types | ✔️ with @types | ✔️ included | ✔️ native | ✔️ included | ✔️ native |
-| Middlewares | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ⚠️ Simplified |
-| Typesafe middlewares | ✔️ | ❌ | ❌ | ❌ | ✔️ | ❌ | ❌ |
-| Async support | ✔️ | ⚠️ v5 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
-| File-based routing | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
-| Input validation | ✔️ zod | ❌ | ❌ | ✔️ | ✔️ | ❌ | ❌ |
-| Dependency-bundling | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
-| CLI | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
-| Serverless ready | ✔️ | ❌ | ❌ | ⚠️ Not trivial | ✔️ | ⚠️ Not trivial | ✔️ |
-| ESM ready | ✔️ | ❌ | ✔️ | ❌ | ✔️ | ✔️ | ✔️ |
-| Dev server w/ HMR | ✔️ | ❌ | ❌ | ❌ | - | ✔️ | ✔️ |
-| Full-stack | ❌ | ❌ | ❌ | ❌ | - | ✔️ | ❌ |
-| REST doc generation | ❌ planned | ❌ | ❌ | ❌ | - | ❌ | ❌ |
-
 ## Bootstrap new project
 
 ```bash
-npx create-svarta-app my-app
-yarn create svarta-app my-app
-pnpm create svarta-app my-app
+npx create-svarta-app
+yarn create svarta-app
+pnpm create svarta-app
 ```
 
 For development, run:
