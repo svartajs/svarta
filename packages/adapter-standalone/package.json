@@ -17,13 +17,15 @@
     "vitest": "0.25.3"
   },
   "engines": {
-    "node": ">=14.8.0"
+    "node": ">=14.18.0"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@tinyhttp/app": "2",
     "milliparsec": "2",
+    "@tinyhttp/cookie": "2"
+  },
+  "dependencies": {
     "@svarta/core": "workspace:*",
-    "@tinyhttp/cookie": "^2.0.5",
     "chalk": "5.1.2",
     "esbuild": "0.15.18",
     "walk-it": "1.1.0",
