@@ -56,14 +56,28 @@ h3 {
   <body>
     <div id="app">
       <div>
-        <h1>Hello World!</h1>
-        <h3>
-          Edit <kbd>routes/api/hello.ts</kbd> and refresh to see changes!
-        </h3>
+        <h1 id="headline"></h1>
+        <h3 id="text"></h3>
         <a class="doc-btn" href="https://github.com/marvin-j97/svarta" target="_blank">
           Documentation 
         </a>
       </div>
     </div>
   </body>
+  <script>
+    (async () => {
+      const res = await fetch("/api/hello");
+      if (res.ok) {
+        const { headline, text } = await res.json();
+        {
+          const el = document.getElementById("headline");
+          el.innerHTML = headline;
+        }
+        {
+          const el = document.getElementById("text");
+          el.innerHTML = text;
+        }
+      }
+    })();
+  </script>
 </html>
