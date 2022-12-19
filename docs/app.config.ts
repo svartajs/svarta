@@ -1,9 +1,12 @@
 export default defineAppConfig({
   docus: {
     title: "svarta",
+    description: "TODO:",
     layout: "default",
     socials: {
-      github: "https://github.com/marvin-j97/svarta",
+      github: "marvin-j97/svarta",
     },
+    // TODO:
+    image: "/social-card.png",
   },
 });
