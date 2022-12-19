@@ -1,6 +1,8 @@
 import { Config, configSchema } from "@svarta/core";
 import chalk from "chalk";
 
+// TODO: move into CORE, don't throw, but result
+
 export async function loadConfig(path: string): Promise<Config> {
   console.log(`[@svarta/cli] Loading config ${chalk.yellow(path)}\n`);
 
@@ -12,5 +14,8 @@ export async function loadConfig(path: string): Promise<Config> {
   if (!parseResult.success) {
     throw parseResult.error;
   }
+
+  // TODO: check if routesFolder exists and is dir
+
   return config;
 }

@@ -1,5 +1,4 @@
-import { resolve } from "node:path";
-
+import chalk from "chalk";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
@@ -7,11 +6,13 @@ import { build } from "./commands/build";
 import { startDevelopmentServer } from "./commands/dev";
 import { loadConfig } from "./config";
 
-const DEFAULT_CONFIG_PATH = resolve("./svarta.config.mjs");
+const DEFAULT_CONFIG_PATH = "svarta.config.mjs";
 
 yargs(hideBin(process.argv))
   .scriptName("svarta")
   .version("0.0.0")
+  /* TODO: init */
+  /* TODO: deploy */
   .command(
     "build",
     "Build server",
@@ -21,12 +22,13 @@ yargs(hideBin(process.argv))
           alias: ["c"],
           type: "string",
           default: DEFAULT_CONFIG_PATH,
+          description: "Config file path",
         },
       }),
     async (argv) => {
       console.log(`[@svarta/cli] Starting build\n`);
       const config = await loadConfig(argv.config);
-      console.log(`[@svarta/cli] Using adapter ${config.adapter.type}\n`);
+      console.log(`[@svarta/cli] Using adapter ${chalk.blueBright(`"${config.adapter.type}"`)}\n`);
       await build(config);
     },
   )
@@ -39,6 +41,7 @@ yargs(hideBin(process.argv))
           alias: ["c"],
           type: "string",
           default: DEFAULT_CONFIG_PATH,
+          description: "Config file path",
         },
       }),
     async (argv) => {
