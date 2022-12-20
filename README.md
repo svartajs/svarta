@@ -5,8 +5,6 @@
 [![CI](https://github.com/marvin-j97/svarta/actions/workflows/ci.yml/badge.svg)](https://github.com/marvin-j97/svarta/actions/workflows/ci.yml)
 ![GitHub](https://img.shields.io/github/license/marvin-j97/svarta)
 
-## About
-
 A Typescript-native, ESM-native REST API framework.
 
 By abstracting the underlying platform, it allows deployment to different platforms without changing your code. Routes are organized using file-based routing, commonly used in fullstack frameworks like Next.js or SvelteKit.
