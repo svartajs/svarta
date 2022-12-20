@@ -1,9 +1,11 @@
+// TODO: core/common
+
 import type { PM } from "detect-package-manager";
 
 const installCommands: Record<PM, string> = {
-  npm: `npm i`,
-  pnpm: `pnpm i`,
-  yarn: `yarn`,
+  npm: `npm install`,
+  pnpm: `pnpm install`,
+  yarn: `yarn install`,
 };
 
 const runCommands: Record<PM, (client: string) => string> = {
