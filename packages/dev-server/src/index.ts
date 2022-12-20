@@ -2,7 +2,7 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
-import { checkRoute, collectRouteFiles } from "@svarta/core";
+import { checkRoute, collectRouteFiles, formatRoutePath } from "@svarta/core";
 import chokidar from "chokidar";
 import esbuild from "esbuild";
 import debounce from "lodash.debounce";
@@ -37,6 +37,8 @@ async function nitrofyRoutes(routesFolder: string): Promise<void> {
       console.log(message);
       unlinkSync(jsFile);
     }
+
+    const routePath = formatRoutePath(route.routeSegments);
 
     const tmpFile = resolve(
       `.svarta/dev/nitro/routes${route.routeSegments.reduce((path, seg) => {
@@ -109,11 +111,11 @@ export default defineEventHandler(async (event) => {
       query: url.parse(req.url, true).query,
       headers,
       input: req.body,
-      fullPath: req.url,
+      path: req.url.split("?").shift(), // TODO: should probably use new URL?
+      url: req.url,
       method: req.method,
       isDev: true,
       cookies,
-      // TODO: basePath
     });
     
     /***** respond *****/
@@ -139,7 +141,7 @@ export default defineEventHandler(async (event) => {
   }
   catch(error) {
     /***** error handler *****/
-    console.error(\`svarta caught an error while handling route (\${req.originalUrl}): \` + (error?.message || error || "Unknown error"));
+    console.error(\`svarta caught an error while handling route (${routePath}): \` + (error?.message || error || "Unknown error"));
     res.statusCode = 500;
     res.setHeader("x-powered-by", "svarta");
     return "Internal Server Error";
@@ -165,7 +167,7 @@ export async function startSvartaDevServer(routesFolder: string) {
 
   const nitro = await createNitro(true);
   const devServer = createDevServer(nitro);
-  await devServer.listen(+(process.env["PORT"] || 3000));
+  await devServer.listen(+(process.env["SVARTA_PORT"] || process.env["PORT"] || 7777));
   await prepare(nitro);
   await build(nitro);
 

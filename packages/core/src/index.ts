@@ -1,9 +1,9 @@
 export type { Adapter, AdapterOptions } from "./adapter";
 export type { Config } from "./config";
 export { configSchema } from "./config";
-export type { default as Context } from "./context";
 export type { default as Cookies, SetCookieOptions } from "./cookies";
 export { checkRoute, collectRouteFiles, formatRoutePath, tokenizeRoute } from "./fs_router";
+export type { default as HandlerEvent } from "./handler_event";
 export type { default as Headers } from "./headers";
 export type { RouteMethod } from "./method";
 export { default as Redirect } from "./redirect";

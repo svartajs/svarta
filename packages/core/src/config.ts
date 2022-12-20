@@ -1,6 +1,7 @@
 import * as zod from "zod";
 
 export const configSchema = zod.object({
+  packageManager: zod.enum(["npm", "yarn", "pnpm"]),
   adapter: zod.object({
     type: zod.string(),
   }),

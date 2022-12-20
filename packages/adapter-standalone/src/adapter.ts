@@ -4,6 +4,7 @@ import * as zod from "zod";
 import { buildStandaloneServer } from "./build";
 
 const optionsSchema = zod.object({
+  defaultPort: zod.number().int().positive(),
   outputFile: zod.string(),
   provider: zod.enum(["tinyhttp"]),
   logger: zod
@@ -21,6 +22,7 @@ class StandaloneAdapter implements Adapter<Options> {
       minify,
       outputFile: opts.outputFile,
       logger: opts.logger?.enabled ?? true,
+      defaultPort: opts.defaultPort,
     });
   }
 

@@ -14,20 +14,22 @@ interface BuildOptions {
   routeFolder: string;
   outputFile: string;
   minify?: boolean;
+  defaultPort: number;
   logger?: boolean;
 }
 
 export async function buildStandaloneServer({
   routeFolder,
   outputFile,
+  defaultPort,
   minify = false,
   logger = true,
 }: BuildOptions): Promise<void> {
   const timer = new Timer();
 
   const collectTimer = new Timer();
-  console.log("[@svarta/adapter-standalone] Creating a standalone server\n");
-  console.log("[@svarta/adapter-standalone] Collecting routes\n");
+  console.log("[@svarta/adapter-standalone] Creating a standalone server");
+  console.log("[@svarta/adapter-standalone] Collecting routes");
 
   if (existsSync(".svarta/tmp")) {
     rmSync(".svarta/tmp", { recursive: true });
@@ -67,7 +69,7 @@ export async function buildStandaloneServer({
   }
 
   const buildTimer = new Timer();
-  await buildTinyHttpStandaloneServer(routes, outputFile, minify, logger);
+  await buildTinyHttpStandaloneServer(routes, outputFile, defaultPort, minify, logger);
   buildTimer.stop();
 
   timer.stop();

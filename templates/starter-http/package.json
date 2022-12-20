@@ -1,5 +1,5 @@
 {
-  "name": "my-svarta-app",
+  "name": "@svarta/template-starter-http",
   "version": "1.0.0",
   "description": "My great REST API",
   "scripts": {

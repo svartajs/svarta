@@ -11,18 +11,17 @@ import { buildTemplate } from "./template";
 export async function buildTinyHttpStandaloneServer(
   routes: { path: string; routeSegments: RouteSegment[]; method: RouteMethod }[],
   outputFile: string,
+  defaultPort: number,
   minify = true,
   logger = true,
 ): Promise<string> {
   console.log(
-    `[@svarta/adapter-standalone] Building standalone app based on ${chalk.blueBright(
-      "tinyhttp",
-    )}\n`,
+    `[@svarta/adapter-standalone] Building standalone app based on ${chalk.blueBright("tinyhttp")}`,
   );
 
   const outputModuleFormat = outputFile.endsWith(".mjs") ? "esm" : "cjs";
   const tmpFile = resolve(`.svarta/tmp/app-${randomBytes(4).toString("hex")}.js`);
-  writeFileSync(tmpFile, buildTemplate(routes, logger), "utf-8");
+  writeFileSync(tmpFile, buildTemplate(routes, defaultPort, logger), "utf-8");
 
   await esbuild.build({
     minify,

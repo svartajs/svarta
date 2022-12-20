@@ -1,6 +1,6 @@
 import * as zod from "zod";
 
-import RouteInput from "./context";
+import RouteInput from "./handler_event";
 import Response from "./response";
 
 type HandlerFunction<Schema, Context, Output> = (

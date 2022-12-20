@@ -2,14 +2,15 @@ import Cookies from "./cookies";
 import Headers from "./headers";
 import type { RouteMethod } from "./method";
 
-export default interface RouteInput<T, Context> {
+export default interface HandlerEvent<T, Context> {
   // User provided context
   ctx: Context;
 
-  // TODO: also add basePath
+  // Full route path without query
+  path: string;
 
   // Full route path including query
-  fullPath: string;
+  url: string;
 
   // HTTP method
   method: RouteMethod;

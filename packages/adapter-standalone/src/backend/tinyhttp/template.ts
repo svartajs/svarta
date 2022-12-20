@@ -35,6 +35,7 @@ function mapRoute(
 
 export function buildTemplate(
   routes: { path: string; routeSegments: RouteSegment[]; method: RouteMethod }[],
+  defaultPort: number,
   logger = true,
 ) {
   return `/***** imports *****/
@@ -88,7 +89,8 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
         params: req.params,
         input: req.body,
         headers,
-        fullPath: req.path, // TODO: also add basePath, test
+        path: req.path,
+        url: req.originalUrl,
         method: req.method,
         isDev: false,
         cookies,
@@ -147,7 +149,7 @@ app.use((req, res, next) => {
 ${routes.map(mapRoute).join(";\n")};
 
 /***** startup *****/
-const port = +(process.env.SVARTA_PORT || process.env.PORT || "3000");
+const port = +(process.env.SVARTA_PORT || process.env.PORT || "${defaultPort}");
 console.error("Starting server on port " + port);
 app.listen(port, () => {
   console.error("Server running on http://localhost:" + port);
