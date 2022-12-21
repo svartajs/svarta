@@ -7,6 +7,7 @@
     "packages/*"
   ],
   "scripts": {
+    "postinstall": "husky install",
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
@@ -14,13 +15,15 @@
     "test": "turbo run test"
   },
   "devDependencies": {
+    "@commitlint/cli": "17.3.0",
+    "@commitlint/config-conventional": "17.3.0",
     "@svarta/eslint-config-custom": "workspace:*",
+    "husky": "8.0.2",
     "prettier": "2.8.0",
     "turbo": "1.6.3"
   },
   "engines": {
     "node": ">=14.18.0"
   },
-  "dependencies": {},
   "packageManager": "pnpm@7.17.0"
 }

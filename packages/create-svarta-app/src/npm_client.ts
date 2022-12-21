@@ -1,4 +1,4 @@
-// TODO: core/common
+// TODO: core
 
 import type { PM } from "detect-package-manager";
 
