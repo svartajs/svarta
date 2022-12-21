@@ -8,6 +8,46 @@ describe("fs_router", () => {
       expect(tokenizeRoute("/")).to.deep.equal([{ type: "sep" }]);
     });
 
+    it("should work for /index.get.ts", () => {
+      expect(tokenizeRoute("/")).to.deep.equal([{ type: "sep" }]);
+    });
+
+    it("should work for /user/[id].get.ts", () => {
+      expect(tokenizeRoute("/user/[id].get.ts")).to.deep.equal([
+        { type: "sep" },
+        { type: "static", value: "user" },
+        { type: "sep" },
+        { type: "param", name: "id" },
+      ]);
+    });
+
+    it("should work for /user/[id].get.ts", () => {
+      expect(tokenizeRoute("/deep/nested/user.get.ts")).to.deep.equal([
+        { type: "sep" },
+        { type: "static", value: "deep" },
+        { type: "sep" },
+        { type: "static", value: "nested" },
+        { type: "sep" },
+        { type: "static", value: "user" },
+      ]);
+    });
+
+    it("should work for /user/[...id].get.ts", () => {
+      expect(tokenizeRoute("/user/[...id].get.ts")).to.deep.equal([
+        { type: "sep" },
+        { type: "static", value: "user" },
+        { type: "sep" },
+        { type: "catchAll", name: "id" },
+      ]);
+    });
+
+    it("should work for /user.get.ts", () => {
+      expect(tokenizeRoute("/user.get.ts")).to.deep.equal([
+        { type: "sep" },
+        { type: "static", value: "user" },
+      ]);
+    });
+
     it("should work for /hello", () => {
       expect(tokenizeRoute("/hello")).to.deep.equal([
         { type: "sep" },

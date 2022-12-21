@@ -9,23 +9,38 @@ describe("fs_router", () => {
     const FIXTURE_PATH = resolve(__dirname, ".fixture/routes");
 
     const expectedRoutes = [
+      /*   {
+        path: resolve(FIXTURE_PATH, "_500.ts"),
+        routeSegments: [{ type: "sep" }],
+        method: "GET",
+      }, */
       {
-        path: resolve(FIXTURE_PATH, "get.ts"),
+        path: resolve(FIXTURE_PATH, "index.get.ts"),
         routeSegments: [{ type: "sep" }],
         method: "GET",
       },
       {
-        path: resolve(FIXTURE_PATH, "post.ts"),
+        path: resolve(FIXTURE_PATH, "index.post.ts"),
         routeSegments: [{ type: "sep" }],
         method: "POST",
       },
       {
-        path: resolve(FIXTURE_PATH, "[id]/get.ts"),
+        path: resolve(FIXTURE_PATH, "render.get.tsx"),
+        routeSegments: [{ type: "sep" }, { type: "static", value: "render" }],
+        method: "GET",
+      },
+      {
+        path: resolve(FIXTURE_PATH, "user.post.ts"),
+        routeSegments: [{ type: "sep" }, { type: "static", value: "user" }],
+        method: "POST",
+      },
+      {
+        path: resolve(FIXTURE_PATH, "[id]/index.get.ts"),
         routeSegments: [{ type: "sep" }, { type: "param", name: "id" }],
         method: "GET",
       },
       {
-        path: resolve(FIXTURE_PATH, "[...rest]/get.ts"),
+        path: resolve(FIXTURE_PATH, "[...rest]/index.get.ts"),
         routeSegments: [{ type: "sep" }, { type: "catchAll", name: "rest" }],
         method: "GET",
       },
@@ -33,6 +48,7 @@ describe("fs_router", () => {
 
     it("should get correct files from folder", async () => {
       const foundRoutes = await collectRouteFiles(FIXTURE_PATH);
+      console.dir({ expectedRoutes, foundRoutes }, { depth: null });
       expect(foundRoutes).to.deep.equal(expectedRoutes);
     });
   });

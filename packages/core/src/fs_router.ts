@@ -58,7 +58,9 @@ export async function checkRoute(path: string, routeSegments: RouteSegment[]): P
   }
 }
 
-const ROUTE_FILE_PATTERN = new RegExp(`^${SUPPORTED_METHODS.join("|").toLowerCase()}\.ts$`);
+const ROUTE_FILE_PATTERN = new RegExp(
+  `^[a-zA-Z0-9_\\-~\\[\\].]+\.(${SUPPORTED_METHODS.join("|").toLowerCase()})\.tsx?$`,
+);
 
 export async function collectRouteFiles(
   folder: string,
@@ -76,11 +78,14 @@ export async function collectRouteFiles(
 
   const routes = files
     .map((path) => {
-      const method = basename(path).replace(".ts", "").toUpperCase() as RouteMethod;
+      const filename = basename(path);
+      const [_name, methodRaw, _ext] = filename.split(".");
+      const method = methodRaw.toUpperCase() as RouteMethod;
 
-      const normalized = `/${relative(folder, path)
-        .replace(windowsSeparator, posixSeperator)
-        .replace(basename(path), "")}`;
+      let normalized = `/${relative(folder, path).replace(windowsSeparator, posixSeperator)}`;
+      if (filename.startsWith("index.")) {
+        normalized = normalized.replace(filename, "");
+      }
 
       return {
         path: normalize(path),
@@ -110,7 +115,7 @@ export async function collectRouteFiles(
 const SEP_REGEX = /^\//;
 const CATCH_ALL_REGEX = /^\[[.]{3}([a-zA-Z0-9_\-~]+)\]/;
 const PARAM_REGEX = /^\[([a-zA-Z0-9_\-~]+)\]/;
-const STATIC_REGEX = /^[a-zA-Z0-9_.\-~]+/;
+const STATIC_REGEX = /^[a-zA-Z0-9_\-~]+/;
 
 export function tokenizeRoute(str: string, removeTrailingSlash = true): RouteSegment[] {
   const segments: RouteSegment[] = [];
@@ -122,6 +127,19 @@ export function tokenizeRoute(str: string, removeTrailingSlash = true): RouteSeg
     if (SEP_REGEX.test(stream)) {
       segments.push({ type: "sep" });
       stream = stream.replace(SEP_REGEX, "");
+    }
+    // Route name
+    else if (ROUTE_FILE_PATTERN.test(stream)) {
+      const [matched] = stream.match(ROUTE_FILE_PATTERN)!;
+      const routeName = matched.replace(
+        new RegExp(`\\.(${SUPPORTED_METHODS.join("|").toLowerCase()})\\.tsx?$`),
+        "",
+      );
+
+      const tokens = tokenizeRoute(routeName, true);
+      segments.push(...tokens);
+
+      stream = stream.replace(ROUTE_FILE_PATTERN, "");
     }
     // [...Catch all]
     else if (CATCH_ALL_REGEX.test(stream)) {
