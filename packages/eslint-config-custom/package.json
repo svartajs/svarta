@@ -7,7 +7,7 @@
   "devDependencies": {
     "@typescript-eslint/parser": "5.47.0",
     "eslint": "7.23.0",
-    "eslint-config-prettier": "8.3.0",
+    "eslint-config-prettier": "8.5.0",
     "eslint-config-turbo": "latest",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-simple-import-sort": "8.0.0",
