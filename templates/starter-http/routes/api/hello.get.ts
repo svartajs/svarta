@@ -1,4 +1,4 @@
-import { Response, route, Status } from "@svarta/core";
+import { Response, route, Status } from "svarta";
 
 export default route.handle(async ({ isDev }) => {
   if (isDev) {

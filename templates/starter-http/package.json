@@ -1,5 +1,6 @@
 {
   "name": "@svarta/template-starter-http",
+  "private": true,
   "version": "1.0.0",
   "description": "My great REST API",
   "scripts": {
@@ -14,7 +15,7 @@
   "devDependencies": {
     "@svarta/adapter-standalone": "latest",
     "@svarta/cli": "latest",
-    "@svarta/core": "latest",
+    "svarta": "latest",
     "@tinyhttp/app": "2",
     "@tinyhttp/cookie": "2",
     "@types/node": "14.18",

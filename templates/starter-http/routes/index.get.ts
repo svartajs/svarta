@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 
-import { Response, route, Status } from "@svarta/core";
+import { Response, route, Status } from "svarta";
 
 const html = readFileSync("index.html", "utf-8");
 
