@@ -1,9 +1,9 @@
-name: CI
+name: Release
 
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   build:
@@ -31,3 +31,4 @@ jobs:
       - run: pnpm build
       - run: pnpm lint
       - run: pnpm test
+      - run: pnpm publish -r
