@@ -33,13 +33,13 @@ importers:
       typescript: 4.9.3
       vitest: 0.25.3
       walk-it: 1.1.0
-      zod: 3.19.1
+      zod: 3.20.2
     dependencies:
       '@svarta/core': link:../core
       chalk: 5.1.2
       esbuild: 0.15.18
       walk-it: 1.1.0
-      zod: 3.19.1
+      zod: 3.20.2
     devDependencies:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
       '@svarta/tsconfig': link:../tsconfig
@@ -64,13 +64,13 @@ importers:
       typescript: 4.9.3
       vitest: 0.25.3
       yargs: 17.6.2
-      zod: 3.19.1
+      zod: 3.20.2
     dependencies:
       '@svarta/core': link:../core
       '@svarta/dev-server': link:../dev-server
       chalk: 5.1.2
       yargs: 17.6.2
-      zod: 3.19.1
+      zod: 3.20.2
     devDependencies:
       '@svarta/adapter-standalone': link:../adapter-standalone
       '@svarta/eslint-config-custom': link:../eslint-config-custom
@@ -92,10 +92,10 @@ importers:
       typescript: 4.9.3
       vitest: 0.25.3
       walk-it: 1.1.0
-      zod: 3.19.1
+      zod: 3.20.2
     dependencies:
       walk-it: 1.1.0
-      zod: 3.19.1
+      zod: 3.20.2
     devDependencies:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
       '@svarta/tsconfig': link:../tsconfig
@@ -5477,6 +5477,6 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
-  /zod/3.19.1:
-    resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
+  /zod/3.20.2:
+    resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
     dev: false
