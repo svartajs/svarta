@@ -24,7 +24,7 @@
   "dependencies": {
     "@svarta/core": "workspace:*",
     "@svarta/dev-server": "workspace:*",
-    "chalk": "5.1.2",
+    "chalk": "5.2.0",
     "yargs": "17.6.2",
     "zod": "3.20.2"
   },
