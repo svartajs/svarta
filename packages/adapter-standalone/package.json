@@ -29,7 +29,7 @@
     "chalk": "5.1.2",
     "esbuild": "0.15.18",
     "walk-it": "1.1.0",
-    "zod": "3.19.1"
+    "zod": "3.20.2"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
