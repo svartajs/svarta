@@ -1,3 +1,5 @@
+import * as packageManager from "./package_manager";
+
 export type { Adapter, AdapterOptions } from "./adapter";
 export type { LoadedRoute } from "./check_routes";
 export { loadRoute, loadRoutes } from "./check_routes";
@@ -15,3 +17,4 @@ export { default as Response } from "./response";
 export { defaultRoute as route } from "./route";
 export { default as Status } from "./status";
 export type { RouteSegment } from "./types";
+export { packageManager };

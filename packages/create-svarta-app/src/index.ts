@@ -2,16 +2,18 @@ import { execSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
+import { packageManager } from "@svarta/core";
 import chalk from "chalk";
-import { detect as detectManager, PM } from "detect-package-manager";
 import { downloadTemplate } from "giget";
 import prompts from "prompts";
 
-import { getInstallCommand, getRunCommand } from "./npm_client";
-
 type Template = "starter-http";
 
-async function cloneTemplate(appDir: string, template: Template, npmClient: PM): Promise<void> {
+async function cloneTemplate(
+  appDir: string,
+  template: Template,
+  npmClient: packageManager.Type,
+): Promise<void> {
   console.log("");
   console.log(`Cloning ${chalk.blueBright(template)} into ${chalk.blueBright(appDir)}...`);
 
@@ -31,8 +33,12 @@ async function cloneTemplate(appDir: string, template: Template, npmClient: PM):
   console.log("");
   console.log(`Next steps:`);
   console.log(`  ${chalk.grey("1:")} ${chalk.blueBright(`cd ${appDir}`)}`);
-  console.log(`  ${chalk.grey("2:")} ${chalk.blueBright(getInstallCommand(npmClient))}`);
-  console.log(`  ${chalk.grey("3:")} ${chalk.blueBright(getRunCommand(npmClient, "dev"))}`);
+  console.log(
+    `  ${chalk.grey("2:")} ${chalk.blueBright(packageManager.getInstallCommand(npmClient))}`,
+  );
+  console.log(
+    `  ${chalk.grey("3:")} ${chalk.blueBright(packageManager.getRunCommand(npmClient, "dev"))}`,
+  );
   console.log("");
 }
 
@@ -57,12 +63,12 @@ const managers = [
 (async () => {
   console.log(chalk.grey("create-svarta-app 0.0.0"));
 
-  let manager: PM;
+  let manager: packageManager.Type;
   const fromCmd = process.argv[0];
   if (["npm", "yarn", "pnpm"].includes(fromCmd)) {
-    manager = fromCmd as PM;
+    manager = fromCmd as packageManager.Type;
   } else {
-    manager = await detectManager();
+    manager = await packageManager.detect();
   }
 
   const managerIndex = managers.findIndex(({ value }) => value === manager);

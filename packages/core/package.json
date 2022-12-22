@@ -20,6 +20,7 @@
     "node": ">=14.18"
   },
   "dependencies": {
+    "detect-package-manager": "2.0.1",
     "walk-it": "1.1.0",
     "zod": "3.19.1"
   },

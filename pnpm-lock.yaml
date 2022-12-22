@@ -87,6 +87,7 @@ importers:
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
       '@types/node': 18.11.10
+      detect-package-manager: 2.0.1
       eslint: 7.32.0
       tsup: 6.5.0
       typescript: 4.9.3
@@ -94,6 +95,7 @@ importers:
       walk-it: 1.1.0
       zod: 3.19.1
     dependencies:
+      detect-package-manager: 2.0.1
       walk-it: 1.1.0
       zod: 3.19.1
     devDependencies:
@@ -107,13 +109,13 @@ importers:
 
   packages/create-svarta-app:
     specifiers:
+      '@svarta/core': workspace:*
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
       '@types/node': 18.11.10
       '@types/prompts': 2.4.2
       '@types/yargs': 17.0.17
       chalk: 5.1.2
-      detect-package-manager: 2.0.1
       eslint: 7.32.0
       giget: 1.0.0
       prompts: 2.4.2
@@ -121,8 +123,8 @@ importers:
       typescript: 4.9.3
       vitest: 0.25.3
     dependencies:
+      '@svarta/core': link:../core
       chalk: 5.1.2
-      detect-package-manager: 2.0.1
       giget: 1.0.0
       prompts: 2.4.2
     devDependencies:

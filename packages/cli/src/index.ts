@@ -1,19 +1,13 @@
-import { loadConfig } from "@svarta/core";
+import { loadConfig, packageManager } from "@svarta/core";
 import chalk from "chalk";
 import { execSync } from "child_process";
-import yargs, { config } from "yargs";
+import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import { build } from "./commands/build";
 import { startDevelopmentServer } from "./commands/dev";
 
 const DEFAULT_CONFIG_PATH = "svarta.config.mjs";
-
-const createCommands: Record<string, (client: string) => string> = {
-  npm: (cmd) => `npm create ${cmd}`,
-  yarn: (cmd) => `yarn create ${cmd}`,
-  pnpm: (cmd) => `pnpm create ${cmd}`,
-};
 
 yargs(hideBin(process.argv))
   .scriptName("svarta")
@@ -28,7 +22,7 @@ yargs(hideBin(process.argv))
         default: "npm",
       }),
     async (args) => {
-      execSync(createCommands[args.manager]("svarta-app"), {
+      execSync(packageManager.getCreateCommand(args.manager as packageManager.Type, "svarta-app"), {
         stdio: "inherit",
       });
     },
