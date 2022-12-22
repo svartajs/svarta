@@ -141,6 +141,7 @@ importers:
       '@svarta/tsconfig': workspace:*
       '@types/lodash.debounce': ^4.0.7
       '@types/node': 18.11.10
+      chalk: 5.1.2
       chokidar: ^3.5.3
       esbuild: 0.15.18
       eslint: 7.32.0
@@ -151,6 +152,7 @@ importers:
       vitest: 0.25.3
     dependencies:
       '@svarta/core': link:../core
+      chalk: 5.1.2
       chokidar: 3.5.3
       esbuild: 0.15.18
       lodash.debounce: 4.0.8

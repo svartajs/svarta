@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@svarta/core": "workspace:*",
+    "chalk": "5.1.2",
     "chokidar": "^3.5.3",
     "esbuild": "0.15.18",
     "lodash.debounce": "^4.0.8",
