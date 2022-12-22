@@ -1,12 +1,12 @@
 import { statSync } from "node:fs";
 
-import { formatRoutePath, RouteMethod, RouteSegment } from "@svarta/core";
+import { CollectedRoute, formatRoutePath } from "@svarta/core";
 import chalk from "chalk";
 
 import { Timer } from "./timer";
 
 interface ResultOptions {
-  routes: { path: string; routeSegments: RouteSegment[]; method: RouteMethod }[];
+  routes: CollectedRoute[];
   outputFile: string;
   timer: Timer;
   collectTimer: Timer;

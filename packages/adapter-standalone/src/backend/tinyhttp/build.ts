@@ -2,14 +2,14 @@ import { randomBytes } from "node:crypto";
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { RouteMethod, RouteSegment } from "@svarta/core";
+import { CollectedRoute } from "@svarta/core";
 import chalk from "chalk";
 import esbuild from "esbuild";
 
 import { buildTemplate } from "./template";
 
 export async function buildTinyHttpStandaloneServer(
-  routes: { path: string; routeSegments: RouteSegment[]; method: RouteMethod }[],
+  routes: CollectedRoute[],
   outputFile: string,
   defaultPort: number,
   minify = true,

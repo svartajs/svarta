@@ -2,7 +2,8 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
-import { checkRoute, collectRouteFiles, formatRoutePath } from "@svarta/core";
+import { collectRouteFiles, formatRoutePath, loadRoute } from "@svarta/core";
+import chalk from "chalk";
 import chokidar from "chokidar";
 import esbuild from "esbuild";
 import debounce from "lodash.debounce";
@@ -15,6 +16,8 @@ async function nitrofyRoutes(routesFolder: string): Promise<void> {
   console.log(`[@svarta/dev-server] Loading ${routes.length} routes`);
 
   for (const route of routes) {
+    console.log("-----");
+    console.log(chalk.bgBlack(route.path));
     const jsFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.mjs`);
 
     await esbuild.build({
@@ -29,12 +32,26 @@ async function nitrofyRoutes(routesFolder: string): Promise<void> {
       target: "es2019",
     });
 
-    try {
-      await checkRoute(jsFile, route.routeSegments);
-      unlinkSync(jsFile);
-    } catch (error) {
-      const { message } = error as Error;
-      console.log(message);
+    const checkResult = await loadRoute({
+      ...route,
+      path: jsFile,
+    });
+
+    for (const warning of checkResult.warnings) {
+      console.log(chalk.yellowBright(warning.message));
+      console.log();
+      if (warning.suggestion) {
+        console.log(warning.suggestion);
+      }
+    }
+
+    const [error] = checkResult.errors;
+    if (error) {
+      console.log(chalk.yellowBright(error.message));
+      console.log();
+      if (error.suggestion) {
+        console.log(chalk.yellowBright(error.suggestion));
+      }
       unlinkSync(jsFile);
     }
 
@@ -184,6 +201,7 @@ export async function startSvartaDevServer(routesFolder: string) {
   chokidar
     .watch(routesFolder, {
       persistent: false,
+      ignoreInitial: true,
     })
     //.on("change", reloadRoutes)
     .on("add", reloadRoutes)

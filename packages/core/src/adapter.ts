@@ -5,7 +5,8 @@ export type AdapterOptions<T> = {
   opts: T;
 };
 
-export interface Adapter<T> {
-  build(opts: AdapterOptions<T>): Promise<void>;
-  validateOptions(opts: unknown): opts is T;
+export interface Adapter<Options, DeployOptions> {
+  validateOptions(opts: unknown): opts is Options;
+  build(opts: AdapterOptions<Options>): Promise<void>;
+  deploy(opts: DeployOptions): Promise<void>;
 }

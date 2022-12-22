@@ -2,7 +2,7 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { checkRoute, collectRouteFiles } from "@svarta/core";
+import { collectRouteFiles, formatRoutePath, loadRoute } from "@svarta/core";
 import chalk from "chalk";
 import esbuild from "esbuild";
 
@@ -39,7 +39,9 @@ export async function buildStandaloneServer({
   const routes = await collectRouteFiles(routeFolder);
 
   for (const route of routes) {
-    const tmpFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.mjs`);
+    console.log("-----");
+    console.log(chalk.bgBlack(route.path));
+    const jsFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.mjs`);
 
     await esbuild.build({
       bundle: true,
@@ -47,17 +49,32 @@ export async function buildStandaloneServer({
         js: "/***** svarta route *****/",
       },
       entryPoints: [route.path],
-      outfile: tmpFile,
+      outfile: jsFile,
       platform: "node",
       format: "esm",
       target: "es2019",
     });
 
-    try {
-      await checkRoute(tmpFile, route.routeSegments);
-    } catch (error) {
-      const { message } = error as Error;
-      console.log(chalk.yellowBright(message));
+    const checkResult = await loadRoute({
+      ...route,
+      path: jsFile,
+    });
+
+    for (const warning of checkResult.warnings) {
+      console.log(chalk.yellowBright(warning.message));
+      console.log();
+      if (warning.suggestion) {
+        console.log(warning.suggestion);
+      }
+    }
+
+    const [error] = checkResult.errors;
+    if (error) {
+      console.log(chalk.redBright(error.message));
+      console.log();
+      if (error.suggestion) {
+        console.log(chalk.yellowBright(error.suggestion));
+      }
       process.exit(1);
     }
   }

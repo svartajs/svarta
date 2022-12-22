@@ -1,4 +1,4 @@
-import type { RouteMethod, RouteSegment } from "@svarta/core";
+import type { CollectedRoute, RouteMethod, RouteSegment } from "@svarta/core";
 import { formatRoutePath } from "@svarta/core";
 
 function mapRoute(
@@ -33,11 +33,7 @@ function mapRoute(
 )`;
 }
 
-export function buildTemplate(
-  routes: { path: string; routeSegments: RouteSegment[]; method: RouteMethod }[],
-  defaultPort: number,
-  logger = true,
-) {
+export function buildTemplate(routes: CollectedRoute[], defaultPort: number, logger = true) {
   return `/***** imports *****/
 import { App } from "@tinyhttp/app";
 import { json } from "milliparsec";

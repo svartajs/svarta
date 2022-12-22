@@ -3,7 +3,7 @@ import * as zod from "zod";
 
 import { buildStandaloneServer } from "./build";
 
-const optionsSchema = zod.object({
+const buildOptionsSchema = zod.object({
   defaultPort: zod.number().int().positive(),
   outputFile: zod.string(),
   provider: zod.enum(["tinyhttp"]),
@@ -13,10 +13,10 @@ const optionsSchema = zod.object({
     })
     .optional(),
 });
-export type Options = zod.TypeOf<typeof optionsSchema>;
+export type BuildOptions = zod.TypeOf<typeof buildOptionsSchema>;
 
-class StandaloneAdapter implements Adapter<Options> {
-  async build({ minify, routeFolder, opts }: AdapterOptions<Options>): Promise<void> {
+class StandaloneAdapter implements Adapter<BuildOptions, {}> {
+  async build({ minify, routeFolder, opts }: AdapterOptions<BuildOptions>): Promise<void> {
     return buildStandaloneServer({
       routeFolder,
       minify,
@@ -26,13 +26,17 @@ class StandaloneAdapter implements Adapter<Options> {
     });
   }
 
-  validateOptions(opts: unknown): opts is Options {
-    const validation = optionsSchema.safeParse(opts);
+  validateOptions(opts: unknown): opts is BuildOptions {
+    const validation = buildOptionsSchema.safeParse(opts);
     if (!validation.success) {
       console.log(validation.error);
       throw new Error("Invalid schema");
     }
     return true;
+  }
+
+  async deploy(_: {}): Promise<void> {
+    console.log("Nothing to do");
   }
 }
 

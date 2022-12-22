@@ -1,10 +1,4 @@
-import { basename, normalize, relative } from "node:path";
-import { sep as posixSeperator } from "node:path/posix";
-import { sep as windowsSeparator } from "node:path/win32";
-
-import { walkFiles } from "walk-it";
-
-import { RouteMethod, SUPPORTED_METHODS } from "./method";
+import { SUPPORTED_METHODS } from "./method";
 import type { RouteSegment } from "./types";
 
 export function formatRoutePath(routeSegments: RouteSegment[]): string {
@@ -22,105 +16,9 @@ export function formatRoutePath(routeSegments: RouteSegment[]): string {
   }, "");
 }
 
-export async function checkRoute(path: string, routeSegments: RouteSegment[]): Promise<void> {
-  const route = await import(path);
-  const { default: def, params } = route;
-
-  if (!def?.handler) {
-    throw new Error("Route is not exporting handler");
-  }
-
-  if (params) {
-    if (!Array.isArray(params)) {
-      throw new Error("Invalid params export");
-    }
-  }
-
-  const definedParams = params || [];
-  const realParams = routeSegments.reduce((params, seg) => {
-    if (seg.type === "param" || seg.type === "catchAll") {
-      params.push(seg.name);
-    }
-    return params;
-  }, [] as string[]);
-
-  const nonExhaustedParams = realParams.filter((param: string) => !definedParams.includes(param));
-  const unusedParams = definedParams.filter((param: string) => !realParams.includes(param));
-
-  if (unusedParams.length) {
-    const routePath = formatRoutePath(routeSegments);
-    throw new Error(
-      `Param defined but not present in route "${routePath}": ${nonExhaustedParams.join(
-        ", ",
-      )}\nRemove "${unusedParams[0]}" from the "params" array`,
-    );
-  }
-
-  if (nonExhaustedParams.length) {
-    const routePath = formatRoutePath(routeSegments);
-    throw new Error(
-      `Param(s) not defined in route "${routePath}": ${nonExhaustedParams.join(
-        ", ",
-      )}\nTo your route file, add:\n\nexport const params = [${realParams
-        .map((x) => `"${x}"`)
-        .join(", ")}] as const;`,
-    );
-  }
-}
-
-const ROUTE_FILE_PATTERN = new RegExp(
+export const ROUTE_FILE_PATTERN = new RegExp(
   `^[a-zA-Z0-9_\\-~\\[\\].]+\.(${SUPPORTED_METHODS.join("|").toLowerCase()})\.tsx?$`,
 );
-
-export async function collectRouteFiles(
-  folder: string,
-): Promise<{ path: string; routeSegments: RouteSegment[]; method: RouteMethod }[]> {
-  const files: string[] = [];
-  for await (const { path } of walkFiles(folder, {
-    recursive: true,
-  })) {
-    if (ROUTE_FILE_PATTERN.test(basename(path))) {
-      files.push(path);
-    } else {
-      console.log(`Unsupported file in routes folder: ${path}`);
-    }
-  }
-
-  const routes = files
-    .map((path) => {
-      const filename = basename(path);
-      const [_name, methodRaw, _ext] = filename.split(".");
-      const method = methodRaw.toUpperCase() as RouteMethod;
-
-      let normalized = `/${relative(folder, path).replace(windowsSeparator, posixSeperator)}`;
-      if (filename.startsWith("index.")) {
-        normalized = normalized.replace(filename, "");
-      }
-
-      return {
-        path: normalize(path),
-        method,
-        routeSegments: tokenizeRoute(normalized),
-      };
-    })
-    .sort((a, b) => {
-      if (a.routeSegments.some((x) => x.type === "catchAll")) {
-        return 1;
-      }
-      if (b.routeSegments.some((x) => x.type === "catchAll")) {
-        return -1;
-      }
-      if (a.routeSegments.some((x) => x.type === "param")) {
-        return 1;
-      }
-      if (b.routeSegments.some((x) => x.type === "param")) {
-        return -1;
-      }
-      return 0;
-    });
-
-  return routes;
-}
 
 const SEP_REGEX = /^\//;
 const CATCH_ALL_REGEX = /^\[[.]{3}([a-zA-Z0-9_\-~]+)\]/;
