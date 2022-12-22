@@ -90,11 +90,11 @@ importers:
       tsup: 6.5.0
       typescript: 4.9.3
       vitest: 0.25.3
-      walk-it: 1.1.0
+      walk-it: 1.1.1
       zod: 3.20.2
     dependencies:
       detect-package-manager: 2.0.1
-      walk-it: 1.1.0
+      walk-it: 1.1.1
       zod: 3.20.2
     devDependencies:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
@@ -5269,8 +5269,8 @@ packages:
       - terser
     dev: true
 
-  /walk-it/1.1.0:
-    resolution: {integrity: sha512-U/xMVPcENpmATrtre5LQnHyyUM5afmiMZEdxI5udmNmSsHNmeWIsjNR+Jka7Lp125pZvCxAqpspJZMg2/FAYSQ==}
+  /walk-it/1.1.1:
+    resolution: {integrity: sha512-rwZqgWHSt4AXjsDFGrhoJno5WFClcLUk5iI6dQsu8NcFKeuckEv22aqds0MX9vLFti/Q/7V3O5gMdtK5Ka4mrg==}
     engines: {node: '>=14.18.0'}
     dev: false
 
