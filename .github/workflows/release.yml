@@ -12,11 +12,8 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          #- windows-latest
-          #- macos-latest
         node-version:
           - 16.x
-          #- 18.x
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
@@ -27,8 +24,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
       - run: pnpm install
       - run: pnpm build
       - run: pnpm lint
       - run: pnpm test
-      - run: pnpm publish -r
+      - run: pnpm publish --no-git-checks --access public -r
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
