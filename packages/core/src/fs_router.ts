@@ -45,6 +45,16 @@ export async function checkRoute(path: string, routeSegments: RouteSegment[]): P
   }, [] as string[]);
 
   const nonExhaustedParams = realParams.filter((param: string) => !definedParams.includes(param));
+  const unusedParams = definedParams.filter((param: string) => !realParams.includes(param));
+
+  if (unusedParams.length) {
+    const routePath = formatRoutePath(routeSegments);
+    throw new Error(
+      `Param defined but not present in route "${routePath}": ${nonExhaustedParams.join(
+        ", ",
+      )}\nRemove "${unusedParams[0]}" from the "params" array`,
+    );
+  }
 
   if (nonExhaustedParams.length) {
     const routePath = formatRoutePath(routeSegments);

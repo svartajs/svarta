@@ -1,17 +1,21 @@
 import * as zod from "zod";
 
-import RouteInput from "./handler_event";
+import HandlerEvent from "./handler_event";
 import Response from "./response";
 
-type HandlerFunction<Schema, Context, Output> = (
-  routeInput: RouteInput<Schema, Context>,
+type ParamArrayToDict<T extends readonly string[]> = {
+  [key in T[number]]: string;
+};
+
+type HandlerFunction<Schema, Context, Params extends Record<string, string> | unknown, Output> = (
+  routeInput: HandlerEvent<Schema, Context, Params>,
 ) => Promise<Response<Output>>;
 
-function buildHandler<Schema, Context, Output>(
-  fn: HandlerFunction<Schema, Context, Output>,
+function buildHandler<Schema, Context, Params extends Record<string, string> | unknown, Output>(
+  fn: HandlerFunction<Schema, Context, Params, Output>,
   middlewares: Function[],
 ) {
-  return async (routeInput: RouteInput<Schema, Context>) => {
+  return async (routeInput: HandlerEvent<Schema, Context, Params>) => {
     let transformedContext = routeInput.ctx;
     for (const mw of middlewares) {
       const mwInput = { ...routeInput, ctx: { ...transformedContext } };
@@ -27,14 +31,22 @@ function buildHandler<Schema, Context, Output>(
   };
 }
 
-class RouteBuilder<Context = {}> {
-  private _middlewares: Function[] = [];
+class RouteBuilder<Context = {}, Params extends Record<string, string> | unknown = unknown> {
+  protected _middlewares: Function[] = [];
+  protected _params: readonly string[] = [];
 
   middleware<NewContext, Output>(
-    fn: (routeInput: RouteInput<null, Context>) => Promise<Response<Output> | NewContext>,
+    fn: (routeInput: HandlerEvent<null, Context, Params>) => Promise<Response<Output> | NewContext>,
   ): RouteBuilder<NewContext> {
     const newRouteBuilder = new RouteBuilder<NewContext>();
     newRouteBuilder._middlewares.push(...this._middlewares, fn);
+    return newRouteBuilder;
+  }
+
+  params<Params extends readonly string[]>(params: Params) {
+    const newRouteBuilder = new RouteBuilder<Context, ParamArrayToDict<Params>>();
+    newRouteBuilder._middlewares.push(...this._middlewares);
+    newRouteBuilder._params = params;
     return newRouteBuilder;
   }
 
@@ -44,7 +56,7 @@ class RouteBuilder<Context = {}> {
     return newRouteBuilder;
   }
 
-  handle<Output>(fn: HandlerFunction<null, Context, Output>) {
+  handle<Output>(fn: HandlerFunction<null, Context, Params, Output>) {
     return {
       handler: buildHandler(fn, this._middlewares),
       input: null,
@@ -52,15 +64,15 @@ class RouteBuilder<Context = {}> {
   }
 }
 
-class ValidatedRouteBuilder<Schema, Context = {}> {
+class ValidatedRouteBuilder<Schema, Context = {}, Params extends Record<string, string> = {}> {
   _middlewares: Function[] = [];
-  private _inputSchema: zod.Schema<Schema>;
+  protected _inputSchema: zod.Schema<Schema>;
 
   constructor(schema: zod.Schema<Schema>) {
     this._inputSchema = schema;
   }
 
-  handle<Output>(fn: HandlerFunction<Schema, Context, Output>) {
+  handle<Output>(fn: HandlerFunction<Schema, Context, Params, Output>) {
     return {
       handler: buildHandler(fn, this._middlewares),
       input: this._inputSchema,

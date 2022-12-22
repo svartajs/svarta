@@ -2,7 +2,7 @@ import Cookies from "./cookies";
 import Headers from "./headers";
 import type { RouteMethod } from "./method";
 
-export default interface HandlerEvent<T, Context> {
+export default interface HandlerEvent<T, Context, Params extends Record<string, string> | unknown> {
   // User provided context
   ctx: Context;
 
@@ -22,7 +22,7 @@ export default interface HandlerEvent<T, Context> {
   input: T;
 
   // Route params
-  params: Record<string, string>;
+  params: Params;
 
   // Route query
   query: Record<string, string>;
@@ -33,3 +33,11 @@ export default interface HandlerEvent<T, Context> {
   // Cookies
   cookies: Cookies;
 }
+
+const test = ["a", "b", "c"] as const;
+
+type Params<T extends readonly string[]> = {
+  [key in T[number]]: string;
+};
+
+type p = Params<typeof test>;
