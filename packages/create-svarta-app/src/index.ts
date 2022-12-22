@@ -57,7 +57,14 @@ const managers = [
 (async () => {
   console.log(chalk.grey("create-svarta-app 0.0.0"));
 
-  const manager = await detectManager();
+  let manager: PM;
+  const fromCmd = process.argv[0];
+  if (["npm", "yarn", "pnpm"].includes(fromCmd)) {
+    manager = fromCmd as PM;
+  } else {
+    manager = await detectManager();
+  }
+
   const managerIndex = managers.findIndex(({ value }) => value === manager);
   const managerObject = managers.find(({ value }) => value === manager) ?? managers[0];
 
