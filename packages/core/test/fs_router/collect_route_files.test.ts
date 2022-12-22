@@ -2,7 +2,7 @@ import { resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { collectRouteFiles } from "../../src/fs_router";
+import { collectRouteFiles } from "../../src/collect_routes";
 
 describe("fs_router", () => {
   describe("collectRouteFiles", () => {
@@ -48,7 +48,6 @@ describe("fs_router", () => {
 
     it("should get correct files from folder", async () => {
       const foundRoutes = await collectRouteFiles(FIXTURE_PATH);
-      console.dir({ expectedRoutes, foundRoutes }, { depth: null });
       expect(foundRoutes).to.deep.equal(expectedRoutes);
     });
   });
