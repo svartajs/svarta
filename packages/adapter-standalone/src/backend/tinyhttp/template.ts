@@ -61,21 +61,23 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
       const headers = {
         get: (key) => req.get(key),
         set: (key, value) => res.set(key, value),
-        entries: Object.entries(req.headers),
-        keys: Object.keys(req.headers),
-        values: Object.values(req.headers),
+        entries: () => Object.entries(req.headers),
+        keys: () => Object.keys(req.headers),
+        values: () => Object.values(req.headers),
       };
 
-      const cookieObj = parse(req.get("cookie") || '');
+      const cookieObj = parse(headers.get("cookie") || '');
+
+      const setCookies = [];
 
       const cookies = {
         get: (key) => cookieObj[key],
-        set: (key, value, opts) => { // TODO: test
-          res.set("Set-Cookie", serialize(key, value, opts));
+        set: (key, value, opts) => {
+          setCookies.push({ key, value, opts });
         },
-        entries: Object.entries(cookieObj),
-        keys: Object.keys(cookieObj),
-        values: Object.values(cookieObj),
+        entries: () => Object.entries(cookieObj),
+        keys: () => Object.keys(cookieObj),
+        values: () => Object.values(cookieObj),
       };
 
       /***** call handler *****/
@@ -96,6 +98,12 @@ function __svartaTinyHttpHandler({ input, handler, routePath }) {
       for(const [key, value] of Object.entries(response._headers)) {
         res.set(key, value);
       }
+
+      /***** set cookies *****/
+      res.setHeader(
+        "set-cookie", 
+        setCookies.map(({ key, value, opts }) => serialize(key, value, opts))
+      );
 
       res.set("x-powered-by", "svarta");
       res.status(response._status);

@@ -78,6 +78,7 @@ async function nitrofyRoutes(routesFolder: string): Promise<void> {
       tmpFile,
       `import svartaRoute from "${route.path.replace(".ts", "")}";
 import url from "node:url";
+import { parse, serialize } from "@tinyhttp/cookie";
 
 /***** svarta dev handler *****/
 export default defineEventHandler(async (event) => {
@@ -115,12 +116,24 @@ export default defineEventHandler(async (event) => {
     const headers = {
       set: (key, value) => res.setHeader(key.toLowerCase(), value),
       get: (key) => req.headers[key.toLowerCase()],
-      entries: Object.entries(req.headers),
-      keys: Object.keys(req.headers),
-      values: Object.values(req.headers),
+      entries: () => Object.entries(req.headers),
+      keys: () => Object.keys(req.headers),
+      values: () => Object.values(req.headers),
     };
 
-    const cookies = {}; // TODO:
+    const cookieObj = parse(headers.get("cookie") || '');
+
+    const setCookies = [];
+
+    const cookies = {
+      get: (key) => cookieObj[key],
+      set: (key, value, opts) => {
+        setCookies.push({ key, value, opts });
+      },
+      entries: () => Object.entries(cookieObj),
+      keys: () => Object.keys(cookieObj),
+      values: () => Object.values(cookieObj),
+    };
   
     const response = await svartaRoute.handler({
       ctx: {},
@@ -139,6 +152,12 @@ export default defineEventHandler(async (event) => {
     for(const [key, value] of Object.entries(response._headers)) {
       res.setHeader(key, value);
     }
+
+    /***** set cookies *****/
+    res.setHeader(
+      "set-cookie", 
+      setCookies.map(({ key, value, opts }) => serialize(key, value, opts))
+    );
     
     res.setHeader("x-powered-by", "svarta");
     res.statusCode = response._status;

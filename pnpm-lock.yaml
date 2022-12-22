@@ -139,19 +139,21 @@ importers:
       '@svarta/core': workspace:*
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
-      '@types/lodash.debounce': ^4.0.7
+      '@tinyhttp/cookie': '2'
+      '@types/lodash.debounce': 4.0.7
       '@types/node': 18.11.10
       chalk: 5.1.2
-      chokidar: ^3.5.3
+      chokidar: 3.5.3
       esbuild: 0.15.18
       eslint: 7.32.0
-      lodash.debounce: ^4.0.8
+      lodash.debounce: 4.0.8
       nitropack: 1.0.0
       tsup: 6.5.0
       typescript: 4.9.3
       vitest: 0.25.3
     dependencies:
       '@svarta/core': link:../core
+      '@tinyhttp/cookie': 2.0.5
       chalk: 5.1.2
       chokidar: 3.5.3
       esbuild: 0.15.18
@@ -660,6 +662,11 @@ packages:
       estree-walker: 2.0.2
       picomatch: 2.3.1
       rollup: 2.79.1
+    dev: false
+
+  /@tinyhttp/cookie/2.0.5:
+    resolution: {integrity: sha512-fQxpzkD4pe9hv401DC5981RB1+T57bNCAh5Y/4Y1+AfaPcKUnyeSRHy1v6NkT0qF51PlXYPPpzm2X84PZIhKJw==}
+    engines: {node: '>=12.4.0'}
     dev: false
 
   /@tsconfig/node10/1.0.9:

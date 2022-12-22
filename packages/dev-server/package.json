@@ -10,7 +10,7 @@
   "devDependencies": {
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
-    "@types/lodash.debounce": "^4.0.7",
+    "@types/lodash.debounce": "4.0.7",
     "@types/node": "18.11.10",
     "eslint": "7.32.0",
     "tsup": "6.5.0",
@@ -23,10 +23,11 @@
   "dependencies": {
     "@svarta/core": "workspace:*",
     "chalk": "5.1.2",
-    "chokidar": "^3.5.3",
+    "chokidar": "3.5.3",
     "esbuild": "0.15.18",
-    "lodash.debounce": "^4.0.8",
-    "nitropack": "1.0.0"
+    "lodash.debounce": "4.0.8",
+    "nitropack": "1.0.0",
+    "@tinyhttp/cookie": "2"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
