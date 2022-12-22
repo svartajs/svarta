@@ -10,7 +10,8 @@
     "node": ">=14.18"
   },
   "devDependencies": {
-    "@svarta/tsconfig": "workspace:*"
+    "@svarta/tsconfig": "workspace:*",
+    "tsup": "6.5.0"
   },
   "dependencies": {
     "@svarta/core": "workspace:*"
