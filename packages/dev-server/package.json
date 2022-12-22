@@ -18,7 +18,7 @@
     "vitest": "0.25.3"
   },
   "engines": {
-    "node": ">=14.18.0"
+    "node": ">=14.18"
   },
   "dependencies": {
     "@svarta/core": "workspace:*",

@@ -84,12 +84,10 @@ importers:
     specifiers:
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
-      '@types/glob': 8.0.0
       '@types/node': 18.11.10
       eslint: 7.32.0
       tsup: 6.5.0
       typescript: 4.9.3
-      vitest: 0.25.3
       walk-it: 1.1.0
       zod: 3.19.1
     dependencies:
@@ -98,12 +96,10 @@ importers:
     devDependencies:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
       '@svarta/tsconfig': link:../tsconfig
-      '@types/glob': 8.0.0
       '@types/node': 18.11.10
       eslint: 7.32.0
       tsup: 6.5.0_typescript@4.9.3
       typescript: 4.9.3
-      vitest: 0.25.3
 
   packages/create-svarta-app:
     specifiers:
@@ -186,6 +182,15 @@ importers:
       eslint-plugin-react: 7.31.8_eslint@7.23.0
       eslint-plugin-simple-import-sort: 8.0.0_eslint@7.23.0
       typescript: 4.9.3
+
+  packages/svarta:
+    specifiers:
+      '@svarta/core': workspace:*
+      '@svarta/tsconfig': workspace:*
+    dependencies:
+      '@svarta/core': link:../core
+    devDependencies:
+      '@svarta/tsconfig': link:../tsconfig
 
   packages/tsconfig:
     specifiers: {}
@@ -708,13 +713,6 @@ packages:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
     dev: false
 
-  /@types/glob/8.0.0:
-    resolution: {integrity: sha512-l6NQsDDyQUVeoTynNpC9uRvCUint/gSUXQA2euwmTuWGvPY5LSDUu6tkCtJB2SvGQlJQzLaKqcGZP4//7EDveA==}
-    dependencies:
-      '@types/minimatch': 5.1.2
-      '@types/node': 18.11.10
-    dev: true
-
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
@@ -727,10 +725,6 @@ packages:
 
   /@types/lodash/4.14.191:
     resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
-    dev: true
-
-  /@types/minimatch/5.1.2:
-    resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
     dev: true
 
   /@types/minimist/1.2.2:
