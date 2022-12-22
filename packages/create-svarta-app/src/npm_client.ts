@@ -11,7 +11,7 @@ const installCommands: Record<PM, string> = {
 const runCommands: Record<PM, (client: string) => string> = {
   npm: (cmd) => `npm run ${cmd}`,
   yarn: (cmd) => `yarn ${cmd}`,
-  pnpm: (cmd) => `pnpm run ${cmd}`,
+  pnpm: (cmd) => `pnpm ${cmd}`,
 };
 
 /**

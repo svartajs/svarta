@@ -15,7 +15,7 @@ Svarta can scaffold your application from the ground up, removing the overhead o
 ## Bootstrap new project
 
 ```bash
-npx create-svarta-app
+npm create svarta-app
 yarn create svarta-app
 pnpm create svarta-app
 ```
@@ -25,7 +25,7 @@ For development, run:
 ```bash
 npm run dev
 yarn dev
-pnpm run dev
+pnpm dev
 ```
 
 For building, run:
@@ -33,7 +33,7 @@ For building, run:
 ```bash
 npm run build
 yarn build
-pnpm run build
+pnpm build
 ```
 
 If you use the standalone adapter, your app will be bundled to a single .mjs file which you can run using:
