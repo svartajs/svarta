@@ -8,14 +8,14 @@ importers:
       '@commitlint/config-conventional': 17.3.0
       '@svarta/eslint-config-custom': workspace:*
       husky: 8.0.2
-      prettier: 2.8.0
+      prettier: 2.8.1
       turbo: 1.6.3
     devDependencies:
       '@commitlint/cli': 17.3.0
       '@commitlint/config-conventional': 17.3.0
       '@svarta/eslint-config-custom': link:packages/eslint-config-custom
       husky: 8.0.2
-      prettier: 2.8.0
+      prettier: 2.8.1
       turbo: 1.6.3
 
   packages/adapter-standalone:
@@ -3590,8 +3590,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier/2.8.0:
-    resolution: {integrity: sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==}
+  /prettier/2.8.1:
+    resolution: {integrity: sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
