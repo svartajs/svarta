@@ -28,7 +28,7 @@ importers:
       esbuild: 0.15.18
       eslint: 7.32.0
       tsup: 6.5.0
-      typescript: 4.9.3
+      typescript: 4.9.4
       vitest: 0.25.3
       walk-it: 1.1.0
       zod: 3.19.1
@@ -43,8 +43,8 @@ importers:
       '@svarta/tsconfig': link:../tsconfig
       '@types/node': 18.11.10
       eslint: 7.32.0
-      tsup: 6.5.0_typescript@4.9.3
-      typescript: 4.9.3
+      tsup: 6.5.0_typescript@4.9.4
+      typescript: 4.9.4
       vitest: 0.25.3
 
   packages/cli:
@@ -59,7 +59,7 @@ importers:
       chalk: 5.1.2
       eslint: 7.32.0
       tsup: 6.5.0
-      typescript: 4.9.3
+      typescript: 4.9.4
       vitest: 0.25.3
       yargs: 17.6.2
       zod: 3.19.1
@@ -76,8 +76,8 @@ importers:
       '@types/node': 18.11.10
       '@types/yargs': 17.0.17
       eslint: 7.32.0
-      tsup: 6.5.0_typescript@4.9.3
-      typescript: 4.9.3
+      tsup: 6.5.0_typescript@4.9.4
+      typescript: 4.9.4
       vitest: 0.25.3
 
   packages/core:
@@ -87,7 +87,7 @@ importers:
       '@types/node': 18.11.10
       eslint: 7.32.0
       tsup: 6.5.0
-      typescript: 4.9.3
+      typescript: 4.9.4
       vitest: 0.25.3
       walk-it: 1.1.0
       zod: 3.19.1
@@ -99,8 +99,8 @@ importers:
       '@svarta/tsconfig': link:../tsconfig
       '@types/node': 18.11.10
       eslint: 7.32.0
-      tsup: 6.5.0_typescript@4.9.3
-      typescript: 4.9.3
+      tsup: 6.5.0_typescript@4.9.4
+      typescript: 4.9.4
       vitest: 0.25.3
 
   packages/create-svarta-app:
@@ -116,7 +116,7 @@ importers:
       giget: 1.0.0
       prompts: 2.4.2
       tsup: 6.5.0
-      typescript: 4.9.3
+      typescript: 4.9.4
       vitest: 0.25.3
     dependencies:
       chalk: 5.1.2
@@ -130,8 +130,8 @@ importers:
       '@types/prompts': 2.4.2
       '@types/yargs': 17.0.17
       eslint: 7.32.0
-      tsup: 6.5.0_typescript@4.9.3
-      typescript: 4.9.3
+      tsup: 6.5.0_typescript@4.9.4
+      typescript: 4.9.4
       vitest: 0.25.3
 
   packages/dev-server:
@@ -147,7 +147,7 @@ importers:
       lodash.debounce: ^4.0.8
       nitropack: 1.0.0
       tsup: 6.5.0
-      typescript: 4.9.3
+      typescript: 4.9.4
       vitest: 0.25.3
     dependencies:
       '@svarta/core': link:../core
@@ -161,8 +161,8 @@ importers:
       '@types/lodash.debounce': 4.0.7
       '@types/node': 18.11.10
       eslint: 7.32.0
-      tsup: 6.5.0_typescript@4.9.3
-      typescript: 4.9.3
+      tsup: 6.5.0_typescript@4.9.4
+      typescript: 4.9.4
       vitest: 0.25.3
 
   packages/eslint-config-custom:
@@ -172,14 +172,14 @@ importers:
       eslint-config-turbo: latest
       eslint-plugin-import: ^2.26.0
       eslint-plugin-simple-import-sort: 8.0.0
-      typescript: 4.9.3
+      typescript: 4.9.4
     devDependencies:
       eslint: 7.23.0
       eslint-config-prettier: 8.3.0_eslint@7.23.0
       eslint-config-turbo: 0.0.7_eslint@7.23.0
       eslint-plugin-import: 2.26.0_eslint@7.23.0
       eslint-plugin-simple-import-sort: 8.0.0_eslint@7.23.0
-      typescript: 4.9.3
+      typescript: 4.9.4
 
   packages/svarta:
     specifiers:
@@ -309,13 +309,13 @@ packages:
       '@types/node': 14.18.35
       chalk: 4.1.2
       cosmiconfig: 7.1.0
-      cosmiconfig-typescript-loader: 4.3.0_3ic5cwn52nn455ow45bf6kugkq
+      cosmiconfig-typescript-loader: 4.3.0_or2qrscwofpw4jwfbychkdzroy
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
       resolve-from: 5.0.0
-      ts-node: 10.9.1_5axvewzfuqiugp6622ftukgx6y
-      typescript: 4.9.3
+      ts-node: 10.9.1_xplfzyzpegygk3axf4z63vz544
+      typescript: 4.9.4
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -1268,7 +1268,7 @@ packages:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: false
 
-  /cosmiconfig-typescript-loader/4.3.0_3ic5cwn52nn455ow45bf6kugkq:
+  /cosmiconfig-typescript-loader/4.3.0_or2qrscwofpw4jwfbychkdzroy:
     resolution: {integrity: sha512-NTxV1MFfZDLPiBMjxbHRwSh5LaLcPMwNdCutmnHJCKoVnlvldPWlllonKwrsRJ5pYZBIBGRWWU2tfvzxgeSW5Q==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
@@ -1279,8 +1279,8 @@ packages:
     dependencies:
       '@types/node': 14.18.35
       cosmiconfig: 7.1.0
-      ts-node: 10.9.1_5axvewzfuqiugp6622ftukgx6y
-      typescript: 4.9.3
+      ts-node: 10.9.1_xplfzyzpegygk3axf4z63vz544
+      typescript: 4.9.4
     dev: true
 
   /cosmiconfig/7.1.0:
@@ -4217,7 +4217,7 @@ packages:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
 
-  /ts-node/10.9.1_5axvewzfuqiugp6622ftukgx6y:
+  /ts-node/10.9.1_xplfzyzpegygk3axf4z63vz544:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -4243,7 +4243,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.9.3
+      typescript: 4.9.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
@@ -4292,7 +4292,7 @@ packages:
       - ts-node
     dev: true
 
-  /tsup/6.5.0_typescript@4.9.3:
+  /tsup/6.5.0_typescript@4.9.4:
     resolution: {integrity: sha512-36u82r7rYqRHFkD15R20Cd4ercPkbYmuvRkz3Q1LCm5BsiFNUgpo36zbjVhCOgvjyxNBWNKHsaD5Rl8SykfzNA==}
     engines: {node: '>=14'}
     hasBin: true
@@ -4322,7 +4322,7 @@ packages:
       source-map: 0.8.0-beta.0
       sucrase: 3.29.0
       tree-kill: 1.2.2
-      typescript: 4.9.3
+      typescript: 4.9.4
     transitivePeerDependencies:
       - supports-color
       - ts-node
@@ -4426,8 +4426,8 @@ packages:
     engines: {node: '>=12.20'}
     dev: false
 
-  /typescript/4.9.3:
-    resolution: {integrity: sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==}
+  /typescript/4.9.4:
+    resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
