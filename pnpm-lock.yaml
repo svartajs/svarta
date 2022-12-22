@@ -32,13 +32,11 @@ importers:
       tsup: 6.5.0
       typescript: 4.9.3
       vitest: 0.25.3
-      walk-it: 1.1.0
       zod: 3.20.2
     dependencies:
       '@svarta/core': link:../core
       chalk: 5.1.2
       esbuild: 0.15.18
-      walk-it: 1.1.0
       zod: 3.20.2
     devDependencies:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
