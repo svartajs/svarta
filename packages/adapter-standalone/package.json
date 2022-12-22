@@ -27,7 +27,7 @@
   "dependencies": {
     "@svarta/core": "workspace:*",
     "chalk": "5.1.2",
-    "esbuild": "0.15.18",
+    "esbuild": "0.16.10",
     "walk-it": "1.1.0",
     "zod": "3.19.1"
   },
