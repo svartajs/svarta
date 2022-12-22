@@ -3,5 +3,6 @@
   "extends": ["config:base"],
   "prConcurrentLimit": 10,
   "prHourlyLimit": 10,
-  "baseBranches": ["dev"]
+  "baseBranches": ["dev"],
+  "labels": ["dependencies"]
 }
