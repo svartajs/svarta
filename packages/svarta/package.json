@@ -1,0 +1,31 @@
+{
+  "name": "svarta",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint \"**/*.ts*\"",
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean"
+  },
+  "engines": {
+    "node": ">=14.18"
+  },
+  "devDependencies": {
+    "@svarta/tsconfig": "workspace:*"
+  },
+  "dependencies": {
+    "@svarta/core": "workspace:*"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  }
+}
