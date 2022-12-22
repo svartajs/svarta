@@ -1,10 +1,11 @@
-import type { Options } from "./adapter";
+import type { BuildOptions } from "./adapter";
 
-export default function (opts: Options): Options & { type: "standalone" } {
+export default function (opts: BuildOptions): BuildOptions & { type: "standalone" } {
   return {
     ...opts,
     type: "standalone",
   };
 }
 
+export type { BuildOptions };
 export { adapter } from "./adapter";

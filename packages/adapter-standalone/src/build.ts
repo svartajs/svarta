@@ -2,7 +2,7 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { collectRouteFiles, formatRoutePath, loadRoute } from "@svarta/core";
+import { collectRouteFiles, loadRoute, loadRoutes } from "@svarta/core";
 import chalk from "chalk";
 import esbuild from "esbuild";
 
@@ -38,45 +38,49 @@ export async function buildStandaloneServer({
 
   const routes = await collectRouteFiles(routeFolder);
 
-  for (const route of routes) {
-    console.log("-----");
-    console.log(chalk.bgBlack(route.path));
-    const jsFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.mjs`);
+  const transformedRoutes = await Promise.all(
+    routes.map(async (route) => {
+      const jsFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.mjs`);
 
-    await esbuild.build({
-      bundle: true,
-      banner: {
-        js: "/***** svarta route *****/",
-      },
-      entryPoints: [route.path],
-      outfile: jsFile,
-      platform: "node",
-      format: "esm",
-      target: "es2019",
-    });
+      await esbuild.build({
+        bundle: true,
+        banner: {
+          js: "/***** svarta route *****/",
+        },
+        entryPoints: [route.path],
+        outfile: jsFile,
+        platform: "node",
+        format: "esm",
+        target: "es2019",
+      });
 
-    const checkResult = await loadRoute({
-      ...route,
-      path: jsFile,
-    });
+      return {
+        ...route,
+        path: jsFile,
+      };
+    }),
+  );
 
-    for (const warning of checkResult.warnings) {
-      console.log(chalk.yellowBright(warning.message));
-      console.log();
-      if (warning.suggestion) {
-        console.log(warning.suggestion);
-      }
+  const checkResult = await loadRoutes(transformedRoutes);
+
+  for (const warning of checkResult.warnings) {
+    console.log();
+    console.log(chalk.yellowBright(warning.message));
+    console.log();
+    if (warning.suggestion) {
+      console.log(warning.suggestion);
     }
+  }
 
-    const [error] = checkResult.errors;
-    if (error) {
-      console.log(chalk.redBright(error.message));
-      console.log();
-      if (error.suggestion) {
-        console.log(chalk.yellowBright(error.suggestion));
-      }
-      process.exit(1);
+  const [error] = checkResult.errors;
+  if (error) {
+    console.log();
+    console.log(chalk.red(error.message));
+    console.log();
+    if (error.suggestion) {
+      console.log(chalk.redBright(error.suggestion));
     }
+    process.exit(1);
   }
 
   collectTimer.stop();

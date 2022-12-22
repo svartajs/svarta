@@ -10,6 +10,7 @@ export type LoadedRoute = CollectedRoute & {
 };
 
 type LoadRouteErrorCode =
+  | "duplicate_route_name"
   | "missing_route_handler"
   | "invalid_params"
   | "unused_params"
@@ -99,7 +100,7 @@ export async function loadRoute({ path, method, routeSegments }: CollectedRoute)
 
 export async function loadRoutes(collectedRoutes: CollectedRoute[]): Promise<{
   routes: LoadedRoute[];
-  errors: { message: string; code: LoadRouteErrorCode }[];
+  errors: { message: string; code: LoadRouteErrorCode; suggestion: string | null }[];
   warnings: { message: string; code: LoadRouteWarningCode; suggestion: string | null }[];
 }> {
   const routes: LoadedRoute[] = [];
@@ -115,6 +116,29 @@ export async function loadRoutes(collectedRoutes: CollectedRoute[]): Promise<{
     errors.push(...routeErrors);
     warnings.push(...routeWarnings);
     routes.push(route);
+  }
+
+  const countedNames: Map<string, number> = new Map();
+  routes
+    .filter(({ name }) => name)
+    .map(({ name }) => name!)
+    .forEach((name) => {
+      const entry = countedNames.get(name);
+      if (entry) {
+        countedNames.set(name, entry + 1);
+      } else {
+        countedNames.set(name, 1);
+      }
+    });
+
+  for (const [key, count] of countedNames.entries()) {
+    if (count > 1) {
+      errors.push({
+        code: "duplicate_route_name",
+        message: `Duplicate route name: "${key}"`,
+        suggestion: null,
+      });
+    }
   }
 
   return {
