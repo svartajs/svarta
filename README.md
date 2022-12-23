@@ -38,9 +38,3 @@ npm run build
 yarn build
 pnpm build
 ```
-
-If you use the standalone adapter, your app will be bundled to a single .mjs file which you can run using:
-
-```bash
-node server.mjs
-```
