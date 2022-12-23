@@ -21,8 +21,8 @@ const createCommands: Record<string, (client: string) => string> = {
 /**
  * Gets the install command of the chosen NPM client
  */
-export function getInstallCommand(client: Type): string {
-  return installCommands[client];
+export function getInstallCommand(client: Type, packages: string[] = []): string {
+  return `${installCommands[client]} ${packages.join(" ")}`.trim();
 }
 
 /**
