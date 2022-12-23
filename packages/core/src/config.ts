@@ -61,6 +61,6 @@ export async function loadConfig(path: string): Promise<Result> {
 
   return {
     state: "success",
-    data: result.data,
+    data: config,
   };
 }

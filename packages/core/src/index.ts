@@ -18,3 +18,4 @@ export { defaultRoute as route } from "./route";
 export { default as Status } from "./status";
 export type { RouteSegment } from "./types";
 export { packageManager };
+export { createAndRunHandler } from "./handler";

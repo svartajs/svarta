@@ -1,13 +1,12 @@
-import type { PM } from "detect-package-manager";
-import { detect } from "detect-package-manager";
+export type Type = "npm" | "yarn" | "pnpm";
 
-const installCommands: Record<PM, string> = {
+const installCommands: Record<Type, string> = {
   npm: `npm install`,
   pnpm: `pnpm install`,
   yarn: `yarn install`,
 };
 
-const runCommands: Record<PM, (client: string) => string> = {
+const runCommands: Record<Type, (client: string) => string> = {
   npm: (cmd) => `npm run ${cmd}`,
   yarn: (cmd) => `yarn ${cmd}`,
   pnpm: (cmd) => `pnpm ${cmd}`,
@@ -22,23 +21,35 @@ const createCommands: Record<string, (client: string) => string> = {
 /**
  * Gets the install command of the chosen NPM client
  */
-export function getInstallCommand(client: PM): string {
+export function getInstallCommand(client: Type): string {
   return installCommands[client];
 }
 
 /**
  * Gets the run command of the chosen NPM client
  */
-export function getRunCommand(client: PM, cmd: string): string {
+export function getRunCommand(client: Type, cmd: string): string {
   return runCommands[client](cmd);
 }
 
 /**
  * Gets the create command of the chosen NPM client
  */
-export function getCreateCommand(client: PM, cmd: string): string {
+export function getCreateCommand(client: Type, cmd: string): string {
   return createCommands[client](cmd);
 }
 
-export type Type = PM;
+function detect(): Type {
+  const str = process.env["npm_config_user_agent"];
+  if (str) {
+    if (str.includes("pnpm")) {
+      return "pnpm";
+    }
+    if (str.includes("yarn")) {
+      return "yarn";
+    }
+  }
+  return "npm";
+}
+
 export { detect };

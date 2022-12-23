@@ -26,8 +26,7 @@
     "chokidar": "3.5.3",
     "esbuild": "0.15.18",
     "lodash.debounce": "4.0.8",
-    "nitropack": "1.0.0",
-    "@tinyhttp/cookie": "2"
+    "nitropack": "1.0.0"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

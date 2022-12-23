@@ -2,7 +2,7 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
-import { collectRouteFiles, formatRoutePath, loadRoute } from "@svarta/core";
+import { collectRouteFiles, loadRoute } from "@svarta/core";
 import chalk from "chalk";
 import chokidar from "chokidar";
 import esbuild from "esbuild";
@@ -82,8 +82,8 @@ export async function startSvartaDevServer(routesFolder: string) {
 
   console.log(`[@svarta/dev-server] Starting dev server for ${routesFolder}`);
 
-  if (existsSync(".svarta/dev")) {
-    rmSync(".svarta/dev", { recursive: true });
+  if (existsSync(".svarta")) {
+    rmSync(".svarta", { recursive: true });
   }
   mkdirSync(".svarta/dev/nitro/routes", { recursive: true });
 

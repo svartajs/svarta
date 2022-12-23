@@ -68,7 +68,7 @@ const managers = [
   if (["npm", "yarn", "pnpm"].includes(fromCmd)) {
     manager = fromCmd as packageManager.Type;
   } else {
-    manager = await packageManager.detect();
+    manager = packageManager.detect();
   }
 
   const managerIndex = managers.findIndex(({ value }) => value === manager);
