@@ -80,7 +80,7 @@ export async function buildStandaloneServer({
     if (error.suggestion) {
       console.log(chalk.redBright(error.suggestion));
     }
-    process.exit(1);
+    throw new Error(`Build failed: ${error.message}`);
   }
 
   collectTimer.stop();

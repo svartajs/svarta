@@ -17,7 +17,7 @@ function mapRoute(
     await json()(req, res, (err) => {
       if (err) {
         res.status(400);
-        res.send("Bad request");
+        res.send("Bad Request");
       }
       else {
         next();
