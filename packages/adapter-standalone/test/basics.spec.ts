@@ -2,8 +2,10 @@ import { ChildProcess, exec } from "node:child_process";
 import { unlinkSync } from "node:fs";
 import { resolve } from "node:path";
 
+import { parse, serialize } from "@tinyhttp/cookie";
 import fetch from "node-fetch";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import YAML from "yaml";
 
 import { buildStandaloneServer } from "../src/build";
 
@@ -102,9 +104,34 @@ describe("basics", () => {
   });
 
   // TODO: header.keys, header.get, header.values
-  // TODO: cookies
 
   // TODO: raw string body, other content types...
+
+  it("should get & set cookies", async () => {
+    const cookieName = "x-custom-header";
+    const cookieValue = "123";
+
+    const res = await fetch("http://localhost:7777/cookies", {
+      headers: {
+        Cookie: serialize(cookieName, cookieValue),
+      },
+    });
+    const body = await res.json();
+
+    expect(res.status).to.equal(200);
+    expect(res.headers.get("x-powered-by")).to.equal("svarta");
+    expect(body).to.be.an("object").that.has.property("cookies");
+    // @ts-ignore
+    const cookies: [string, string][] = body.cookies;
+
+    expect(!!cookies.find(([key, value]) => key === cookieName && value === cookieValue)).to.be
+      .true;
+
+    expect(parse(res.headers.get("set-cookie")!)).to.deep.equal({
+      "cookie-1": "abc",
+      "cookie-2": "xyz",
+    });
+  });
 
   it("should get body", async () => {
     const data = {
@@ -125,5 +152,26 @@ describe("basics", () => {
     expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
     expect(body).to.be.an("object").that.has.property("input").that.deep.equal(data);
     expect(body).to.be.an("object").that.has.property("method").that.deep.equal("POST");
+  });
+
+  it("should get raw body", async () => {
+    const res = await fetch("http://localhost:7777/raw_body");
+    const body = await res.text();
+
+    expect(res.status).to.equal(200);
+    expect(res.headers.get("x-powered-by")).to.equal("svarta");
+    expect(res.headers.get("content-type")).to.equal("text/html; charset=utf-8");
+    expect(body).to.be.a("string").that.equals("hello world");
+  });
+
+  it("should get yaml body", async () => {
+    const res = await fetch("http://localhost:7777/yaml");
+    const textBody = await res.text();
+    const body = YAML.parse(textBody);
+
+    expect(res.status).to.equal(200);
+    expect(res.headers.get("x-powered-by")).to.equal("svarta");
+    expect(res.headers.get("content-type")).to.equal("application/yml; charset=utf-8");
+    expect(body).to.be.an("object").that.has.property("message").that.equals("hello world");
   });
 });

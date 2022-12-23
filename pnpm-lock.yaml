@@ -26,6 +26,7 @@ importers:
       '@svarta/eslint-config-custom': workspace:*
       '@svarta/tsconfig': workspace:*
       '@tinyhttp/app': '2'
+      '@tinyhttp/cookie': 2.0.5
       '@types/node': 18.11.17
       chalk: 5.2.0
       esbuild: 0.16.10
@@ -35,6 +36,7 @@ importers:
       tsup: 6.5.0
       typescript: 4.9.4
       vitest: 0.26.2
+      yaml: 2.2.0
       zod: 3.20.2
     dependencies:
       '@svarta/core': link:../core
@@ -45,6 +47,7 @@ importers:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
       '@svarta/tsconfig': link:../tsconfig
       '@tinyhttp/app': 2.0.26
+      '@tinyhttp/cookie': 2.0.5
       '@types/node': 18.11.17
       eslint: 8.30.0
       milliparsec: 2.2.2
@@ -52,6 +55,7 @@ importers:
       tsup: 6.5.0_typescript@4.9.4
       typescript: 4.9.4
       vitest: 0.26.2
+      yaml: 2.2.0
 
   packages/cli:
     specifiers:
@@ -5774,6 +5778,11 @@ packages:
   /yaml/1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
+    dev: true
+
+  /yaml/2.2.0:
+    resolution: {integrity: sha512-auf7Gi6QwO7HW//GA9seGvTXVGWl1CM/ADWh1+RxtXr6XOxnT65ovDl9fTi4e0monEyJxCHqDpF6QnFDXmJE4g==}
+    engines: {node: '>= 14'}
     dev: true
 
   /yargs-parser/18.1.3:
