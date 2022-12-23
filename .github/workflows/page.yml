@@ -31,6 +31,5 @@ jobs:
         working-directory: docs
       - name: Deploy page
         uses: JamesIves/github-pages-deploy-action@v4
-        working-directory: docs
         with:
-          folder: .output/public
+          folder: docs/.output/public
