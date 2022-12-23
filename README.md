@@ -3,6 +3,9 @@
 [![TS ready](https://img.shields.io/static/v1?label=&message=TS+ready&color=000000&logo=typescript)]()
 [![ESM ready](https://img.shields.io/static/v1?label=&message=ESM+ready&color=%23000000&logo=javascript)]()
 [![CI](https://github.com/marvin-j97/svarta/actions/workflows/ci.yml/badge.svg)](https://github.com/marvin-j97/svarta/actions/workflows/ci.yml)
+![npm](https://img.shields.io/npm/v/svarta)
+![node-current](https://img.shields.io/node/v/svarta)
+![GitHub last commit](https://img.shields.io/github/last-commit/marvin-j97/svarta)
 ![GitHub](https://img.shields.io/github/license/marvin-j97/svarta)
 
 A TypeScript-native, ESM-native REST API framework.
