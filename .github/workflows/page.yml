@@ -14,9 +14,6 @@ jobs:
           - ubuntu-latest
         node-version:
           - 16.x
-    defaults:
-      run:
-        working-directory: docs
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
@@ -26,10 +23,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
-      - name: Deploy 🚀
+        working-directory: docs
+      - name: Generate page
+        run: pnpm generate
+        working-directory: docs
+      - name: Deploy page
         uses: JamesIves/github-pages-deploy-action@v4
+        working-directory: docs
         with:
           folder: .output/public
