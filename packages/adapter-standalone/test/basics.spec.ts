@@ -103,10 +103,6 @@ describe("basics", () => {
       .true;
   });
 
-  // TODO: header.keys, header.get, header.values
-
-  // TODO: raw string body, other content types...
-
   it("should get & set cookies", async () => {
     const cookieName = "x-custom-header";
     const cookieValue = "123";
