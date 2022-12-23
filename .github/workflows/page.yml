@@ -28,6 +28,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
       - name: Install dependencies
+        run: pnpm install
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
