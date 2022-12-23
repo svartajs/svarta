@@ -27,7 +27,7 @@ jobs:
         run: npm install
         working-directory: docs
       - name: Generate page
-        run: npm generate
+        run: npm run generate
         working-directory: docs
       - name: Deploy page
         uses: JamesIves/github-pages-deploy-action@v4
