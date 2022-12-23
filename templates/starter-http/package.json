@@ -15,10 +15,9 @@
   "devDependencies": {
     "@svarta/adapter-standalone": "latest",
     "@svarta/cli": "latest",
-    "svarta": "latest",
     "@tinyhttp/app": "2",
-    "@tinyhttp/cookie": "2",
     "@types/node": "18.11",
+    "svarta": "latest",
     "milliparsec": "2",
     "typescript": "4.9.4"
   },
