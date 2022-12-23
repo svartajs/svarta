@@ -3,34 +3,54 @@ import Headers from "./headers";
 import type { RouteMethod } from "./method";
 
 export default interface HandlerEvent<T, Context, Params extends Record<string, string> | unknown> {
-  // User provided context
+  /**
+   * User provided context
+   */
   ctx: Context;
 
-  // Full route path without query
+  /**
+   * Full route path without query
+   */
   path: string;
 
-  // Full route path including query
+  /**
+   * Full route path including query
+   */
   url: string;
 
-  // HTTP method
+  /**
+   * HTTP method
+   */
   method: RouteMethod;
 
-  // HTTP headers
+  /**
+   * HTTP headers
+   */
   headers: Headers;
 
-  // Request body
+  /**
+   * Request body
+   */
   input: T;
 
-  // Route params
+  /**
+   * Route params
+   */
   params: Params;
 
-  // Route query
+  /**
+   * Route query
+   */
   query: Record<string, string>;
 
-  // Development flag
+  /**
+   * Development flag
+   */
   isDev: boolean;
 
-  // Cookies
+  /**
+   * Cookies
+   */
   cookies: Cookies;
 }
 
