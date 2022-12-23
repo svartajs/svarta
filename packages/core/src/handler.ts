@@ -52,7 +52,6 @@ export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body:
     }
 
     const cookieObj = parse(headers.get("cookie") || "");
-
     const setCookies: { key: string; value: string; opts?: Partial<SetCookieOptions> }[] = [];
 
     const cookies: Cookies = {
@@ -71,7 +70,7 @@ export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body:
       query,
       headers,
       input: body,
-      path: url.split("?").shift()!, // TODO: should probably use new URL?
+      path: url.split("?").shift()!,
       url,
       method,
       isDev,
