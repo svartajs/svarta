@@ -16,17 +16,19 @@ jobs:
           - 16.x
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
+      # - uses: pnpm/action-setup@v2
+      #  with:
+      #   version: 7
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        run: cd docs && pnpm install
+        run: npm install
+        working-directory: docs
       - name: Generate page
-        run: cd docs && pnpm generate
+        run: npm generate
+        working-directory: docs
       - name: Deploy page
         uses: JamesIves/github-pages-deploy-action@v4
         with:
