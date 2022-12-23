@@ -104,6 +104,8 @@ describe("basics", () => {
   // TODO: header.keys, header.get, header.values
   // TODO: cookies
 
+  // TODO: raw string body, other content types...
+
   it("should get body", async () => {
     const data = {
       message: "hello",
