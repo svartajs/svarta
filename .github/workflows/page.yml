@@ -24,11 +24,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        run: pnpm install
-        working-directory: ./docs
+        run: cd docs && pnpm install
       - name: Generate page
-        run: pnpm generate
-        working-directory: ./docs
+        run: cd docs && pnpm generate
       - name: Deploy page
         uses: JamesIves/github-pages-deploy-action@v4
         with:
