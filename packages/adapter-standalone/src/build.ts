@@ -38,6 +38,10 @@ export async function buildStandaloneServer({
 
   const routes = await collectRouteFiles(routeFolder);
 
+  collectTimer.stop();
+
+  const checkTimer = new Timer();
+
   const transformedRoutes = await Promise.all(
     routes.map(async (route) => {
       const jsFile = resolve(`.svarta/tmp/route-${randomBytes(4).toString("hex")}.mjs`);
@@ -83,7 +87,7 @@ export async function buildStandaloneServer({
     throw new Error(`Build failed: ${error.message}`);
   }
 
-  collectTimer.stop();
+  checkTimer.stop();
 
   if (existsSync(outputFile)) {
     unlinkSync(outputFile);
@@ -95,7 +99,7 @@ export async function buildStandaloneServer({
 
   timer.stop();
 
-  printBuildResult({ routes, outputFile, timer, collectTimer, buildTimer });
+  printBuildResult({ routes, outputFile, timer, collectTimer, buildTimer, checkTimer });
 
   if (existsSync(".svarta/tmp")) {
     rmSync(".svarta/tmp", { recursive: true });

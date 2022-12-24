@@ -11,7 +11,10 @@ interface ResultOptions {
   timer: Timer;
   collectTimer: Timer;
   buildTimer: Timer;
+  checkTimer: Timer;
 }
+
+// TODO: make it better and move to core
 
 export function printBuildResult({
   routes,
@@ -19,6 +22,7 @@ export function printBuildResult({
   timer,
   buildTimer,
   collectTimer,
+  checkTimer,
 }: ResultOptions): void {
   const longestRoutePath = Math.max(
     ...routes.map(({ routeSegments }) => formatRoutePath(routeSegments).length),
@@ -27,18 +31,19 @@ export function printBuildResult({
 
   console.log("Routes");
 
-  for (const route of routes) {
+  routes.forEach((route, index) => {
     const routeSize = statSync(route.path).size;
     const routePath = formatRoutePath(route.routeSegments);
+    const isLastRoute = index === routes.length - 1;
 
     console.log(
-      `${chalk.grey("├")} ${chalk.yellow(route.method)}${" ".repeat(
+      `${chalk.grey(isLastRoute ? "└" : "├")} ${chalk.yellow(route.method)}${" ".repeat(
         longestRouteMethod - route.method.length + 1,
       )}${chalk.blueBright(routePath)}${" ".repeat(
         longestRoutePath - routePath.length + 1,
       )}${chalk.grey(`[${(routeSize / 1000).toFixed(2)} kB]`)}`,
     );
-  }
+  });
 
   const appSize = statSync(outputFile).size;
   console.log(
@@ -47,9 +52,19 @@ export function printBuildResult({
     )}`,
   );
 
+  function formatTime(timer: Timer): string {
+    const ms = timer.asMilli();
+    if (ms < 1000) {
+      return `${ms}ms`;
+    }
+    return `${(ms / 1000).toFixed(2)}s`;
+  }
+
   console.log(
-    `\nDone in ${timer.asSeconds()}s ${chalk.grey(
-      `(collect ${collectTimer.asMilli()}ms, build ${buildTimer.asMilli()}ms)`,
+    `\nDone in ${formatTime(timer)} ${chalk.grey(
+      `(collect ${formatTime(collectTimer)}, check ${formatTime(checkTimer)}, build ${formatTime(
+        buildTimer,
+      )})`,
     )}`,
   );
 }
