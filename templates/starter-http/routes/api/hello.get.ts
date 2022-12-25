@@ -1,5 +1,7 @@
 import { Response, route, Status } from "svarta";
 
+export const name = "HelloRoute";
+
 export default route.handle(async ({ isDev }) => {
   if (isDev) {
     return new Response(Status.Ok, {
