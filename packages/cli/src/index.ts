@@ -11,13 +11,13 @@ const DEFAULT_CONFIG_PATH = "svarta.config.mjs";
 
 yargs(hideBin(process.argv))
   .scriptName("svarta")
-  .version("0.0.0")
+  .version("0.0.1")
   /* TODO: deploy */
   .command(
     "init <path>",
     "Scaffold new project",
     (yargs) =>
-      yargs.positional("path", { type: "string" }).option("manager", {
+      yargs.option("manager", {
         choices: ["npm", "yarn", "pnpm"],
         default: "npm",
       }),

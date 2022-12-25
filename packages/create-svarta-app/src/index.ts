@@ -7,6 +7,8 @@ import chalk from "chalk";
 import { downloadTemplate } from "giget";
 import prompts from "prompts";
 
+import { loadTemplates } from "./templates";
+
 type Template = "starter-http";
 
 async function cloneTemplate(
@@ -61,7 +63,7 @@ const managers = [
 ];
 
 (async () => {
-  console.log(chalk.grey("create-svarta-app 0.0.0"));
+  console.log(chalk.grey("create-svarta-app 0.0.1"));
 
   let manager: packageManager.Type;
   const fromCmd = process.argv[0];
@@ -96,14 +98,7 @@ const managers = [
       name: "template",
       type: "select",
       message: "Choose template",
-      choices: [
-        {
-          value: "starter-http",
-          title: "HTTP starter",
-          description: "Minimal standalone HTTP server",
-        },
-      ],
-      initial: 0,
+      choices: await loadTemplates(),
     },
     {
       name: "chosenManager",
@@ -115,12 +110,12 @@ const managers = [
     {
       name: "setupGitRepo",
       type: "confirm",
-      message: "Do you want me to setup a git repository?",
+      message: "Do you want to setup a git repository?",
     },
   ]);
 
   if (!appDir || !template) {
-    console.log("Aborting...");
+    console.log("Cancelled.");
     process.exit(1);
   }
 
