@@ -63,7 +63,7 @@ const managers = [
 ];
 
 (async () => {
-  console.log(chalk.grey("create-svarta-app 0.0.3"));
+  console.log(chalk.grey("create-svarta-app 0.0.4"));
 
   let manager: packageManager.Type;
   const fromCmd = process.argv[0];
@@ -81,12 +81,7 @@ const managers = [
 
   const templates = await loadTemplates();
 
-  const {
-    appDir,
-    template: templateIndex,
-    chosenManager,
-    setupGitRepo,
-  } = await prompts([
+  const { appDir, template, chosenManager, setupGitRepo } = await prompts([
     {
       name: "appDir",
       type: "text",
@@ -121,14 +116,12 @@ const managers = [
     },
   ]);
 
-  const chosenTemplate = templates[templateIndex];
-
-  if (!appDir || !chosenTemplate) {
+  if (!appDir || !template) {
     console.log("Cancelled.");
     process.exit(1);
   }
 
-  await cloneTemplate(appDir, chosenTemplate.value, chosenManager);
+  await cloneTemplate(appDir, template, chosenManager);
   if (setupGitRepo) {
     execSync("git init", {
       cwd: appDir,
