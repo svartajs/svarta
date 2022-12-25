@@ -19,7 +19,7 @@ async function cloneTemplate(
   console.log("");
   console.log(`Cloning ${chalk.blueBright(template)} into ${chalk.blueBright(appDir)}...`);
 
-  await downloadTemplate(`gh:marvin-j97/svarta/templates/${template}`, {
+  await downloadTemplate(`gh:svartajs/svarta/templates/${template}`, {
     dir: appDir,
     preferOffline: false,
   });

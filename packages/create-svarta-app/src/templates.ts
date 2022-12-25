@@ -4,7 +4,7 @@ import type { Choice } from "prompts";
 export async function loadTemplates(): Promise<Choice[]> {
   console.log("Loading template list");
   const response = await nodeFetch(
-    "https://raw.githubusercontent.com/marvin-j97/svarta/main/templates.json",
+    "https://raw.githubusercontent.com/svartajs/svarta/main/templates.json",
   );
   if (!response.ok) {
     throw new Error(`Response failed with status ${response.status}`);
