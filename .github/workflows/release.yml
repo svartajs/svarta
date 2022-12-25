@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - xyz
+      - main
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
       - run: pnpm install
       - run: pnpm build
       - run: pnpm lint
-      - run: pnpm test
-      - run: pnpm publish --no-git-checks --access public -r
+      #- run: pnpm test
+      - run: pnpm publish --access public -r
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

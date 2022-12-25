@@ -1,6 +1,6 @@
 {
   "name": "@svarta/adapter-standalone",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
@@ -10,26 +10,29 @@
   "devDependencies": {
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
-    "@types/node": "18.11.10",
-    "eslint": "7.32.0",
+    "@tinyhttp/app": "2",
+    "@tinyhttp/cookie": "2.0.5",
+    "@types/node": "18.11.17",
+    "eslint": "8.30.0",
+    "milliparsec": "2",
+    "node-fetch": "3.3.0",
     "tsup": "6.5.0",
-    "typescript": "4.9.3",
-    "vitest": "0.25.3"
+    "typescript": "4.9.4",
+    "vitest": "0.26.2",
+    "yaml": "2.2.0"
   },
   "engines": {
     "node": ">=14.18"
   },
   "peerDependencies": {
     "@tinyhttp/app": "2",
-    "milliparsec": "2",
-    "@tinyhttp/cookie": "2"
+    "milliparsec": "2"
   },
   "dependencies": {
     "@svarta/core": "workspace:*",
-    "chalk": "5.1.2",
-    "esbuild": "0.15.18",
-    "walk-it": "1.1.0",
-    "zod": "3.19.1"
+    "chalk": "5.2.0",
+    "esbuild": "0.16.10",
+    "zod": "3.20.2"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

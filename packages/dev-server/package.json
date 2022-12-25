@@ -1,6 +1,6 @@
 {
   "name": "@svarta/dev-server",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
@@ -11,23 +11,22 @@
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
     "@types/lodash.debounce": "4.0.7",
-    "@types/node": "18.11.10",
-    "eslint": "7.32.0",
+    "@types/node": "18.11.17",
+    "eslint": "8.30.0",
     "tsup": "6.5.0",
-    "typescript": "4.9.3",
-    "vitest": "0.25.3"
+    "typescript": "4.9.4",
+    "vitest": "0.26.2"
   },
   "engines": {
     "node": ">=14.18"
   },
   "dependencies": {
     "@svarta/core": "workspace:*",
-    "chalk": "5.1.2",
+    "chalk": "5.2.0",
     "chokidar": "3.5.3",
-    "esbuild": "0.15.18",
+    "esbuild": "0.16.10",
     "lodash.debounce": "4.0.8",
-    "nitropack": "1.0.0",
-    "@tinyhttp/cookie": "2"
+    "nitropack": "1.0.0"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

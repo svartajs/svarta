@@ -1,6 +1,6 @@
 {
   "name": "create-svarta-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
@@ -10,21 +10,22 @@
   "devDependencies": {
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
-    "@types/node": "18.11.10",
+    "@types/node": "18.11.17",
     "@types/prompts": "2.4.2",
     "@types/yargs": "17.0.17",
-    "eslint": "7.32.0",
+    "eslint": "8.30.0",
     "tsup": "6.5.0",
-    "typescript": "4.9.3",
-    "vitest": "0.25.3"
+    "typescript": "4.9.4",
+    "vitest": "0.26.2"
   },
   "engines": {
     "node": ">=14.18"
   },
   "dependencies": {
-    "chalk": "5.1.2",
-    "detect-package-manager": "2.0.1",
+    "@svarta/core": "workspace:*",
+    "chalk": "5.2.0",
     "giget": "1.0.0",
+    "node-fetch": "3.3.0",
     "prompts": "2.4.2"
   },
   "bin": "bin.mjs",

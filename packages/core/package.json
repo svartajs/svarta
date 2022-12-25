@@ -1,6 +1,6 @@
 {
   "name": "@svarta/core",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
@@ -10,18 +10,19 @@
   "devDependencies": {
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
-    "@types/node": "18.11.10",
-    "eslint": "7.32.0",
+    "@types/node": "18.11.17",
+    "eslint": "8.30.0",
     "tsup": "6.5.0",
-    "typescript": "4.9.3",
-    "vitest": "0.25.3"
+    "typescript": "4.9.4",
+    "vitest": "0.26.2"
   },
   "engines": {
     "node": ">=14.18"
   },
   "dependencies": {
-    "walk-it": "1.1.0",
-    "zod": "3.19.1"
+    "@tinyhttp/cookie": "2.0.5",
+    "walk-it": "1.1.1",
+    "zod": "3.20.2"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

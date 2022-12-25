@@ -7,9 +7,12 @@ type ParamArrayToDict<T extends readonly string[]> = {
   [key in T[number]]: string;
 };
 
-type HandlerFunction<Schema, Context, Params extends Record<string, string> | unknown, Output> = (
-  routeInput: HandlerEvent<Schema, Context, Params>,
-) => Promise<Response<Output>>;
+export type HandlerFunction<
+  Schema,
+  Context,
+  Params extends Record<string, string> | unknown,
+  Output,
+> = (routeInput: HandlerEvent<Schema, Context, Params>) => Promise<Response<Output>>;
 
 function buildHandler<Schema, Context, Params extends Record<string, string> | unknown, Output>(
   fn: HandlerFunction<Schema, Context, Params, Output>,

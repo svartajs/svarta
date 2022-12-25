@@ -11,5 +11,7 @@ module.exports = {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "import/newline-after-import": "error",
+
+    "import/no-unresolved": "off"
   },
 };

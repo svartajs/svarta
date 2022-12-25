@@ -1,6 +1,6 @@
 {
   "name": "@svarta/cli",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
@@ -11,12 +11,12 @@
     "@svarta/adapter-standalone": "workspace:*",
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
-    "@types/node": "18.11.10",
+    "@types/node": "18.11.17",
     "@types/yargs": "17.0.17",
-    "eslint": "7.32.0",
+    "eslint": "8.30.0",
     "tsup": "6.5.0",
-    "typescript": "4.9.3",
-    "vitest": "0.25.3"
+    "typescript": "4.9.4",
+    "vitest": "0.26.2"
   },
   "engines": {
     "node": ">=14.18"
@@ -24,9 +24,9 @@
   "dependencies": {
     "@svarta/core": "workspace:*",
     "@svarta/dev-server": "workspace:*",
-    "chalk": "5.1.2",
+    "chalk": "5.2.0",
     "yargs": "17.6.2",
-    "zod": "3.19.1"
+    "zod": "3.20.2"
   },
   "peerDependencies": {
     "@svarta/adapter-standalone": "workspace:*"

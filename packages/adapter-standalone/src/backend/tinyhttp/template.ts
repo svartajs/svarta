@@ -17,7 +17,7 @@ function mapRoute(
     await json()(req, res, (err) => {
       if (err) {
         res.status(400);
-        res.send("Bad request");
+        res.send("Bad Request");
       }
       else {
         next();
@@ -37,7 +37,7 @@ export function buildTemplate(routes: CollectedRoute[], defaultPort: number, log
   return `/***** imports *****/
 import { App } from "@tinyhttp/app";
 import { json } from "milliparsec";
-import { parse, serialize } from "@tinyhttp/cookie";
+import { createAndRunHandler } from "@svarta/core";
 
 /***** routes *****/
 ${routes.map(({ path }, index) => `import r${index} from "${path}";`).join("\n")}
@@ -45,88 +45,33 @@ ${routes.map(({ path }, index) => `import r${index} from "${path}";`).join("\n")
 /***** handler *****/
 function __svartaTinyHttpHandler({ input, handler, routePath }) {
   return async (req, res) => {
-    try {
-      /***** body validation *****/
-      if (input) {
-        // Validate via Zod
-        const validation = input.safeParse(req.body);
-        if (!validation.success) {
-          res.status(422);
-          res.set("x-powered-by", "svarta");
-          res.send("Unprocessable Entity");
-          return;
-        }
-      }
+    const headers = {
+      get: (key) => req.get(key),
+      set: (key, value) => res.set(key, value),
+      entries: () => Object.entries(req.headers),
+      keys: () => Object.keys(req.headers),
+      values: () => Object.values(req.headers),
+    };
 
-      const headers = {
-        get: (key) => req.get(key),
-        set: (key, value) => res.set(key, value),
-        entries: () => Object.entries(req.headers),
-        keys: () => Object.keys(req.headers),
-        values: () => Object.values(req.headers),
-      };
-
-      const cookieObj = parse(headers.get("cookie") || '');
-
-      const setCookies = [];
-
-      const cookies = {
-        get: (key) => cookieObj[key],
-        set: (key, value, opts) => {
-          setCookies.push({ key, value, opts });
-        },
-        entries: () => Object.entries(cookieObj),
-        keys: () => Object.keys(cookieObj),
-        values: () => Object.values(cookieObj),
-      };
-
-      /***** call handler *****/
-      const response = await handler({
-        ctx: {} /* context starts empty */,
-        query: req.query,
-        params: req.params,
-        input: req.body,
-        headers,
-        path: req.path,
-        url: req.originalUrl,
-        method: req.method,
-        isDev: false,
-        cookies,
-      });
-
-      /***** respond *****/
-      for(const [key, value] of Object.entries(response._headers)) {
-        res.set(key, value);
-      }
-
-      /***** set cookies *****/
-      res.setHeader(
-        "set-cookie", 
-        setCookies.map(({ key, value, opts }) => serialize(key, value, opts))
-      );
-
-      res.set("x-powered-by", "svarta");
-      res.status(response._status);
-
-      const resBody = response._body;
-      if (resBody) {
-        if (typeof resBody === "string") {
-          res.send(resBody);
-        }
-        else {
-          res.json(resBody);
-        }
-      }
-      else {
-        res.end();
-      }
+    const { body } = await createAndRunHandler({
+      svartaRoute: { input, handler },
+      body: req.body,
+      headers,
+      setStatus: (status) => {
+        res.status(status);
+      },
+      params: req.params,
+      query: req.query,
+      url: req.originalUrl,
+      method: req.method,
+      isDev: false,
+      formattedRouteName: routePath,
+    });
+    if (body) {
+      res.send(body);
     }
-    catch(error) {
-      /***** error handler *****/
-      console.error(\`svarta caught an error while handling route (\${routePath}): \` + (error?.message || error || "Unknown error"));
-      res.status(500);
-      res.set("x-powered-by", "svarta");
-      res.send("Internal Server Error");
+    else {
+      res.end();
     }
   }
 }
@@ -142,7 +87,7 @@ app.use((_, res, next) => {
 ${
   logger
     ? `/***** logger *****/
-app.use((req, res, next) => {
+app.use((req, _, next) => {
   const now = new Date();
   console.error(\`[\${now.toISOString()}] \${req.method} \${req.path}\`);
   next();
