@@ -15,6 +15,7 @@
   "devDependencies": {
     "@svarta/adapter-standalone": "latest",
     "@svarta/cli": "latest",
+    "@svarta/core": "latest",
     "@tinyhttp/app": "2",
     "@types/node": "18.11",
     "svarta": "latest",
