@@ -79,7 +79,14 @@ const managers = [
   console.log(`Detected package manager: ${managerObject?.color(manager)}`);
   console.log("");
 
-  const { appDir, template, chosenManager, setupGitRepo } = await prompts([
+  const templates = await loadTemplates();
+
+  const {
+    appDir,
+    template: templateIndex,
+    chosenManager,
+    setupGitRepo,
+  } = await prompts([
     {
       name: "appDir",
       type: "text",
@@ -88,7 +95,7 @@ const managers = [
       initial: "my-app",
       validate: (appDir: string) => {
         if (existsSync(appDir)) {
-          console.error(chalk.red(`\n\nFolder ${appDir} already exists! Aborting...`));
+          console.error(chalk.red(`\n\nFolder ${appDir} already exists! Cancelling...`));
           process.exit(1);
         }
         return true;
@@ -98,7 +105,7 @@ const managers = [
       name: "template",
       type: "select",
       message: "Choose template",
-      choices: await loadTemplates(),
+      choices: templates,
     },
     {
       name: "chosenManager",
@@ -114,12 +121,14 @@ const managers = [
     },
   ]);
 
-  if (!appDir || !template) {
+  const chosenTemplate = templates[templateIndex];
+
+  if (!appDir || !chosenTemplate) {
     console.log("Cancelled.");
     process.exit(1);
   }
 
-  await cloneTemplate(appDir, template, chosenManager);
+  await cloneTemplate(appDir, chosenTemplate.value, chosenManager);
   if (setupGitRepo) {
     execSync("git init", {
       cwd: appDir,

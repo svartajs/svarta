@@ -1,6 +1,7 @@
 [
   {
     "id": "starter-http",
+    "value": "starter-http",
     "title": "Minimal HTTP starter",
     "description": "Minimal standalone HTTP server"
   }
