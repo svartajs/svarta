@@ -1,5 +1,13 @@
 # @svarta/adapter-standalone
 
+## 0.0.4
+
+### Patch Changes
+
+- Fix template selection
+- Updated dependencies
+  - @svarta/core@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes
