@@ -1,0 +1,29 @@
+{
+  "name": "@svarta/template-starter-http",
+  "private": true,
+  "version": "1.0.0",
+  "description": "My great REST API",
+  "scripts": {
+    "start": "node .output/server.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "svarta build",
+    "dev": "svarta dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@svarta/adapter-standalone": "latest",
+    "@svarta/cli": "latest",
+    "@svarta/core": "latest",
+    "@tinyhttp/app": "2",
+    "@types/node": "18.11",
+    "svarta": "latest",
+    "typescript": "4.9.4",
+    "zod": "3.20.2"
+  },
+  "engines": {
+    "node": ">=16.6"
+  },
+  "type": "module"
+}
