@@ -81,10 +81,12 @@ export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body:
       headers.set(key, value);
     }
 
-    headers.set(
-      "set-cookie",
-      setCookies.map(({ key, value, opts }) => serialize(key, value, opts)).join("; "),
-    );
+    if (setCookies.length) {
+      headers.set(
+        "set-cookie",
+        setCookies.map(({ key, value, opts }) => serialize(key, value, opts)).join("; "),
+      );
+    }
 
     headers.set("x-powered-by", "svarta");
     setStatus(response._status);

@@ -1,5 +1,13 @@
 # @svarta/dev-server
 
+## 0.0.7
+
+### Patch Changes
+
+- Fix body parser handling
+- Updated dependencies
+  - @svarta/core@0.0.7
+
 ## 0.0.6
 
 ### Patch Changes

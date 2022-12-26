@@ -19,8 +19,8 @@
     "@tinyhttp/app": "2",
     "@types/node": "18.11",
     "svarta": "latest",
-    "milliparsec": "2",
-    "typescript": "4.9.4"
+    "typescript": "4.9.4",
+    "zod": "3.20.2"
   },
   "engines": {
     "node": ">=16.6"

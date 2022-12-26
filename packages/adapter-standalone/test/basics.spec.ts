@@ -1,4 +1,4 @@
-import { ChildProcess, exec } from "node:child_process";
+import { ChildProcess, spawn } from "node:child_process";
 import { unlinkSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -17,15 +17,20 @@ describe("basics", () => {
 
   beforeAll(async () => {
     const routeFolder = resolve("test/fixture");
-    console.log(`Building server using folder ${routeFolder}`);
+    console.error(`Building server using folder ${routeFolder}`);
     await buildStandaloneServer({
       routeFolder: resolve("test/fixture"),
       defaultPort: port,
       outputFile: serverFile,
+      logger: true,
     });
-    console.log("Running server");
-    proc = exec(`node "${serverFile}"`);
-    proc.on("message", (data) => console.log(data.toString()));
+    console.error("Running server");
+    proc = spawn("node", [serverFile], {
+      stdio: "pipe",
+    });
+    proc.stderr?.on("data", (data) => {
+      console.error(`[test-server] ${data.toString()}`);
+    });
 
     await new Promise((resolve) => proc.on("spawn", resolve));
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -61,6 +66,34 @@ describe("basics", () => {
     expect(body).to.have.property("url").that.equals("/info");
     expect(body).to.have.property("isDev").that.is.false;
     expect(body).to.have.property("query").that.deep.equals({});
+  });
+
+  it("should correctly use DELETE route", async () => {
+    const res = await fetch(`http://127.0.0.1:${port}/hello`, {
+      method: "DELETE",
+    });
+    const body = await res.json();
+
+    expect(res.status).to.equal(200);
+    expect(res.headers.get("x-powered-by")).to.equal("svarta");
+    expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
+
+    expect(body).to.be.an("object");
+    expect(body).to.have.property("method").that.equals("DELETE");
+  });
+
+  it("should correctly use PUT route", async () => {
+    const res = await fetch(`http://127.0.0.1:${port}/hello`, {
+      method: "PUT",
+    });
+    const body = await res.json();
+
+    expect(res.status).to.equal(200);
+    expect(res.headers.get("x-powered-by")).to.equal("svarta");
+    expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
+
+    expect(body).to.be.an("object");
+    expect(body).to.have.property("method").that.equals("PUT");
   });
 
   describe("query", () => {

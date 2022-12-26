@@ -15,18 +15,6 @@ function mapRoute(
   const importName = `r${index}`;
   const routePath = formatRoutePath(route.routeSegments);
   return `app.${route.method.toLowerCase()}("${routePath}",
-  /***** body parser *****/
-  async (req,res,next)=>{
-    await json()(req, res, (err) => {
-      if (err) {
-        res.status(400);
-        res.send("Bad Request");
-      }
-      else {
-        next();
-      }
-    });
-  },
   /***** svarta handler *****/
   __svartaTinyHttpHandler({ 
     handler: ${importName}.handler,
@@ -39,7 +27,6 @@ function mapRoute(
 export function buildTemplate(routes: CollectedRoute[], defaultPort: number, logger = true) {
   return `/***** imports *****/
 import { App } from "@tinyhttp/app";
-import { json } from "milliparsec";
 import { createAndRunHandler } from "@svarta/core";
 
 /***** routes *****/
@@ -53,6 +40,23 @@ ${routes
 /***** handler *****/
 function __svartaTinyHttpHandler({ input, handler, routePath }) {
   return async (req, res) => {
+    /***** body parser *****/
+    // https://github.com/tinyhttp/milliparsec/blob/master/src/index.ts
+    if (input && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
+      let body = "";
+      for await (const chunk of req) {
+        body += chunk;
+      }
+      try {
+        req.body = JSON.parse(body);
+      }
+      catch {
+        res.status(400);
+        res.send("Bad Request");
+        return;
+      };
+    }
+
     const headers = {
       get: (key) => req.get(key),
       set: (key, value) => res.set(key, value),
