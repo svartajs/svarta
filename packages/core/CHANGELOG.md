@@ -1,5 +1,11 @@
 # @svarta/core
 
+## 0.0.5
+
+### Patch Changes
+
+- Add additional readdir check to create-svarta-app
+
 ## 0.0.4
 
 ### Patch Changes
