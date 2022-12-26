@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { packageManager } from "@svarta/core";
@@ -10,6 +10,11 @@ import prompts from "prompts";
 import { loadTemplates } from "./templates";
 
 type Template = "starter-http";
+
+function isDirEmpty(path: string): boolean {
+  const files = readdirSync(path);
+  return files.length === 0;
+}
 
 async function cloneTemplate(
   appDir: string,
@@ -63,7 +68,7 @@ const managers = [
 ];
 
 (async () => {
-  console.log(chalk.grey("create-svarta-app 0.0.4"));
+  console.log(chalk.grey("create-svarta-app 0.0.5"));
 
   let manager: packageManager.Type;
   const fromCmd = process.argv[0];
@@ -89,8 +94,11 @@ const managers = [
       hint: "my-app",
       initial: "my-app",
       validate: (appDir: string) => {
-        if (existsSync(appDir)) {
-          console.error(chalk.red(`\n\nFolder ${appDir} already exists! Cancelling...`));
+        if (!existsSync(appDir)) {
+          return true;
+        }
+        if (!isDirEmpty(appDir)) {
+          console.error(chalk.red(`\n\nFolder ${appDir} is not empty! Cancelling...`));
           process.exit(1);
         }
         return true;

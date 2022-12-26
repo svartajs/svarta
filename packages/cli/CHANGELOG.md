@@ -1,5 +1,15 @@
 # @svarta/cli
 
+## 0.0.5
+
+### Patch Changes
+
+- Add additional readdir check to create-svarta-app
+- Updated dependencies
+  - @svarta/adapter-standalone@0.0.5
+  - @svarta/dev-server@0.0.5
+  - @svarta/core@0.0.5
+
 ## 0.0.4
 
 ### Patch Changes
