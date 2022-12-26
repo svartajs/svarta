@@ -53,7 +53,7 @@ export async function buildStandaloneServer({
         banner: {
           js: "/***** svarta route *****/",
         },
-        entryPoints: [route.path.replace(windowsSeparator, posixSeperator)],
+        entryPoints: [route.path],
         outfile: jsFile,
         platform: "node",
         format: "esm",

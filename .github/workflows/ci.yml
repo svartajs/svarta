@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-    concurrency: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
