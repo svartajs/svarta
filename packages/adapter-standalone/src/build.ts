@@ -2,7 +2,7 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { collectRouteFiles, loadRoute, loadRoutes } from "@svarta/core";
+import { collectRouteFiles, loadRoutes } from "@svarta/core";
 import chalk from "chalk";
 import esbuild from "esbuild";
 

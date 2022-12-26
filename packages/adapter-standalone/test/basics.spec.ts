@@ -15,7 +15,8 @@ describe("basics", () => {
   let proc: ChildProcess;
 
   beforeAll(async () => {
-    console.log("Building server");
+    const routeFolder = resolve("test/fixture");
+    console.log(`Building server using folder ${routeFolder}`);
     await buildStandaloneServer({
       routeFolder: resolve("test/fixture"),
       defaultPort: 7777,
