@@ -1,5 +1,11 @@
 # @svarta/core
 
+## 0.0.11
+
+### Patch Changes
+
+- added --force flag to CSA
+
 ## 0.0.10
 
 ### Patch Changes

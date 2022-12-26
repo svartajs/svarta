@@ -16,17 +16,26 @@ function isDirEmpty(path: string): boolean {
   return files.length === 0;
 }
 
-async function cloneTemplate(
-  appDir: string,
-  template: Template,
-  npmClient: packageManager.Type,
-): Promise<void> {
+interface CloneOptions {
+  appDir: string;
+  template: Template;
+  npmClient: packageManager.Type;
+  force?: boolean;
+}
+
+async function cloneTemplate({
+  appDir,
+  template,
+  npmClient,
+  force = false,
+}: CloneOptions): Promise<void> {
   console.log("");
   console.log(`Cloning ${chalk.blueBright(template)} into ${chalk.blueBright(appDir)}...`);
 
   await downloadTemplate(`gh:svartajs/svarta/templates/${template}`, {
     dir: appDir,
     preferOffline: false,
+    force,
   });
 
   console.log("");
@@ -68,7 +77,7 @@ const managers = [
 ];
 
 (async () => {
-  console.log(chalk.grey("create-svarta-app 0.0.10"));
+  console.log(chalk.grey("create-svarta-app 0.0.11"));
 
   let manager: packageManager.Type;
   const fromCmd = process.argv[0];
@@ -85,6 +94,7 @@ const managers = [
   console.log("");
 
   const templates = await loadTemplates();
+  const forceCopy = process.argv.includes("--force");
 
   const { appDir, template, chosenManager, setupGitRepo } = await prompts([
     {
@@ -98,8 +108,11 @@ const managers = [
           return true;
         }
         if (!isDirEmpty(appDir)) {
-          console.error(chalk.red(`\n\nFolder ${appDir} is not empty! Cancelling...`));
-          process.exit(1);
+          if (!forceCopy) {
+            console.error(chalk.red(`\n\nFolder ${appDir} is not empty! Cancelling...`));
+            console.error(chalk.gray("Run with --force to force-copy into folder"));
+            process.exit(1);
+          }
         }
         return true;
       },
@@ -129,7 +142,7 @@ const managers = [
     process.exit(1);
   }
 
-  await cloneTemplate(appDir, template, chosenManager);
+  await cloneTemplate({ appDir, template, npmClient: chosenManager, force: forceCopy });
   if (setupGitRepo) {
     execSync("git init", {
       cwd: appDir,
