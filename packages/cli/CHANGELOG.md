@@ -1,5 +1,15 @@
 # @svarta/cli
 
+## 0.0.8
+
+### Patch Changes
+
+- Export more types from core
+- Updated dependencies
+  - @svarta/core@0.0.8
+  - @svarta/adapter-standalone@0.0.8
+  - @svarta/dev-server@0.0.8
+
 ## 0.0.7
 
 ### Patch Changes

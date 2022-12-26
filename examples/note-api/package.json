@@ -1,8 +1,8 @@
 {
-  "name": "@svarta/example-minimal-flyio-docker",
+  "name": "@svarta/example-note-api",
   "private": true,
   "version": "1.0.0",
-  "description": "Fly.io + Docker + Svarta",
+  "description": "Note taking API built with Svarta",
   "scripts": {
     "start": "node .output/server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
