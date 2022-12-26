@@ -72,6 +72,7 @@ export function tokenizeRoute(str: string, removeTrailingSlash = true): RouteSeg
   }
 
   if (removeTrailingSlash) {
+    // TODO: Array.at() is only supported Node >=16.6: https://github.com/nodejs/node/pull/39534
     if (segments.length > 1 && segments.at(-1)?.type === "sep") {
       segments.pop();
     }
