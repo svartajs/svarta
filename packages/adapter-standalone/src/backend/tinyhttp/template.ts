@@ -46,7 +46,7 @@ import { createAndRunHandler } from "@svarta/core";
 ${routes
   .map(
     ({ path }, index) =>
-      `import r${index} from "${path.replace(windowsSeparator, posixSeperator)}";`,
+      `import r${index} from "${path.replaceAll(windowsSeparator, posixSeperator)}";`,
   )
   .join("\n")}
 

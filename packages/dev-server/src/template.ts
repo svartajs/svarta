@@ -11,7 +11,7 @@ export function buildTemplate(route: {
   const routePath = formatRoutePath(route.routeSegments);
 
   return `import svartaRoute from "${route.path
-    .replace(windowsSeparator, posixSeperator)
+    .replaceAll(windowsSeparator, posixSeperator)
     .replace(/\.tsx?$/, "")}";
   import { createAndRunHandler } from "@svarta/core";
   import url from "node:url";
