@@ -1,5 +1,13 @@
 # create-svarta-app
 
+## 0.0.9
+
+### Patch Changes
+
+- Fix middleware type in core
+- Updated dependencies
+  - @svarta/core@0.0.9
+
 ## 0.0.8
 
 ### Patch Changes

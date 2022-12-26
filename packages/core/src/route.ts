@@ -40,8 +40,8 @@ export class RouteBuilder<Context = {}, Params extends Record<string, string> | 
 
   middleware<NewContext, Output>(
     fn: (routeInput: HandlerEvent<null, Context, Params>) => Promise<Response<Output> | NewContext>,
-  ): RouteBuilder<NewContext> {
-    const newRouteBuilder = new RouteBuilder<NewContext>();
+  ): RouteBuilder<NewContext, Params> {
+    const newRouteBuilder = new RouteBuilder<NewContext, Params>();
     newRouteBuilder._middlewares.push(...this._middlewares, fn);
     return newRouteBuilder;
   }
