@@ -1,5 +1,13 @@
 # create-svarta-app
 
+## 0.0.11
+
+### Patch Changes
+
+- added --force flag to CSA
+- Updated dependencies
+  - @svarta/core@0.0.11
+
 ## 0.0.10
 
 ### Patch Changes
