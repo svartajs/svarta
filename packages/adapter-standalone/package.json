@@ -1,6 +1,6 @@
 {
   "name": "@svarta/adapter-standalone",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
@@ -14,7 +14,6 @@
     "@tinyhttp/cookie": "2.0.5",
     "@types/node": "18.11.17",
     "eslint": "8.30.0",
-    "milliparsec": "2",
     "node-fetch": "3.3.0",
     "tsup": "6.5.0",
     "typescript": "4.9.4",
@@ -25,8 +24,7 @@
     "node": ">=16.6"
   },
   "peerDependencies": {
-    "@tinyhttp/app": "2",
-    "milliparsec": "2"
+    "@tinyhttp/app": "2"
   },
   "dependencies": {
     "@svarta/core": "workspace:*",

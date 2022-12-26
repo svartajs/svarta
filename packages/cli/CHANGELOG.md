@@ -1,5 +1,15 @@
 # @svarta/cli
 
+## 0.0.7
+
+### Patch Changes
+
+- Fix body parser handling
+- Updated dependencies
+  - @svarta/adapter-standalone@0.0.7
+  - @svarta/dev-server@0.0.7
+  - @svarta/core@0.0.7
+
 ## 0.0.6
 
 ### Patch Changes

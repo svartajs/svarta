@@ -11,7 +11,7 @@ const DEFAULT_CONFIG_PATH = "svarta.config.mjs";
 
 yargs(hideBin(process.argv))
   .scriptName("svarta")
-  .version("0.0.6")
+  .version("0.0.7")
   /* TODO: deploy */
   .command(
     "init <path>",

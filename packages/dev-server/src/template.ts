@@ -25,8 +25,9 @@ export function buildTemplate(route: {
     const now = new Date();
     console.error(\`[\${now.toISOString()}] \${req.method} \${req.url}\`);
 
+    /***** body parser *****/
     // https://github.com/tinyhttp/milliparsec/blob/master/src/index.ts
-    if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
+    if (svartaRoute.input && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
       let body = "";
       for await (const chunk of req) {
         body += chunk;
@@ -34,7 +35,10 @@ export function buildTemplate(route: {
       try {
         req.body = JSON.parse(body);
       }
-      catch {};
+      catch {
+        res.statusCode = 400;
+        return "Bad Request";
+      };
     }
 
     const headers = {

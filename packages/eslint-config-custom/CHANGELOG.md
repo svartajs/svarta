@@ -1,5 +1,11 @@
 # @svarta/eslint-config-custom
 
+## 0.0.7
+
+### Patch Changes
+
+- Fix body parser handling
+
 ## 0.0.6
 
 ### Patch Changes
