@@ -1,5 +1,11 @@
 # @svarta/eslint-config-custom
 
+## 0.0.9
+
+### Patch Changes
+
+- Fix middleware type in core
+
 ## 0.0.8
 
 ### Patch Changes

@@ -68,7 +68,7 @@ const managers = [
 ];
 
 (async () => {
-  console.log(chalk.grey("create-svarta-app 0.0.8"));
+  console.log(chalk.grey("create-svarta-app 0.0.9"));
 
   let manager: packageManager.Type;
   const fromCmd = process.argv[0];

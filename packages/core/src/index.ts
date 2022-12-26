@@ -14,7 +14,7 @@ export type { default as Headers } from "./headers";
 export type { RouteMethod } from "./method";
 export { default as Redirect } from "./redirect";
 export { default as Response } from "./response";
-export type { HandlerFunction } from "./route";
+export type { HandlerFunction, MiddlewareFn } from "./route";
 export { defaultRoute as route, RouteBuilder, ValidatedRouteBuilder } from "./route";
 export { default as Status } from "./status";
 export type { RouteSegment } from "./types";

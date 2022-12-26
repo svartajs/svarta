@@ -14,6 +14,13 @@ export type HandlerFunction<
   Output,
 > = (routeInput: HandlerEvent<Schema, Context, Params>) => Promise<Response<Output>>;
 
+export type MiddlewareFn<
+  Output,
+  NewContext,
+  Context = {},
+  Params extends Record<string, string> | unknown = unknown,
+> = (routeInput: HandlerEvent<null, Context, Params>) => Promise<Response<Output> | NewContext>;
+
 function buildHandler<Schema, Context, Params extends Record<string, string> | unknown, Output>(
   fn: HandlerFunction<Schema, Context, Params, Output>,
   middlewares: Function[],
@@ -39,9 +46,9 @@ export class RouteBuilder<Context = {}, Params extends Record<string, string> | 
   protected _params: readonly string[] = [];
 
   middleware<NewContext, Output>(
-    fn: (routeInput: HandlerEvent<null, Context, Params>) => Promise<Response<Output> | NewContext>,
-  ): RouteBuilder<NewContext> {
-    const newRouteBuilder = new RouteBuilder<NewContext>();
+    fn: MiddlewareFn<Output, NewContext, Context, Params>,
+  ): RouteBuilder<NewContext, Params> {
+    const newRouteBuilder = new RouteBuilder<NewContext, Params>();
     newRouteBuilder._middlewares.push(...this._middlewares, fn);
     return newRouteBuilder;
   }

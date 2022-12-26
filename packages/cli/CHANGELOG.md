@@ -1,5 +1,15 @@
 # @svarta/cli
 
+## 0.0.9
+
+### Patch Changes
+
+- Fix middleware type in core
+- Updated dependencies
+  - @svarta/adapter-standalone@0.0.9
+  - @svarta/dev-server@0.0.9
+  - @svarta/core@0.0.9
+
 ## 0.0.8
 
 ### Patch Changes
