@@ -1,0 +1,29 @@
+{
+  "name": "@svarta/example-flyio-starter",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Fly.io + Docker + Svarta",
+  "scripts": {
+    "start": "node .output/server.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "svarta build",
+    "dev": "svarta dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@svarta/adapter-standalone": "latest",
+    "@svarta/cli": "latest",
+    "@svarta/core": "latest",
+    "@tinyhttp/app": "2",
+    "@types/node": "18.11",
+    "milliparsec": "2",
+    "svarta": "latest",
+    "typescript": "4.9.4"
+  },
+  "engines": {
+    "node": ">=16.6"
+  },
+  "type": "module"
+}
