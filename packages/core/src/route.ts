@@ -34,7 +34,7 @@ function buildHandler<Schema, Context, Params extends Record<string, string> | u
   };
 }
 
-class RouteBuilder<Context = {}, Params extends Record<string, string> | unknown = unknown> {
+export class RouteBuilder<Context = {}, Params extends Record<string, string> | unknown = unknown> {
   protected _middlewares: Function[] = [];
   protected _params: readonly string[] = [];
 
@@ -67,7 +67,11 @@ class RouteBuilder<Context = {}, Params extends Record<string, string> | unknown
   }
 }
 
-class ValidatedRouteBuilder<Schema, Context = {}, Params extends Record<string, string> = {}> {
+export class ValidatedRouteBuilder<
+  Schema,
+  Context = {},
+  Params extends Record<string, string> = {},
+> {
   _middlewares: Function[] = [];
   protected _inputSchema: zod.Schema<Schema>;
 
