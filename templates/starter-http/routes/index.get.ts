@@ -4,6 +4,8 @@ import { Response, route, Status } from "svarta";
 
 const html = readFileSync("index.html", "utf-8");
 
+export const name = "LandingPage";
+
 export default route.handle(async () => {
   return new Response(Status.Ok, html);
 });
