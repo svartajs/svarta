@@ -1,3 +1,6 @@
+import { sep as posixSeperator } from "node:path/posix";
+import { sep as windowsSeparator } from "node:path/win32";
+
 import type { CollectedRoute, RouteMethod, RouteSegment } from "@svarta/core";
 import { formatRoutePath } from "@svarta/core";
 
@@ -40,7 +43,12 @@ import { json } from "milliparsec";
 import { createAndRunHandler } from "@svarta/core";
 
 /***** routes *****/
-${routes.map(({ path }, index) => `import r${index} from "${path}";`).join("\n")}
+${routes
+  .map(
+    ({ path }, index) =>
+      `import r${index} from "${path.replace(windowsSeparator, posixSeperator)}";`,
+  )
+  .join("\n")}
 
 /***** handler *****/
 function __svartaTinyHttpHandler({ input, handler, routePath }) {

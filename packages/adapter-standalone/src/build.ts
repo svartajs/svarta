@@ -1,8 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
-import { sep as posixSeperator } from "node:path/posix";
-import { sep as windowsSeparator } from "node:path/win32";
 
 import { collectRouteFiles, loadRoutes } from "@svarta/core";
 import chalk from "chalk";
@@ -39,7 +37,6 @@ export async function buildStandaloneServer({
   mkdirSync(".svarta/tmp", { recursive: true });
 
   const routes = await collectRouteFiles(routeFolder);
-  console.log({ routes });
 
   collectTimer.stop();
 
