@@ -1,6 +1,8 @@
 import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
+import { sep as posixSeperator } from "node:path/posix";
+import { sep as windowsSeparator } from "node:path/win32";
 
 import { collectRouteFiles, loadRoutes } from "@svarta/core";
 import chalk from "chalk";
@@ -51,7 +53,7 @@ export async function buildStandaloneServer({
         banner: {
           js: "/***** svarta route *****/",
         },
-        entryPoints: [route.path],
+        entryPoints: [route.path.replace(windowsSeparator, posixSeperator)],
         outfile: jsFile,
         platform: "node",
         format: "esm",
