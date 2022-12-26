@@ -38,7 +38,7 @@ describe("basics", () => {
   });
 
   it("should handle server error", async () => {
-    const res = await fetch(`http://localhost:${port}/error`);
+    const res = await fetch(`http://127.0.0.1:${port}/error`);
     const body = await res.text();
 
     expect(res.status).to.equal(500);
@@ -48,7 +48,7 @@ describe("basics", () => {
   });
 
   it("should correctly get info", async () => {
-    const res = await fetch(`http://localhost:${port}/info`);
+    const res = await fetch(`http://127.0.0.1:${port}/info`);
     const body = await res.json();
 
     expect(res.status).to.equal(200);
@@ -65,7 +65,7 @@ describe("basics", () => {
 
   describe("query", () => {
     it("should correctly get query", async () => {
-      const res = await fetch(`http://localhost:${port}/info?test=2&name=peter`);
+      const res = await fetch(`http://127.0.0.1:${port}/info?test=2&name=peter`);
       const body = await res.json();
 
       expect(res.status).to.equal(200);
@@ -84,7 +84,7 @@ describe("basics", () => {
 
   describe("status", () => {
     it("should set status", async () => {
-      const res = await fetch(`http://localhost:${port}/set_status`);
+      const res = await fetch(`http://127.0.0.1:${port}/set_status`);
 
       expect(res.status).to.equal(418);
       expect(res.headers.get("x-powered-by")).to.equal("svarta");
@@ -93,7 +93,7 @@ describe("basics", () => {
 
   describe("headers", () => {
     it("should set header", async () => {
-      const res = await fetch(`http://localhost:${port}/set_header`);
+      const res = await fetch(`http://127.0.0.1:${port}/set_header`);
 
       expect(res.status).to.equal(200);
       expect(res.headers.get("x-powered-by")).to.equal("svarta");
@@ -104,7 +104,7 @@ describe("basics", () => {
       const headerName = "x-custom-header";
       const headerValue = "123";
 
-      const res = await fetch(`http://localhost:${port}/get_headers`, {
+      const res = await fetch(`http://127.0.0.1:${port}/get_headers`, {
         headers: {
           [headerName]: headerValue,
         },
@@ -128,7 +128,7 @@ describe("basics", () => {
       const cookieName = "x-custom-header";
       const cookieValue = "123";
 
-      const res = await fetch(`http://localhost:${port}/cookies`, {
+      const res = await fetch(`http://127.0.0.1:${port}/cookies`, {
         headers: {
           Cookie: serialize(cookieName, cookieValue),
         },
@@ -153,7 +153,7 @@ describe("basics", () => {
 
   describe("body", () => {
     it("should handle invalid json", async () => {
-      const res = await fetch(`http://localhost:${port}/body`, {
+      const res = await fetch(`http://127.0.0.1:${port}/body`, {
         method: "POST",
         body: "{asda5wa}",
         headers: {
@@ -169,7 +169,7 @@ describe("basics", () => {
     });
 
     it("should validate body", async () => {
-      const res = await fetch(`http://localhost:${port}/body`, {
+      const res = await fetch(`http://127.0.0.1:${port}/body`, {
         method: "POST",
         body: JSON.stringify({
           msg: "hello",
@@ -191,7 +191,7 @@ describe("basics", () => {
         message: "hello",
       };
 
-      const res = await fetch(`http://localhost:${port}/body`, {
+      const res = await fetch(`http://127.0.0.1:${port}/body`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -208,7 +208,7 @@ describe("basics", () => {
     });
 
     it("should get raw body", async () => {
-      const res = await fetch(`http://localhost:${port}/raw_body`);
+      const res = await fetch(`http://127.0.0.1:${port}/raw_body`);
       const body = await res.text();
 
       expect(res.status).to.equal(200);
@@ -218,7 +218,7 @@ describe("basics", () => {
     });
 
     it("should get yaml body", async () => {
-      const res = await fetch(`http://localhost:${port}/yaml`);
+      const res = await fetch(`http://127.0.0.1:${port}/yaml`);
       const textBody = await res.text();
       const body = YAML.parse(textBody);
 
@@ -231,7 +231,7 @@ describe("basics", () => {
 
   describe("params", () => {
     it("should correctly match param", async () => {
-      const res = await fetch(`http://localhost:${port}/some-other-route`);
+      const res = await fetch(`http://127.0.0.1:${port}/some-other-route`);
       const body = await res.json();
 
       expect(res.status).to.equal(200);
@@ -242,7 +242,7 @@ describe("basics", () => {
     });
 
     it("should correctly match param 2", async () => {
-      const res = await fetch(`http://localhost:${port}/yet-another-route`);
+      const res = await fetch(`http://127.0.0.1:${port}/yet-another-route`);
       const body = await res.json();
 
       expect(res.status).to.equal(200);
@@ -253,7 +253,7 @@ describe("basics", () => {
     });
 
     it("should correctly match multiple params", async () => {
-      const res = await fetch(`http://localhost:${port}/hello/peter`);
+      const res = await fetch(`http://127.0.0.1:${port}/hello/peter`);
       const body = await res.json();
 
       expect(res.status).to.equal(200);
@@ -265,7 +265,7 @@ describe("basics", () => {
     });
 
     it("should correctly match multiple params 2", async () => {
-      const res = await fetch(`http://localhost:${port}/hi/miranda`);
+      const res = await fetch(`http://127.0.0.1:${port}/hi/miranda`);
       const body = await res.json();
 
       expect(res.status).to.equal(200);
