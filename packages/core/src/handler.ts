@@ -60,7 +60,7 @@ export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body:
       params,
       query,
       headers,
-      path: url.split("?").shift()!,
+      path: url.split("?").at(0)!,
       url,
       method,
       isDev,
