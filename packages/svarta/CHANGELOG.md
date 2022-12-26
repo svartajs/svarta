@@ -1,5 +1,13 @@
 # svarta
 
+## 0.0.10
+
+### Patch Changes
+
+- run middlewares before input validation
+- Updated dependencies
+  - @svarta/core@0.0.10
+
 ## 0.0.9
 
 ### Patch Changes
