@@ -1,5 +1,13 @@
 # create-svarta-app
 
+## 0.0.6
+
+### Patch Changes
+
+- Change node min version
+- Updated dependencies
+  - @svarta/core@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes

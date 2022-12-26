@@ -1,5 +1,15 @@
 # @svarta/cli
 
+## 0.0.6
+
+### Patch Changes
+
+- Change node min version
+- Updated dependencies
+  - @svarta/adapter-standalone@0.0.6
+  - @svarta/dev-server@0.0.6
+  - @svarta/core@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes
