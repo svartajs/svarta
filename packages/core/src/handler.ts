@@ -67,7 +67,7 @@ export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body:
       cookies,
     };
 
-    const ctx = svartaRoute.runMiddlewares ? await svartaRoute.runMiddlewares(baseInput) : {};
+    const ctx = await svartaRoute.runMiddlewares(baseInput);
 
     let response;
 
