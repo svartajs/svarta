@@ -28,7 +28,7 @@ export async function collectRouteFiles(folder: string): Promise<CollectedRoute[
       const [_name, methodRaw, _ext] = filename.split(".");
       const method = methodRaw.toUpperCase() as RouteMethod;
 
-      let normalized = `/${relative(folder, path).replace(windowsSeparator, posixSeperator)}`;
+      let normalized = `/${relative(folder, path).replaceAll(windowsSeparator, posixSeperator)}`;
       if (filename.startsWith("index.")) {
         normalized = normalized.replace(filename, "");
       }

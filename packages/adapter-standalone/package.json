@@ -1,6 +1,6 @@
 {
   "name": "@svarta/adapter-standalone",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
@@ -22,7 +22,7 @@
     "yaml": "2.2.0"
   },
   "engines": {
-    "node": ">=14.18"
+    "node": ">=16.6"
   },
   "peerDependencies": {
     "@tinyhttp/app": "2",

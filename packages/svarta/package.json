@@ -1,13 +1,13 @@
 {
   "name": "svarta",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
     "build": "tsup src/index.ts --format cjs,esm --dts --clean"
   },
   "engines": {
-    "node": ">=14.18"
+    "node": ">=16.6"
   },
   "devDependencies": {
     "@svarta/tsconfig": "workspace:*",

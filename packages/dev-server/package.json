@@ -1,6 +1,6 @@
 {
   "name": "@svarta/dev-server",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
@@ -18,7 +18,7 @@
     "vitest": "0.26.2"
   },
   "engines": {
-    "node": ">=14.18"
+    "node": ">=16.6"
   },
   "dependencies": {
     "@svarta/core": "workspace:*",
