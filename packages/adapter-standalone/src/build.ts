@@ -39,6 +39,7 @@ export async function buildStandaloneServer({
   mkdirSync(".svarta/tmp", { recursive: true });
 
   const routes = await collectRouteFiles(routeFolder);
+  console.log({ routes });
 
   collectTimer.stop();
 
