@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Svarta App</title>
+    <title>Svarta + Railway + Docker</title>
     <style>
       :root {
-        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-          Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+          Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji,
+          Segoe UI Symbol, Noto Color Emoji;
         line-height: 24px;
         color: rgb(234, 231, 241);
         background-color: rgb(0, 0, 0);
@@ -23,13 +23,20 @@
         min-height: 100vh;
       }
 
-      h1 {
-        font-size: 3.5em;
+      .icons {
+        display: flex;
+        align-items: center;
       }
 
-      h3 {
-        opacity: 0.66;
-        margin-bottom: 48px;
+      .card {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        backdrop-filter: blur(8px);
+        border-radius: 25px;
+        background-color: #000000aa;
+        z-index: 999;
+        padding: 30px 60px;
       }
 
       .doc-btn {
@@ -40,7 +47,6 @@
         border-radius: 16px;
         padding: 16px 20px;
         font-weight: 600;
-        border: 2px solid white;
         background: black;
         color: white;
       }
@@ -48,7 +54,6 @@
       .doc-btn:hover {
         color: black;
         background: white;
-        border-color: white;
       }
 
       #app {
@@ -56,15 +61,40 @@
         margin: 0 auto;
         padding: 2rem;
         text-align: center;
+        position: relative;
       }
     </style>
   </head>
   <body>
+    <svg
+      preserveAspectRatio="none"
+      style="position: absolute"
+      width="100%"
+      height="100%"
+      viewBox="0 0 960 540"
+    >
+      <path
+        d="M0 174L120 266L240 114L360 260L480 147L600 217L720 201L840 163L960 174L960 0L840 0L720 0L600 0L480 0L360 0L240 0L120 0L0 0Z"
+        fill="#008bff"
+      ></path>
+      <path
+        d="M0 266L120 368L240 222L360 341L480 206L600 336L720 287L840 249L960 282L960 172L840 161L720 199L600 215L480 145L360 258L240 112L120 264L0 172Z"
+        fill="#035cc8"
+      ></path>
+      <path
+        d="M0 357L120 428L240 368L360 401L480 303L600 433L720 444L840 341L960 411L960 280L840 247L720 285L600 334L480 204L360 339L240 220L120 366L0 264Z"
+        fill="#002e8f"
+      ></path>
+      <path
+        d="M0 541L120 541L240 541L360 541L480 541L600 541L720 541L840 541L960 541L960 409L840 339L720 442L600 431L480 301L360 399L240 366L120 426L0 355Z"
+        fill="#000000"
+      ></path>
+    </svg>
     <div id="app">
-      <div>
-        <div style="display: flex; align-items: center">
+      <div class="card">
+        <div class="icons">
           <svg
-            style="width: 200px; height: 200px"
+            style="width: 100px; height: 100px"
             xmlns="http://www.w3.org/2000/svg"
             aria-label="Docker"
             role="img"
@@ -80,9 +110,9 @@
               d="m472 228s-18-17-55-11c-4-29-35-46-35-46s-29 35-8 74c-6 3-16 7-31 7H68c-5 19-5 145 133 145 99 0 173-46 208-130 52 4 63-39 63-39"
             />
           </svg>
-          <div style="font-size: 80px; margin-right: 15px">+</div>
+          <div style="font-size: 50px; margin-right: 10px">+</div>
           <svg
-            style="width: 150px; height: 150px"
+            style="width: 75px; height: 75px"
             width="1024"
             height="1024"
             viewBox="0 0 1024 1024"
@@ -99,19 +129,12 @@
             />
           </svg>
         </div>
-        <h1>Hello World</h1>
-        <h3 id="text">Loading...</h3>
+        <div style="font-size: 2.5rem; font-weight: 500">Hello World</div>
+        <div id="text">Loading...</div>
         <div style="display: flex; flex-direction: column; gap: 10px">
-          <a
-            class="doc-btn"
-            href="https://github.com/svartajs/example-flyio-starter"
-            target="_blank"
-            >GitHub</a
-          >
+          <a class="doc-btn" href="https://github.com/svartajs/svarta" target="_blank">GitHub</a>
           <!-- TODO: doc URL -->
-          <a class="doc-btn" href="https://svartajs.github.io" target="_blank"
-            >Documentation</a
-          >
+          <a class="doc-btn" href="https://svartajs.github.io" target="_blank">Documentation</a>
         </div>
       </div>
     </div>
