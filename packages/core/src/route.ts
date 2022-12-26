@@ -19,10 +19,11 @@ export type MiddlewareFn<
   NewContext,
   Context = {},
   Params extends Record<string, string> | unknown = unknown,
-> = (routeInput: HandlerEvent<null, Context, Params>) => Promise<Response<Output> | NewContext>;
+> = (
+  routeInput: Omit<HandlerEvent<null, Context, Params>, "input">,
+) => Promise<Response<Output> | NewContext>;
 
-function buildHandler<Schema, Context, Params extends Record<string, string> | unknown, Output>(
-  fn: HandlerFunction<Schema, Context, Params, Output>,
+function buildMiddlewareStack<Schema, Context, Params extends Record<string, string> | unknown>(
   middlewares: Function[],
 ) {
   return async (routeInput: HandlerEvent<Schema, Context, Params>) => {
@@ -37,7 +38,7 @@ function buildHandler<Schema, Context, Params extends Record<string, string> | u
         transformedContext = result;
       }
     }
-    return fn({ ...routeInput, ctx: transformedContext });
+    return transformedContext;
   };
 }
 
@@ -68,7 +69,8 @@ export class RouteBuilder<Context = {}, Params extends Record<string, string> | 
 
   handle<Output>(fn: HandlerFunction<null, Context, Params, Output>) {
     return {
-      handler: buildHandler(fn, this._middlewares),
+      handler: fn,
+      runMiddlewares: buildMiddlewareStack(this._middlewares),
       input: null,
     };
   }
@@ -88,7 +90,8 @@ export class ValidatedRouteBuilder<
 
   handle<Output>(fn: HandlerFunction<Schema, Context, Params, Output>) {
     return {
-      handler: buildHandler(fn, this._middlewares),
+      handler: fn,
+      runMiddlewares: buildMiddlewareStack(this._middlewares),
       input: this._inputSchema,
     };
   }

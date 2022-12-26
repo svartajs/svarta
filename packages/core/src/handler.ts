@@ -3,17 +3,20 @@ import type { ZodObject } from "zod";
 
 import type Cookies from "./cookies";
 import type { SetCookieOptions } from "./cookies";
+import HandlerEvent from "./handler_event";
 import type Headers from "./headers";
 import type { RouteMethod } from "./method";
+import Response from "./response";
 import type { HandlerFunction } from "./route";
 import Status from "./status";
 
 type HandlerOptions = {
   svartaRoute: {
     handler: HandlerFunction<any, any, any, any>;
+    runMiddlewares: (routeInput: Omit<HandlerEvent<any, any, any>, "input">) => any;
     input?: ZodObject<any>;
   };
-  body: any;
+  parseBody: () => any;
   headers: Headers;
   setStatus: (x: number) => void;
   params: Record<string, string>;
@@ -26,7 +29,7 @@ type HandlerOptions = {
 
 export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body: string }> {
   const {
-    body,
+    parseBody,
     formattedRouteName,
     headers,
     isDev,
@@ -39,18 +42,6 @@ export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body:
   } = opts;
 
   try {
-    if (svartaRoute.input) {
-      // Validate via Zod
-      const validation = svartaRoute.input.safeParse(body);
-      if (!validation.success) {
-        setStatus(Status.UnprocessableEntity);
-        headers.set("x-powered-by", "svarta");
-        return {
-          body: "Unprocessable Entity",
-        };
-      }
-    }
-
     const cookieObj = parse(headers.get("cookie") || "");
     const setCookies: { key: string; value: string; opts?: Partial<SetCookieOptions> }[] = [];
 
@@ -64,18 +55,53 @@ export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body:
       values: () => Object.values(cookieObj),
     };
 
-    const response = await svartaRoute.handler({
+    const baseInput = {
       ctx: {},
       params,
       query,
       headers,
-      input: body,
       path: url.split("?").shift()!,
       url,
       method,
       isDev,
       cookies,
-    });
+    };
+
+    const ctx = svartaRoute.runMiddlewares ? await svartaRoute.runMiddlewares(baseInput) : {};
+
+    let response;
+
+    if (ctx instanceof Response) {
+      response = ctx;
+    }
+
+    if (!response) {
+      let body = null;
+
+      if (svartaRoute.input && ["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+        try {
+          body = await parseBody();
+        } catch (error) {
+          setStatus(400);
+          headers.set("x-powered-by", "svarta");
+          return { body: "Bad Request" };
+        }
+
+        // Validate via Zod
+        const validation = svartaRoute.input.safeParse(body);
+        if (!validation.success) {
+          setStatus(Status.UnprocessableEntity);
+          headers.set("x-powered-by", "svarta");
+          return { body: "Unprocessable Entity" };
+        }
+      }
+
+      response = await svartaRoute.handler({
+        ...baseInput,
+        ctx,
+        input: body,
+      });
+    }
 
     for (const [key, value] of Object.entries(response._headers)) {
       headers.set(key, value);

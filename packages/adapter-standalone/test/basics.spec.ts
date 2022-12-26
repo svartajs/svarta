@@ -136,6 +136,41 @@ describe("basics", () => {
     expect(body).to.have.property("method").that.equals("OPTIONS");
   });
 
+  describe("middlewares", () => {
+    it("should correctly pass through context from middleware", async () => {
+      const res = await fetch(`http://127.0.0.1:${port}/middleware`);
+      const body = await res.json();
+
+      expect(res.status).to.equal(200);
+      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+      expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
+
+      expect(body).to.be.an("object");
+      expect(body).to.have.property("user").that.equals("peter");
+    });
+
+    it("should correctly respond from middleware", async () => {
+      const res = await fetch(`http://127.0.0.1:${port}/middleware_stop`);
+      const body = await res.text();
+      expect(body).to.have.lengthOf(0);
+
+      expect(res.status).to.equal(418);
+      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+    });
+
+    it("should correctly run middleware before input validation", async () => {
+      const res = await fetch(`http://127.0.0.1:${port}/middleware`, {
+        method: "POST",
+        body: "abw4abwbaw54",
+      });
+      const body = await res.text();
+      expect(body).to.have.lengthOf(0);
+
+      expect(res.status).to.equal(418);
+      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+    });
+  });
+
   describe("query", () => {
     it("should correctly get query", async () => {
       const res = await fetch(`http://127.0.0.1:${port}/info?test=2&name=peter`);

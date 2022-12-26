@@ -1,5 +1,11 @@
 # @svarta/tsconfig
 
+## 0.0.10
+
+### Patch Changes
+
+- run middlewares before input validation
+
 ## 0.0.9
 
 ### Patch Changes
