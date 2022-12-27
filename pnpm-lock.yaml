@@ -94,6 +94,7 @@ importers:
       '@svarta/tsconfig': workspace:*
       '@tinyhttp/cookie': 2.0.5
       '@types/node': 18.11.17
+      chalk: 5.2.0
       eslint: 8.30.0
       tsup: 6.5.0
       typescript: 4.9.4
@@ -102,6 +103,7 @@ importers:
       zod: 3.20.2
     dependencies:
       '@tinyhttp/cookie': 2.0.5
+      chalk: 5.2.0
       walk-it: 1.1.1
       zod: 3.20.2
     devDependencies:

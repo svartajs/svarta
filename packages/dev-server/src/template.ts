@@ -1,4 +1,4 @@
-import { sep as posixSeperator } from "node:path/posix";
+import { sep as posixSeparator } from "node:path/posix";
 import { sep as windowsSeparator } from "node:path/win32";
 
 import { formatRoutePath, RouteMethod, RouteSegment } from "@svarta/core";
@@ -11,7 +11,7 @@ export function buildTemplate(route: {
   const routePath = formatRoutePath(route.routeSegments);
 
   return `import svartaRoute from "${route.path
-    .replaceAll(windowsSeparator, posixSeperator)
+    .replaceAll(windowsSeparator, posixSeparator)
     .replace(/\.tsx?$/, "")}";
   import { createAndRunHandler } from "@svarta/core";
   import url from "node:url";

@@ -1,6 +1,6 @@
 {
   "name": "@svarta/core",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@tinyhttp/cookie": "2.0.5",
+    "chalk": "5.2.0",
     "walk-it": "1.1.1",
     "zod": "3.20.2"
   },

@@ -19,4 +19,5 @@ export { defaultRoute as route, RouteBuilder, ValidatedRouteBuilder } from "./ro
 export { default as Status } from "./status";
 export type { RouteSegment } from "./types";
 export { packageManager };
+export { buildRoutingTree, printTree } from "./fs_tree";
 export { createAndRunHandler } from "./handler";

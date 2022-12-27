@@ -1,5 +1,11 @@
 # @svarta/core
 
+## 0.0.12
+
+### Patch Changes
+
+- better build result printing
+
 ## 0.0.11
 
 ### Patch Changes

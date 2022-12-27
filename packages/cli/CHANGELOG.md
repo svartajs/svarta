@@ -1,5 +1,15 @@
 # @svarta/cli
 
+## 0.0.12
+
+### Patch Changes
+
+- better build result printing
+- Updated dependencies
+  - @svarta/adapter-standalone@0.0.12
+  - @svarta/dev-server@0.0.12
+  - @svarta/core@0.0.12
+
 ## 0.0.11
 
 ### Patch Changes

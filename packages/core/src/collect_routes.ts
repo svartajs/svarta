@@ -1,5 +1,5 @@
 import { basename, normalize, relative } from "node:path";
-import { sep as posixSeperator } from "node:path/posix";
+import { sep as posixSeparator } from "node:path/posix";
 import { sep as windowsSeparator } from "node:path/win32";
 
 import { walkFiles } from "walk-it";
@@ -28,7 +28,7 @@ export async function collectRouteFiles(folder: string): Promise<CollectedRoute[
       const [_name, methodRaw, _ext] = filename.split(".");
       const method = methodRaw.toUpperCase() as RouteMethod;
 
-      let normalized = `/${relative(folder, path).replaceAll(windowsSeparator, posixSeperator)}`;
+      let normalized = `/${relative(folder, path).replaceAll(windowsSeparator, posixSeparator)}`;
       if (filename.startsWith("index.")) {
         normalized = normalized.replace(filename, "");
       }

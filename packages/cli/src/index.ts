@@ -1,4 +1,10 @@
-import { loadConfig, packageManager } from "@svarta/core";
+import {
+  buildRoutingTree,
+  collectRouteFiles,
+  loadConfig,
+  packageManager,
+  printTree,
+} from "@svarta/core";
 import chalk from "chalk";
 import { execSync } from "child_process";
 import yargs from "yargs";
@@ -11,8 +17,33 @@ const DEFAULT_CONFIG_PATH = "svarta.config.mjs";
 
 yargs(hideBin(process.argv))
   .scriptName("svarta")
-  .version("0.0.11")
+  .version("0.0.12")
   /* TODO: deploy */
+  .command(
+    "routes list",
+    "List routes",
+    (argv) =>
+      argv.option({
+        config: {
+          alias: ["c"],
+          type: "string",
+          default: DEFAULT_CONFIG_PATH,
+          description: "Config file path",
+        },
+      }),
+    async (argv) => {
+      const configResult = await loadConfig(argv.config);
+      if (configResult.state === "success") {
+        const { routeFolder } = configResult.data;
+        printTree(buildRoutingTree(routeFolder, await collectRouteFiles(routeFolder)));
+      } else if (configResult.state === "fs_error") {
+        throw new Error(`Error while loading error: ${configResult.type}`);
+      } else {
+        const [issue] = configResult.error.issues;
+        throw new Error(`Error while loading error; ${issue.path.join(".")}: ${issue.message}`);
+      }
+    },
+  )
   .command(
     "init <path>",
     "Scaffold new project",
