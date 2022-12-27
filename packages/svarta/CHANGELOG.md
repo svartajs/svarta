@@ -1,5 +1,13 @@
 # svarta
 
+## 0.0.12
+
+### Patch Changes
+
+- better build result printing
+- Updated dependencies
+  - @svarta/core@0.0.12
+
 ## 0.0.11
 
 ### Patch Changes

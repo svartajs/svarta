@@ -1,11 +1,12 @@
 import { statSync } from "node:fs";
 
-import { CollectedRoute, formatRoutePath } from "@svarta/core";
+import { buildRoutingTree, CollectedRoute, formatRoutePath, printTree } from "@svarta/core";
 import chalk from "chalk";
 
 import { Timer } from "./timer";
 
 interface ResultOptions {
+  routeFolder: string;
   routes: CollectedRoute[];
   outputFile: string;
   timer: Timer;
@@ -14,9 +15,8 @@ interface ResultOptions {
   checkTimer: Timer;
 }
 
-// TODO: make it better and move to core
-
 export function printBuildResult({
+  routeFolder,
   routes,
   outputFile,
   timer,
@@ -24,26 +24,7 @@ export function printBuildResult({
   collectTimer,
   checkTimer,
 }: ResultOptions): void {
-  const longestRoutePath = Math.max(
-    ...routes.map(({ routeSegments }) => formatRoutePath(routeSegments).length),
-  );
-  const longestRouteMethod = Math.max(...routes.map(({ method }) => method.length));
-
-  console.log("Routes");
-
-  routes.forEach((route, index) => {
-    const routeSize = statSync(route.path).size;
-    const routePath = formatRoutePath(route.routeSegments);
-    const isLastRoute = index === routes.length - 1;
-
-    console.log(
-      `${chalk.grey(isLastRoute ? "└" : "├")} ${chalk.yellow(route.method)}${" ".repeat(
-        longestRouteMethod - route.method.length + 1,
-      )}${chalk.blueBright(routePath)}${" ".repeat(
-        longestRoutePath - routePath.length + 1,
-      )}${chalk.grey(`[${(routeSize / 1000).toFixed(2)} kB]`)}`,
-    );
-  });
+  printTree(buildRoutingTree(routeFolder, routes));
 
   const appSize = statSync(outputFile).size;
   console.log(

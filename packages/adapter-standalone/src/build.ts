@@ -99,7 +99,15 @@ export async function buildStandaloneServer({
 
   timer.stop();
 
-  printBuildResult({ routes, outputFile, timer, collectTimer, buildTimer, checkTimer });
+  printBuildResult({
+    routeFolder,
+    routes,
+    outputFile,
+    timer,
+    collectTimer,
+    buildTimer,
+    checkTimer,
+  });
 
   if (existsSync(".svarta/tmp")) {
     rmSync(".svarta/tmp", { recursive: true });

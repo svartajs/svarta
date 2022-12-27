@@ -1,4 +1,4 @@
-import { sep as posixSeperator } from "node:path/posix";
+import { sep as posixSeparator } from "node:path/posix";
 import { sep as windowsSeparator } from "node:path/win32";
 
 import type { CollectedRoute, RouteMethod, RouteSegment } from "@svarta/core";
@@ -32,7 +32,7 @@ import { createAndRunHandler } from "@svarta/core";
 ${routes
   .map(
     ({ path }, index) =>
-      `import r${index} from "${path.replaceAll(windowsSeparator, posixSeperator)}";`,
+      `import r${index} from "${path.replaceAll(windowsSeparator, posixSeparator)}";`,
   )
   .join("\n")}
 
