@@ -6,7 +6,7 @@
 
 ### GET /api/note/[id] - Gets a note
 
-### POST /api/note/[id] - Creates a note, request body should be { text: string }
+### POST /api/note/[id] - Creates a note
 
 Example request body:
 ```json
