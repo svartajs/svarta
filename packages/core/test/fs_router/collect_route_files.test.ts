@@ -6,7 +6,7 @@ import { collectRouteFiles } from "../../src/collect_routes";
 
 describe("fs_router", () => {
   describe("collectRouteFiles", () => {
-    const FIXTURE_PATH = resolve(__dirname, ".fixture/routes");
+    const FIXTURE_PATH = resolve(__dirname, ".fixture/collect_routes");
 
     const expectedRoutes = [
       /*   {
