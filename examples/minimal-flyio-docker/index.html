@@ -26,17 +26,19 @@
       .icons {
         display: flex;
         align-items: center;
+        justify-content: center;
       }
 
       .card {
         display: flex;
         flex-direction: column;
-        gap: 30px;
+        gap: 25px;
         backdrop-filter: blur(8px);
         border-radius: 25px;
         background-color: #000000aa;
         z-index: 999;
-        padding: 30px 60px;
+        max-width: 100%;
+        width: 300px;
       }
 
       .doc-btn {
@@ -45,51 +47,37 @@
         text-decoration: none;
         color: black;
         border-radius: 16px;
-        padding: 16px 20px;
-        font-weight: 600;
-        background: black;
+        padding: 12px 12px;
+        background: rgba(255, 255, 255, 0.05);
         color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border: 2px solid transparent;
+      }
+
+      .doc-btn .title {
+        font-size: 1.3em;
+        font-weight: bold;
+      }
+
+      .doc-btn .body {
+        font-size: 16px;
+        opacity: 0.66;
       }
 
       .doc-btn:hover {
-        color: black;
-        background: white;
+        transform: translateX(4px);
+        border-color: rgba(255, 255, 255, 0.1);
       }
 
       #app {
-        max-width: 1280px;
         margin: 0 auto;
-        padding: 2rem;
-        text-align: center;
         position: relative;
       }
     </style>
   </head>
   <body>
-    <svg
-      preserveAspectRatio="none"
-      style="position: absolute"
-      width="100%"
-      height="100%"
-      viewBox="0 0 960 540"
-    >
-      <path
-        d="M0 174L120 266L240 114L360 260L480 147L600 217L720 201L840 163L960 174L960 0L840 0L720 0L600 0L480 0L360 0L240 0L120 0L0 0Z"
-        fill="#008bff"
-      ></path>
-      <path
-        d="M0 266L120 368L240 222L360 341L480 206L600 336L720 287L840 249L960 282L960 172L840 161L720 199L600 215L480 145L360 258L240 112L120 264L0 172Z"
-        fill="#035cc8"
-      ></path>
-      <path
-        d="M0 357L120 428L240 368L360 401L480 303L600 433L720 444L840 341L960 411L960 280L840 247L720 285L600 334L480 204L360 339L240 220L120 366L0 264Z"
-        fill="#002e8f"
-      ></path>
-      <path
-        d="M0 541L120 541L240 541L360 541L480 541L600 541L720 541L840 541L960 541L960 409L840 339L720 442L600 431L480 301L360 399L240 366L120 426L0 355Z"
-        fill="#000000"
-      ></path>
-    </svg>
     <div id="app">
       <div class="card">
         <div class="icons">
@@ -131,12 +119,19 @@
             </g>
           </svg>
         </div>
-        <div style="font-size: 2.5rem; font-weight: 500">Hello World</div>
-        <div id="text">Loading...</div>
+        <div style="font-size: 3rem; font-weight: bolder; text-align: center">Hello World</div>
+        <div id="text" style="text-align: center">Loading...</div>
         <div style="display: flex; flex-direction: column; gap: 10px">
-          <a class="doc-btn" href="https://github.com/svartajs/svarta" target="_blank">GitHub</a>
-          <!-- TODO: doc URL -->
-          <a class="doc-btn" href="https://svartajs.github.io" target="_blank">Documentation</a>
+          <a class="doc-btn" href="https://github.com/svartajs/svarta" target="_blank">
+            <div class="title">GitHub</div>
+            <div class="body">
+              Visit the repository for bug reports or contributing to the project
+            </div>
+          </a>
+          <a class="doc-btn" href="https://svartajs.github.io" target="_blank">
+            <div class="title">Documentation</div>
+            <div class="body">Learn how to create and deploy your API</div>
+          </a>
         </div>
       </div>
     </div>
