@@ -18,23 +18,23 @@ Svarta can scaffold your application from the ground up, removing the overhead o
 ## Bootstrap new project
 
 ```bash
-npm create svarta-app
-yarn create svarta-app
 pnpm create svarta-app
+yarn create svarta-app
+npm create svarta-app
 ```
 
 For development, run:
 
 ```bash
-npm run dev
-yarn dev
 pnpm dev
+yarn dev
+npm run dev
 ```
 
 For building, run:
 
 ```bash
-npm run build
-yarn build
 pnpm build
+yarn build
+npm run build
 ```
