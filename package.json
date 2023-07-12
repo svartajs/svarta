@@ -23,7 +23,7 @@
     "turbo": "1.6.3"
   },
   "engines": {
-    "node": ">=16.6"
+    "node": "18 || 20"
   },
-  "packageManager": "pnpm@7.19.0"
+  "packageManager": "pnpm@8.6.6"
 }

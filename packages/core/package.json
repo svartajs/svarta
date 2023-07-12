@@ -17,7 +17,7 @@
     "vitest": "0.26.2"
   },
   "engines": {
-    "node": ">=16.6"
+    "node": "18 || 20"
   },
   "dependencies": {
     "@tinyhttp/cookie": "2.0.5",

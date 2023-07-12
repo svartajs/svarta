@@ -21,7 +21,7 @@
     "yaml": "2.2.0"
   },
   "engines": {
-    "node": ">=16.6"
+    "node": "18 || 20"
   },
   "peerDependencies": {
     "@tinyhttp/app": "2"

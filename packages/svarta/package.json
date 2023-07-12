@@ -7,7 +7,7 @@
     "build": "tsup src/index.ts --format cjs,esm --dts --clean"
   },
   "engines": {
-    "node": ">=16.6"
+    "node": "18 || 20"
   },
   "devDependencies": {
     "@svarta/tsconfig": "workspace:*",
