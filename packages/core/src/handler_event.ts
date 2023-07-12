@@ -53,11 +53,3 @@ export default interface HandlerEvent<T, Context, Params extends Record<string, 
    */
   cookies: Cookies;
 }
-
-const test = ["a", "b", "c"] as const;
-
-type Params<T extends readonly string[]> = {
-  [key in T[number]]: string;
-};
-
-type p = Params<typeof test>;
