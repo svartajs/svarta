@@ -2,6 +2,7 @@ import { execSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
+import type { Config } from "@svarta/core";
 import { packageManager } from "@svarta/core";
 import chalk from "chalk";
 import { downloadTemplate } from "giget";
@@ -42,9 +43,10 @@ async function cloneTemplate({
   console.log(chalk.greenBright(`Template setup successful!`));
 
   // TODO: test
-  const configFile = resolve(appDir, "svarta.config.mjs");
-  const content = readFileSync(configFile, "utf-8");
-  writeFileSync(configFile, content.replace(`packageManager: "${npmClient}"`, ""), "utf-8");
+  const configFilePath = resolve(appDir, "svarta.config.mjs");
+  const config = JSON.parse(readFileSync(configFilePath, "utf-8")) as Config;
+  config.packageManager = npmClient;
+  writeFileSync(configFilePath, JSON.stringify(config), "utf-8");
 
   console.log("");
   console.log(`Next steps:`);
