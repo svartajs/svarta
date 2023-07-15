@@ -2,7 +2,7 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
-import { collectRouteFiles, loadRoute } from "@svarta/core";
+import { collectErrorHandlers, collectRouteFiles, loadRoute } from "@svarta/core";
 import chalk from "chalk";
 import chokidar from "chokidar";
 import esbuild from "esbuild";
@@ -14,6 +14,7 @@ import { buildTemplate } from "./template";
 
 async function nitrofyRoutes(routesFolder: string): Promise<void> {
   const routes = await collectRouteFiles(routesFolder);
+  const errorHandlers = await collectErrorHandlers(routesFolder);
   console.log(`[@svarta/dev-server] Loading ${routes.length} routes`);
 
   for (const route of routes) {
@@ -30,7 +31,7 @@ async function nitrofyRoutes(routesFolder: string): Promise<void> {
       outfile: jsFile,
       platform: "node",
       format: "esm",
-      target: "es2019",
+      target: "esnext",
     });
 
     const checkResult = await loadRoute({
@@ -73,7 +74,7 @@ async function nitrofyRoutes(routesFolder: string): Promise<void> {
     );
 
     mkdirSync(dirname(tmpFile), { recursive: true });
-    writeFileSync(tmpFile, buildTemplate(route), "utf-8");
+    writeFileSync(tmpFile, buildTemplate(route, errorHandlers), "utf-8");
   }
 }
 

@@ -20,7 +20,7 @@ yargs(hideBin(process.argv))
   .version("0.0.12")
   /* TODO: deploy */
   .command(
-    "routes list",
+    "routes",
     "List routes",
     (argv) =>
       argv.option({
@@ -33,6 +33,7 @@ yargs(hideBin(process.argv))
       }),
     async (argv) => {
       const configResult = await loadConfig(argv.config);
+
       if (configResult.state === "success") {
         const { routeFolder } = configResult.data;
         printTree(buildRoutingTree(routeFolder, await collectRouteFiles(routeFolder)));
@@ -73,6 +74,7 @@ yargs(hideBin(process.argv))
     async (argv) => {
       console.log(`[@svarta/cli] Starting build`);
       const configResult = await loadConfig(argv.config);
+
       if (configResult.state === "success") {
         const config = configResult.data;
         console.log(`[@svarta/cli] Using adapter ${chalk.blueBright(`"${config.adapter.type}"`)}`);
@@ -100,6 +102,7 @@ yargs(hideBin(process.argv))
     async (argv) => {
       console.log(`[@svarta/cli] Starting development server`);
       const configResult = await loadConfig(argv.config);
+
       if (configResult.state === "success") {
         const config = configResult.data;
         await startDevelopmentServer(config);

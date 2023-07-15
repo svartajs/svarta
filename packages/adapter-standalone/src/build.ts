@@ -2,11 +2,12 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, rmSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { collectRouteFiles, loadRoutes } from "@svarta/core";
+import { collectErrorHandlers, collectRouteFiles, loadRoutes } from "@svarta/core";
 import chalk from "chalk";
 import esbuild from "esbuild";
 
-import { buildTinyHttpStandaloneServer } from "./backend/tinyhttp/build";
+import { Options } from "./adapter";
+import { buildHonoStandaloneServer } from "./backend/hono/build";
 import { printBuildResult } from "./result";
 import { Timer } from "./timer";
 
@@ -16,6 +17,7 @@ interface BuildOptions {
   minify?: boolean;
   defaultPort: number;
   logger?: boolean;
+  runtime: Options["runtime"];
 }
 
 export async function buildStandaloneServer({
@@ -37,6 +39,7 @@ export async function buildStandaloneServer({
   mkdirSync(".svarta/tmp", { recursive: true });
 
   const routes = await collectRouteFiles(routeFolder);
+  const errorHandlers = await collectErrorHandlers(routeFolder);
 
   collectTimer.stop();
 
@@ -55,7 +58,7 @@ export async function buildStandaloneServer({
         outfile: jsFile,
         platform: "node",
         format: "esm",
-        target: "es2019",
+        target: "esnext",
       });
 
       return {
@@ -94,7 +97,9 @@ export async function buildStandaloneServer({
   }
 
   const buildTimer = new Timer();
-  await buildTinyHttpStandaloneServer(routes, outputFile, defaultPort, minify, logger);
+
+  await buildHonoStandaloneServer(routes, errorHandlers, outputFile, defaultPort, minify, logger);
+
   buildTimer.stop();
 
   timer.stop();

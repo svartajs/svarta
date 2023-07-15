@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+          cache: pnpm
           registry-url: "https://registry.npmjs.org"
       - run: pnpm i --frozen-lockfile
       - run: pnpm build

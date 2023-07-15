@@ -9,18 +9,17 @@
     "build": "svarta build",
     "dev": "svarta dev"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@hono/node-server": "1.0.2",
     "@svarta/adapter-standalone": "latest",
     "@svarta/cli": "latest",
     "@svarta/core": "latest",
-    "@tinyhttp/app": "2",
-    "@types/node": "18.11",
+    "@types/node": "18.16.19",
+    "hono": "3",
     "svarta": "latest",
-    "typescript": "4.9.4",
-    "zod": "3.20.2"
+    "typescript": "5.1.6",
+    "zod": "3.21.4"
   },
   "engines": {
     "node": "18 || 20"

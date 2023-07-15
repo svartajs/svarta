@@ -19,6 +19,7 @@ export function formatRoutePath(routeSegments: RouteSegment[]): string {
 export const ROUTE_FILE_PATTERN = new RegExp(
   `^[a-zA-Z0-9_\\-~\\[\\].]+\.(${SUPPORTED_METHODS.join("|").toLowerCase()})\.tsx?$`,
 );
+export const ERROR_HANDLER_PATTERN = /(400|404|422).tsx?$/;
 
 const SEP_REGEX = /^\//;
 const CATCH_ALL_REGEX = /^\[[.]{3}([a-zA-Z0-9_\-~]+)\]/;
@@ -30,8 +31,8 @@ export function tokenizeRoute(str: string, removeTrailingSlash = true): RouteSeg
 
   let stream = str;
 
-  // Slash
   while (stream.length > 0) {
+    // Slash
     if (SEP_REGEX.test(stream)) {
       segments.push({ type: "sep" });
       stream = stream.replace(SEP_REGEX, "");

@@ -2,26 +2,31 @@ import { randomBytes } from "node:crypto";
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { CollectedRoute } from "@svarta/core";
+import type { CollectedRoute } from "@svarta/core";
 import chalk from "chalk";
 import esbuild from "esbuild";
 
 import { buildTemplate } from "./template";
 
-export async function buildTinyHttpStandaloneServer(
+export async function buildHonoStandaloneServer(
   routes: CollectedRoute[],
+  errorHandlers: {
+    "400": string;
+    "404": string;
+    "422": string;
+  },
   outputFile: string,
   defaultPort: number,
   minify = true,
   logger = true,
 ): Promise<string> {
   console.log(
-    `[@svarta/adapter-standalone] Building standalone app based on ${chalk.blueBright("tinyhttp")}`,
+    `[@svarta/adapter-standalone] Building standalone app based on ${chalk.blueBright("Hono")}`,
   );
 
   const outputModuleFormat = outputFile.endsWith(".mjs") ? "esm" : "cjs";
   const tmpFile = resolve(`.svarta/tmp/app-${randomBytes(4).toString("hex")}.js`);
-  writeFileSync(tmpFile, buildTemplate(routes, defaultPort, logger), "utf-8");
+  writeFileSync(tmpFile, buildTemplate(routes, errorHandlers, defaultPort, logger), "utf-8");
 
   await esbuild.build({
     minify,
@@ -33,7 +38,7 @@ export async function buildTinyHttpStandaloneServer(
     outfile: outputFile,
     platform: "node",
     format: outputModuleFormat,
-    target: "es2019",
+    target: "esnext",
   });
 
   return tmpFile;

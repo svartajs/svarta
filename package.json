@@ -10,7 +10,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "fmt": "prettier --write \"**/*.ts\"",
+    "fmt": "turbo run fmt",
     "test": "turbo run test"
   },
   "devDependencies": {

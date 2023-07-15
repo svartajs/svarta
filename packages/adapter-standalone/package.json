@@ -4,16 +4,18 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
+    "fmt": "eslint \"**/*.ts\" --fix",
     "test": "vitest run",
     "build": "tsup src/index.ts --format cjs,esm --dts --clean"
   },
   "devDependencies": {
+    "@hono/node-server": "1.0.2",
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
-    "@tinyhttp/app": "2",
     "@tinyhttp/cookie": "2.0.5",
     "@types/node": "18.11.17",
     "eslint": "8.30.0",
+    "hono": "3.3.0",
     "node-fetch": "3.3.0",
     "tsup": "6.5.0",
     "typescript": "4.9.4",
@@ -24,7 +26,8 @@
     "node": "18 || 20"
   },
   "peerDependencies": {
-    "@tinyhttp/app": "2"
+    "@hono/node-server": "1.0.2",
+    "hono": "3.3.0"
   },
   "dependencies": {
     "@svarta/core": "workspace:*",

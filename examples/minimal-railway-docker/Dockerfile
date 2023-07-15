@@ -1,5 +1,7 @@
+FROM node:20-alpine as base
+
 # Get dependencies
-FROM node:18-alpine AS deps
+FROM base AS deps
 
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
@@ -13,7 +15,7 @@ RUN \
   fi
 
 # Bundle server
-FROM node:18-alpine AS builder
+FROM base AS builder
 
 WORKDIR /app
 
@@ -23,7 +25,7 @@ COPY . .
 RUN npm run build
 
 # Run server
-FROM node:18-alpine AS runner
+FROM base AS runner
 WORKDIR /app
 
 COPY package.json index.html /app/

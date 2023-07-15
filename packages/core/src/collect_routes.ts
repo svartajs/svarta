@@ -1,20 +1,57 @@
-import { basename, normalize, relative } from "node:path";
+import { basename, normalize, relative, resolve } from "node:path";
 import { sep as posixSeparator } from "node:path/posix";
 import { sep as windowsSeparator } from "node:path/win32";
 
 import { walkFiles } from "walk-it";
 
-import { ROUTE_FILE_PATTERN, tokenizeRoute } from "./fs_router";
+import { ERROR_HANDLER_PATTERN, ROUTE_FILE_PATTERN, tokenizeRoute } from "./fs_router";
 import { RouteMethod } from "./method";
 import type { RouteSegment } from "./types";
 
 export type CollectedRoute = { path: string; routeSegments: RouteSegment[]; method: RouteMethod };
+
+export async function collectErrorHandlers(folder: string): Promise<{
+  "400": string;
+  "404": string;
+  "422": string;
+}> {
+  const errorHandlers: Record<"400" | "404" | "422", string | null> = {
+    "400": null,
+    "404": null,
+    "422": null,
+  };
+
+  for await (const { path } of walkFiles(folder, {
+    recursive: false,
+  })) {
+    const matches = basename(path).match(ERROR_HANDLER_PATTERN);
+
+    if (matches) {
+      const code = matches[1];
+      errorHandlers[code as "400" | "404" | "422"] = path;
+    }
+  }
+
+  if (Object.entries(errorHandlers).some((x) => x === null)) {
+    throw new Error("Missing error handler");
+  }
+
+  return errorHandlers as {
+    "400": string;
+    "404": string;
+    "422": string;
+  };
+}
 
 export async function collectRouteFiles(folder: string): Promise<CollectedRoute[]> {
   const files: string[] = [];
   for await (const { path } of walkFiles(folder, {
     recursive: true,
   })) {
+    if (ERROR_HANDLER_PATTERN.test(basename(path))) {
+      continue;
+    }
+
     if (ROUTE_FILE_PATTERN.test(basename(path))) {
       files.push(path);
     } else {

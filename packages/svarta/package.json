@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
+    "fmt": "eslint \"**/*.ts\" --fix",
     "build": "tsup src/index.ts --format cjs,esm --dts --clean"
   },
   "engines": {

@@ -8,6 +8,9 @@
     "lint": {
       "outputs": []
     },
+    "fmt": {
+      "outputs": []
+    },
     "dev": {
       "cache": false
     },

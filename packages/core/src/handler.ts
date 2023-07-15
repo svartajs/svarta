@@ -1,5 +1,5 @@
 import { parse, serialize } from "@tinyhttp/cookie";
-import type { ZodObject } from "zod";
+import type { ZodAny, ZodObject } from "zod";
 
 import type Cookies from "./cookies";
 import type { SetCookieOptions } from "./cookies";
@@ -7,14 +7,20 @@ import HandlerEvent from "./handler_event";
 import type Headers from "./headers";
 import type { RouteMethod } from "./method";
 import Response from "./response";
-import type { HandlerFunction } from "./route";
-import Status from "./status";
+import type {
+  BadRequestErrorHandlerFn,
+  HandlerFn,
+  /*  InternalServerErrorHandlerFn, */
+  InvalidInputErrorHandlerFn,
+  /* UnknownErrorHandlerFn, */
+} from "./route";
 
 type HandlerOptions = {
   svartaRoute: {
-    handler: HandlerFunction<any, any, any, any>;
+    handler: HandlerFn<any, any, any, any>;
     runMiddlewares: (routeInput: Omit<HandlerEvent<any, any, any>, "input">) => any;
     input?: ZodObject<any>;
+    output?: ZodAny;
   };
   parseBody: () => any;
   headers: Headers;
@@ -25,6 +31,11 @@ type HandlerOptions = {
   method: RouteMethod;
   isDev: boolean;
   formattedRouteName: string;
+  errorHandler: {
+    badRequest: BadRequestErrorHandlerFn;
+    invalidInput: InvalidInputErrorHandlerFn;
+    // TODO: 500
+  };
 };
 
 export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body: string }> {
@@ -39,12 +50,14 @@ export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body:
     setStatus,
     svartaRoute,
     url,
+    errorHandler,
   } = opts;
 
   try {
     const cookieObj = parse(headers.get("cookie") || "");
     const setCookies: { key: string; value: string; opts?: Partial<SetCookieOptions> }[] = [];
 
+    /* TODO: remove tinyhttp cookie and use hono's cookie functions (c.cookie, c.req.cookie) instead */
     const cookies: Cookies = {
       get: (key) => cookieObj[key],
       set: (key, value, opts) => {
@@ -55,103 +68,111 @@ export async function createAndRunHandler(opts: HandlerOptions): Promise<{ body:
       values: () => Object.values(cookieObj),
     };
 
+    const path = url.split("?").at(0)!;
+
     const baseInput = {
       ctx: {},
       params,
       query,
       headers,
-      path: url.split("?").at(0)!,
+      path,
       url,
       method,
       isDev,
       cookies,
     };
 
-    const ctx = await svartaRoute.runMiddlewares(baseInput);
+    const mwResponse = await svartaRoute.runMiddlewares(baseInput);
+
+    function applyResponse(response: Response<any>) {
+      for (const [key, value] of Object.entries(response._headers)) {
+        headers.set(key, value);
+      }
+
+      if (setCookies.length) {
+        headers.set(
+          "set-cookie",
+          setCookies.map(({ key, value, opts }) => serialize(key, value, opts)).join("; "),
+        );
+      }
+
+      setStatus(response._status);
+
+      const resBody = response._body;
+      if (resBody) {
+        if (typeof response._body === "string") {
+          return {
+            body: response._body,
+          };
+        } else {
+          headers.set("content-type", "application/json; charset=utf-8");
+          return {
+            body: JSON.stringify(response._body),
+          };
+        }
+      }
+
+      return {
+        body: "",
+      };
+    }
 
     let response;
 
-    if (ctx instanceof Response) {
-      response = ctx;
+    if (mwResponse instanceof Response) {
+      return applyResponse(mwResponse);
     }
 
-    if (!response) {
-      let body = null;
+    let body = null;
 
-      if (svartaRoute.input && ["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
-        try {
-          body = await parseBody();
-        } catch (error) {
-          setStatus(400);
-          headers.set("x-powered-by", "svarta");
-          return { body: "Bad Request" };
-        }
-
-        // Validate via Zod
-        const validation = svartaRoute.input.safeParse(body);
-        if (!validation.success) {
-          setStatus(Status.UnprocessableEntity);
-          headers.set("x-powered-by", "svarta");
-          return { body: "Unprocessable Entity" };
-        }
+    if (svartaRoute.input && ["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+      try {
+        body = await parseBody();
+      } catch (error) {
+        const response = await errorHandler.badRequest(error, baseInput);
+        return applyResponse(response);
       }
 
-      response = await svartaRoute.handler({
-        ...baseInput,
-        ctx,
-        input: body,
-      });
-    }
-
-    for (const [key, value] of Object.entries(response._headers)) {
-      headers.set(key, value);
-    }
-
-    if (setCookies.length) {
-      headers.set(
-        "set-cookie",
-        setCookies.map(({ key, value, opts }) => serialize(key, value, opts)).join("; "),
-      );
-    }
-
-    headers.set("x-powered-by", "svarta");
-    setStatus(response._status);
-
-    const resBody = response._body;
-    if (resBody) {
-      if (typeof response._body === "string") {
-        return {
-          body: response._body,
-        };
-      } else {
-        headers.set("content-type", "application/json");
-        return {
-          body: JSON.stringify(response._body),
-        };
+      // Validate via Zod
+      const validation = svartaRoute.input.safeParse(body);
+      if (!validation.success) {
+        const response = await errorHandler.invalidInput(validation.error, baseInput);
+        return applyResponse(response);
       }
     }
 
-    return { body: "" };
+    response = await svartaRoute.handler({
+      ...baseInput,
+      ctx: mwResponse,
+      input: body,
+    });
+
+    if (response._body && svartaRoute.output) {
+      const validation = svartaRoute.output.safeParse(response._body);
+      if (!validation.success) {
+        console.error(
+          `svarta caught an invalid route output type, not matching the given output validator.
+  That means your route "${path}" is probably buggy: ${JSON.stringify(validation.error, null, 2)}`,
+        );
+        setStatus(500);
+        return { body: "Internal Server Error" };
+      }
+    }
+
+    return applyResponse(response);
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(
-        `svarta caught an error while handling route (${formattedRouteName}): ${
-          error.message || error || "Unknown error"
-        }`,
-      );
-    } else {
-      console.error(
-        `svarta caught an error while handling route (${formattedRouteName}): ${
-          error || "Unknown error"
-        }`,
-      );
-    }
+    const errMsg = error instanceof Error ? error.message : error;
+
+    console.error(
+      `svarta caught an error while handling route (${formattedRouteName}): ${
+        errMsg || "Unknown error"
+      }`,
+    );
+    console.error(
+      "This is probably a bug, please report: https://github.com/svartajs/svarta/issues",
+    );
 
     setStatus(500);
-    headers.set("x-powered-by", "svarta");
-
-    return {
-      body: "Internal Server Error",
-    };
+    return { body: "Internal Server Error" };
   }
 }

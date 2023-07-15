@@ -37,3 +37,4 @@ server.mjs
 packages/**/svarta.config.mjs
 .output
 .nitro
+packages/demo

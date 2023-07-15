@@ -23,8 +23,9 @@ describe("basics", () => {
       defaultPort: port,
       outputFile: serverFile,
       logger: true,
+      runtime: "node",
     });
-    console.error("Running server");
+    console.error(`Running server at ${serverFile}`);
     proc = spawn("node", [serverFile], {
       stdio: "pipe",
     });
@@ -39,7 +40,7 @@ describe("basics", () => {
   afterAll(() => {
     console.log("Killing server process");
     proc?.kill();
-    unlinkSync(serverFile);
+    // unlinkSync(serverFile);
   });
 
   it("should handle server error", async () => {
@@ -47,9 +48,15 @@ describe("basics", () => {
     const body = await res.text();
 
     expect(res.status).to.equal(500);
-    expect(res.headers.get("x-powered-by")).to.equal("svarta");
-    expect(res.headers.get("content-type")).to.equal("text/html; charset=utf-8");
     expect(body).to.equal("Internal Server Error");
+  });
+
+  it("should handle not found", async () => {
+    const res = await fetch(`http://127.0.0.1:${port}/some/unknown/route`);
+    const body = await res.text();
+
+    expect(res.status).to.equal(404);
+    expect(body).to.equal("My custom Not Found");
   });
 
   it("should correctly get info", async () => {
@@ -57,7 +64,6 @@ describe("basics", () => {
     const body = await res.json();
 
     expect(res.status).to.equal(200);
-    expect(res.headers.get("x-powered-by")).to.equal("svarta");
     expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
 
     expect(body).to.be.an("object");
@@ -76,7 +82,6 @@ describe("basics", () => {
     expect(body).to.have.lengthOf(0);
 
     expect(res.status).to.equal(200);
-    expect(res.headers.get("x-powered-by")).to.equal("svarta");
     expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
   });
 
@@ -87,7 +92,6 @@ describe("basics", () => {
     const body = await res.json();
 
     expect(res.status).to.equal(200);
-    expect(res.headers.get("x-powered-by")).to.equal("svarta");
     expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
 
     expect(body).to.be.an("object");
@@ -101,7 +105,6 @@ describe("basics", () => {
     const body = await res.json();
 
     expect(res.status).to.equal(200);
-    expect(res.headers.get("x-powered-by")).to.equal("svarta");
     expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
 
     expect(body).to.be.an("object");
@@ -115,7 +118,6 @@ describe("basics", () => {
     const body = await res.json();
 
     expect(res.status).to.equal(200);
-    expect(res.headers.get("x-powered-by")).to.equal("svarta");
     expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
 
     expect(body).to.be.an("object");
@@ -129,7 +131,6 @@ describe("basics", () => {
     const body = await res.json();
 
     expect(res.status).to.equal(200);
-    expect(res.headers.get("x-powered-by")).to.equal("svarta");
     expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
 
     expect(body).to.be.an("object");
@@ -142,7 +143,7 @@ describe("basics", () => {
       const body = await res.json();
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
 
       expect(body).to.be.an("object");
@@ -155,7 +156,6 @@ describe("basics", () => {
       expect(body).to.have.lengthOf(0);
 
       expect(res.status).to.equal(418);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
     });
 
     it("should correctly run middleware before input validation", async () => {
@@ -167,7 +167,6 @@ describe("basics", () => {
       expect(body).to.have.lengthOf(0);
 
       expect(res.status).to.equal(418);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
     });
   });
 
@@ -177,7 +176,7 @@ describe("basics", () => {
       const body = await res.json();
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
 
       expect(body).to.be.an("object");
@@ -195,16 +194,28 @@ describe("basics", () => {
       const res = await fetch(`http://127.0.0.1:${port}/set_status`);
 
       expect(res.status).to.equal(418);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
     });
   });
 
   describe("headers", () => {
+    it("render some html", async () => {
+      const res = await fetch(`http://127.0.0.1:${port}/html`);
+      const body = await res.text();
+
+      expect(res.status).to.equal(200);
+
+      expect(res.headers.get("content-type")).to.equal("text/html");
+      expect(res.headers.get("Content-Type")).to.equal("text/html");
+      expect(body)
+        .to.be.a("string")
+        .that.satisfies((str: string) => str.startsWith("<html>"));
+    });
+
     it("should set header", async () => {
       const res = await fetch(`http://127.0.0.1:${port}/set_header`);
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(res.headers.get("x-custom-header")).to.equal("123");
     });
 
@@ -220,7 +231,7 @@ describe("basics", () => {
       const body = await res.json();
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
       expect(body).to.be.an("object").that.has.property("headers");
       // @ts-ignore
@@ -244,7 +255,7 @@ describe("basics", () => {
       const body = await res.json();
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(body).to.be.an("object").that.has.property("cookies");
       // @ts-ignore
       const cookies: [string, string][] = body.cookies;
@@ -271,9 +282,17 @@ describe("basics", () => {
       const body = await res.text();
 
       expect(res.status).to.equal(400);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
-      expect(res.headers.get("content-type")).to.equal("text/html; charset=utf-8");
-      expect(body).to.equal("Bad Request");
+
+      expect(body).to.equal("My custom Bad Request");
+    });
+
+    it("should handle invalid output", async () => {
+      const res = await fetch(`http://127.0.0.1:${port}/output`);
+      const body = await res.text();
+
+      expect(res.status).to.equal(500);
+
+      expect(body).to.equal("Internal Server Error");
     });
 
     it("should validate body", async () => {
@@ -289,9 +308,8 @@ describe("basics", () => {
       const body = await res.text();
 
       expect(res.status).to.equal(422);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
-      expect(res.headers.get("content-type")).to.equal("text/html; charset=utf-8");
-      expect(body).to.equal("Unprocessable Entity");
+
+      expect(body).to.equal("My custom Unprocessable Entity");
     });
 
     it("should get body", async () => {
@@ -309,7 +327,7 @@ describe("basics", () => {
       const body = await res.json();
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(res.headers.get("content-type")).to.equal("application/json; charset=utf-8");
       expect(body).to.be.an("object").that.has.property("input").that.deep.equal(data);
       expect(body).to.be.an("object").that.has.property("method").that.deep.equal("POST");
@@ -320,8 +338,7 @@ describe("basics", () => {
       const body = await res.text();
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
-      expect(res.headers.get("content-type")).to.equal("text/html; charset=utf-8");
+
       expect(body).to.be.a("string").that.equals("hello world");
     });
 
@@ -331,7 +348,7 @@ describe("basics", () => {
       const body = YAML.parse(textBody);
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(res.headers.get("content-type")).to.equal("application/yml; charset=utf-8");
       expect(body).to.be.an("object").that.has.property("message").that.equals("hello world");
     });
@@ -343,7 +360,7 @@ describe("basics", () => {
       const body = await res.json();
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(body).to.be.an("object");
       expect(body).to.have.property("params").that.has.property("id").equals("some-other-route");
       expect(body).to.have.property("path").that.equals("/some-other-route");
@@ -354,7 +371,7 @@ describe("basics", () => {
       const body = await res.json();
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(body).to.be.an("object");
       expect(body).that.has.property("params").that.has.property("id").equals("yet-another-route");
       expect(body).to.have.property("path").that.equals("/yet-another-route");
@@ -365,7 +382,7 @@ describe("basics", () => {
       const body = await res.json();
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(body).to.be.an("object");
       expect(body).that.has.property("params").that.has.property("greeting").equals("hello");
       expect(body).that.has.property("params").that.has.property("name").equals("peter");
@@ -377,7 +394,7 @@ describe("basics", () => {
       const body = await res.json();
 
       expect(res.status).to.equal(200);
-      expect(res.headers.get("x-powered-by")).to.equal("svarta");
+
       expect(body).to.be.an("object");
       expect(body).that.has.property("params").that.has.property("greeting").equals("hi");
       expect(body).that.has.property("params").that.has.property("name").equals("miranda");

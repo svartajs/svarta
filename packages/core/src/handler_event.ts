@@ -2,7 +2,11 @@ import Cookies from "./cookies";
 import Headers from "./headers";
 import type { RouteMethod } from "./method";
 
-export default interface HandlerEvent<T, Context, Params extends Record<string, string> | unknown> {
+export default interface HandlerEvent<
+  Input,
+  Context,
+  Params extends Record<string, string> | unknown,
+> {
   /**
    * User provided context
    */
@@ -31,7 +35,7 @@ export default interface HandlerEvent<T, Context, Params extends Record<string, 
   /**
    * Request body
    */
-  input: T;
+  input: Input;
 
   /**
    * Route params

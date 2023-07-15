@@ -1,33 +1,34 @@
-import { Adapter, AdapterOptions } from "@svarta/core";
+import type { Adapter, AdapterOptions } from "@svarta/core";
 import * as zod from "zod";
 
 import { buildStandaloneServer } from "./build";
 
-const buildOptionsSchema = zod.object({
+const adapterOptionsSchema = zod.object({
   defaultPort: zod.number().int().positive(),
   outputFile: zod.string(),
-  provider: zod.enum(["tinyhttp"]),
+  runtime: zod.enum(["node"]), // TODO: deno, bun
   logger: zod
     .object({
       enabled: zod.boolean(),
     })
     .optional(),
 });
-export type BuildOptions = zod.TypeOf<typeof buildOptionsSchema>;
+export type Options = zod.TypeOf<typeof adapterOptionsSchema>;
 
-class StandaloneAdapter implements Adapter<BuildOptions, {}> {
-  async build({ minify, routeFolder, opts }: AdapterOptions<BuildOptions>): Promise<void> {
+class StandaloneAdapter implements Adapter<Options, {}> {
+  async build({ minify, routeFolder, opts }: AdapterOptions<Options>): Promise<void> {
     return buildStandaloneServer({
       routeFolder,
       minify,
       outputFile: opts.outputFile,
       logger: opts.logger?.enabled ?? true,
       defaultPort: opts.defaultPort,
+      runtime: opts.runtime,
     });
   }
 
-  validateOptions(opts: unknown): opts is BuildOptions {
-    const validation = buildOptionsSchema.safeParse(opts);
+  validateOptions(opts: unknown): opts is Options {
+    const validation = adapterOptionsSchema.safeParse(opts);
     if (!validation.success) {
       console.log(validation.error);
       throw new Error("Invalid schema");
