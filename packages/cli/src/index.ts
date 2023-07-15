@@ -105,7 +105,12 @@ yargs(hideBin(process.argv))
 
       if (configResult.state === "success") {
         const config = configResult.data;
-        await startDevelopmentServer(config);
+        try {
+          await startDevelopmentServer(config);
+        } catch (error) {
+          console.log(error);
+          process.exit(1);
+        }
       } else if (configResult.state === "fs_error") {
         throw new Error(`Error while loading error: ${configResult.type}`);
       } else {
