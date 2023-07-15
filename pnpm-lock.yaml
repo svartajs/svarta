@@ -225,9 +225,6 @@ importers:
       '@types/node':
         specifier: 18.16.19
         version: 18.16.19
-      hono:
-        specifier: '3'
-        version: 3.3.0
       svarta:
         specifier: workspace:*
         version: link:../svarta

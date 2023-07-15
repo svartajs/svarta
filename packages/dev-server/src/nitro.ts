@@ -1,10 +1,11 @@
 import { createNitro } from "nitropack";
 
-const nitro = (dev: boolean) =>
-  createNitro({
+function nitro(dev: boolean) {
+  return createNitro({
     dev,
     rootDir: ".svarta/dev/nitro",
-    logLevel: 1,
+    logLevel: 5,
   });
+}
 
 export default nitro;

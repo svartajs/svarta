@@ -1,4 +1,6 @@
-import { Response, route, Status } from "svarta";
+import { Response, Status } from "svarta";
+
+import route from "../../route";
 
 export const name = "HelloRoute";
 
