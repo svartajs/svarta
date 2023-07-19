@@ -5,7 +5,7 @@ import { buildStandaloneServer } from "./build";
 
 const adapterOptionsSchema = zod.object({
   defaultPort: zod.number().int().positive(),
-  outputFile: zod.string(),
+  outputFolder: zod.string(),
   runtime: zod.enum(["node"]), // TODO: deno, bun
   logger: zod
     .object({
@@ -17,10 +17,10 @@ export type Options = zod.TypeOf<typeof adapterOptionsSchema>;
 
 class StandaloneAdapter implements Adapter<Options, {}> {
   async build({ minify, routeFolder, opts }: AdapterOptions<Options>): Promise<void> {
-    return buildStandaloneServer({
+    await buildStandaloneServer({
       routeFolder,
       minify,
-      outputFile: opts.outputFile,
+      outputFolder: opts.outputFolder,
       logger: opts.logger?.enabled ?? true,
       defaultPort: opts.defaultPort,
       runtime: opts.runtime,

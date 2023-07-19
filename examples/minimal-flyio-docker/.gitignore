@@ -1,4 +1,5 @@
 node_modules
+npm-debug.log
+.git
 .svarta
 .output
-npm-debug.log

@@ -10,7 +10,7 @@ const config = {
   adapter: standaloneAdapter({
     defaultPort: 7777,
     runtime: "node",
-    outputFile: ".output/server.mjs",
+    outputFolder: ".output",
     logger: {
       enabled: true,
     },

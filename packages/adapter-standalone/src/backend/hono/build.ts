@@ -15,7 +15,7 @@ export async function buildHonoStandaloneServer(
     "404": string;
     "422": string;
   },
-  outputFile: string,
+  outputFolder: string,
   defaultPort: number,
   minify = true,
   logger = true,
@@ -24,9 +24,10 @@ export async function buildHonoStandaloneServer(
     `[@svarta/adapter-standalone] Building standalone app based on ${chalk.blueBright("Hono")}`,
   );
 
-  const outputModuleFormat = outputFile.endsWith(".mjs") ? "esm" : "cjs";
   const tmpFile = resolve(`.svarta/tmp/app-${randomBytes(4).toString("hex")}.js`);
   writeFileSync(tmpFile, buildTemplate(routes, errorHandlers, defaultPort, logger), "utf-8");
+
+  const entryFile = resolve(outputFolder, "entry.mjs");
 
   await esbuild.build({
     minify,
@@ -35,11 +36,11 @@ export async function buildHonoStandaloneServer(
       js: "/***** svarta app *****/",
     },
     entryPoints: [tmpFile],
-    outfile: outputFile,
+    outfile: entryFile,
     platform: "node",
-    format: outputModuleFormat,
+    format: "esm",
     target: "esnext",
   });
 
-  return tmpFile;
+  return entryFile;
 }

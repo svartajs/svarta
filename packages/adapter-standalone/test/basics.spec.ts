@@ -1,5 +1,5 @@
 import { ChildProcess, spawn } from "node:child_process";
-import { unlinkSync } from "node:fs";
+import { rmSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { parse, serialize } from "@tinyhttp/cookie";
@@ -13,7 +13,7 @@ import { buildStandaloneServer } from "../src/build";
 const PORT = 7777 + Math.floor(Math.random() * 1000);
 const URL = `http://127.0.0.1:${PORT}`;
 
-const SERVER_FILE = resolve("server.mjs");
+const OUTPUT_FOLDER = resolve(".output");
 
 function buildUrl(path: string): string {
   return `${URL}${path}`;
@@ -26,15 +26,16 @@ describe("basics", () => {
     const routeFolder = resolve("test/fixture/routes");
     console.error(`Building server using folder ${routeFolder}`);
 
-    await buildStandaloneServer({
+    const { entryFile } = await buildStandaloneServer({
       routeFolder,
       defaultPort: PORT,
-      outputFile: SERVER_FILE,
+      outputFolder: OUTPUT_FOLDER,
       logger: true,
       runtime: "node",
     });
-    console.error(`Running server at ${SERVER_FILE}`);
-    proc = spawn("node", [SERVER_FILE], {
+
+    console.error(`Running server at ${entryFile}`);
+    proc = spawn("node", [entryFile], {
       stdio: "pipe",
     });
     proc.stderr?.on("data", (data) => {
@@ -48,7 +49,7 @@ describe("basics", () => {
   afterAll(() => {
     console.log("Killing server process");
     proc?.kill();
-    unlinkSync(SERVER_FILE);
+    rmSync(OUTPUT_FOLDER, { recursive: true });
   });
 
   it("should handle server error", async () => {

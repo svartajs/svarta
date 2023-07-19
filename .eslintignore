@@ -1,5 +1,4 @@
 node_modules
-server.mjs
-server.js
+.output
 build
 dist

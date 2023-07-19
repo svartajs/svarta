@@ -5,7 +5,7 @@
   "description": "My great REST API",
   "type": "module",
   "scripts": {
-    "start": "node .output/server.mjs",
+    "start": "node .output/entry.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "svarta build",
     "dev": "svarta dev"

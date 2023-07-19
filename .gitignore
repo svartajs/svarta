@@ -31,10 +31,10 @@ yarn-error.log*
 .turbo
 
 demo
-server.js
-server.mjs
+.output
 .svarta
 packages/**/svarta.config.mjs
 .output
 .nitro
 packages/demo
+packages/adapter-standalone/.output

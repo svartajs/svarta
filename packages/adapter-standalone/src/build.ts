@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { existsSync, mkdirSync, rmSync, unlinkSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync, rmdirSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { collectErrorHandlers, collectRouteFiles, loadRoutes } from "@svarta/core";
@@ -13,7 +13,7 @@ import { Timer } from "./timer";
 
 interface BuildOptions {
   routeFolder: string;
-  outputFile: string;
+  outputFolder: string;
   minify?: boolean;
   defaultPort: number;
   logger?: boolean;
@@ -22,11 +22,11 @@ interface BuildOptions {
 
 export async function buildStandaloneServer({
   routeFolder,
-  outputFile,
+  outputFolder,
   defaultPort,
   minify = false,
   logger = true,
-}: BuildOptions): Promise<void> {
+}: BuildOptions): Promise<{ entryFile: string }> {
   const timer = new Timer();
 
   const collectTimer = new Timer();
@@ -92,13 +92,21 @@ export async function buildStandaloneServer({
 
   checkTimer.stop();
 
-  if (existsSync(outputFile)) {
-    unlinkSync(outputFile);
+  if (existsSync(outputFolder)) {
+    rmSync(outputFolder, { recursive: true });
   }
+  mkdirSync(outputFolder, { recursive: true });
 
   const buildTimer = new Timer();
 
-  await buildHonoStandaloneServer(routes, errorHandlers, outputFile, defaultPort, minify, logger);
+  const entryFile = await buildHonoStandaloneServer(
+    routes,
+    errorHandlers,
+    outputFolder,
+    defaultPort,
+    minify,
+    logger,
+  );
 
   buildTimer.stop();
 
@@ -107,7 +115,7 @@ export async function buildStandaloneServer({
   printBuildResult({
     routeFolder,
     routes,
-    outputFile,
+    outputFile: entryFile,
     timer,
     collectTimer,
     buildTimer,
@@ -117,4 +125,6 @@ export async function buildStandaloneServer({
   if (existsSync(".svarta/tmp")) {
     rmSync(".svarta/tmp", { recursive: true });
   }
+
+  return { entryFile };
 }

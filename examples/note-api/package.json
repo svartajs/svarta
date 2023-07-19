@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Note taking API built with Svarta",
   "scripts": {
-    "start": "node .output/server.mjs",
+    "start": "node .output/entry.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "svarta build",
     "dev": "svarta dev"
