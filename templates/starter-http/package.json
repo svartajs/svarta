@@ -3,13 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "description": "My great REST API",
+  "type": "module",
   "scripts": {
     "start": "node .output/server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "svarta build",
     "dev": "svarta dev"
   },
-  "license": "ISC",
   "devDependencies": {
     "@hono/node-server": "1.1.0",
     "@svarta/adapter-standalone": "latest",
@@ -23,6 +23,5 @@
   },
   "engines": {
     "node": "18 || 20"
-  },
-  "type": "module"
+  }
 }
