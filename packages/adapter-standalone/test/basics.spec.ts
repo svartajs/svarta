@@ -6,27 +6,35 @@ import { parse, serialize } from "@tinyhttp/cookie";
 import fetch from "node-fetch";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import YAML from "yaml";
+import { DEFAULTS as CORS_DEFAULTS } from "./fixture/cors";
 
 import { buildStandaloneServer } from "../src/build";
 
-const port = 7777 + Math.floor(Math.random() * 1000);
-const serverFile = resolve("server.mjs");
+const PORT = 7777 + Math.floor(Math.random() * 1000);
+const URL = `http://127.0.0.1:${PORT}`;
+
+const SERVER_FILE = resolve("server.mjs");
+
+function buildUrl(path: string): string {
+  return `${URL}${path}`;
+}
 
 describe("basics", () => {
   let proc: ChildProcess;
 
   beforeAll(async () => {
-    const routeFolder = resolve("test/fixture");
+    const routeFolder = resolve("test/fixture/routes");
     console.error(`Building server using folder ${routeFolder}`);
+
     await buildStandaloneServer({
-      routeFolder: resolve("test/fixture"),
-      defaultPort: port,
-      outputFile: serverFile,
+      routeFolder,
+      defaultPort: PORT,
+      outputFile: SERVER_FILE,
       logger: true,
       runtime: "node",
     });
-    console.error(`Running server at ${serverFile}`);
-    proc = spawn("node", [serverFile], {
+    console.error(`Running server at ${SERVER_FILE}`);
+    proc = spawn("node", [SERVER_FILE], {
       stdio: "pipe",
     });
     proc.stderr?.on("data", (data) => {
@@ -40,11 +48,11 @@ describe("basics", () => {
   afterAll(() => {
     console.log("Killing server process");
     proc?.kill();
-    // unlinkSync(serverFile);
+    unlinkSync(SERVER_FILE);
   });
 
   it("should handle server error", async () => {
-    const res = await fetch(`http://127.0.0.1:${port}/error`);
+    const res = await fetch(buildUrl("/error"));
     const body = await res.text();
 
     expect(res.status).to.equal(500);
@@ -52,7 +60,7 @@ describe("basics", () => {
   });
 
   it("should handle not found", async () => {
-    const res = await fetch(`http://127.0.0.1:${port}/some/unknown/route`);
+    const res = await fetch(buildUrl("/some/unknown/route"));
     const body = await res.text();
 
     expect(res.status).to.equal(404);
@@ -60,7 +68,7 @@ describe("basics", () => {
   });
 
   it("should correctly get info", async () => {
-    const res = await fetch(`http://127.0.0.1:${port}/info`);
+    const res = await fetch(buildUrl("/info"));
     const body = await res.json();
 
     expect(res.status).to.equal(200);
@@ -75,7 +83,7 @@ describe("basics", () => {
   });
 
   it("should correctly head info", async () => {
-    const res = await fetch(`http://127.0.0.1:${port}/info`, {
+    const res = await fetch(buildUrl("/info"), {
       method: "HEAD",
     });
     const body = await res.text();
@@ -86,7 +94,7 @@ describe("basics", () => {
   });
 
   it("should correctly use DELETE route", async () => {
-    const res = await fetch(`http://127.0.0.1:${port}/hello`, {
+    const res = await fetch(buildUrl("/hello"), {
       method: "DELETE",
     });
     const body = await res.json();
@@ -99,7 +107,7 @@ describe("basics", () => {
   });
 
   it("should correctly use PUT route", async () => {
-    const res = await fetch(`http://127.0.0.1:${port}/hello`, {
+    const res = await fetch(buildUrl("/hello"), {
       method: "PUT",
     });
     const body = await res.json();
@@ -112,7 +120,7 @@ describe("basics", () => {
   });
 
   it("should correctly use PATCH route", async () => {
-    const res = await fetch(`http://127.0.0.1:${port}/hello`, {
+    const res = await fetch(buildUrl("/hello"), {
       method: "PATCH",
     });
     const body = await res.json();
@@ -125,7 +133,7 @@ describe("basics", () => {
   });
 
   it("should correctly use OPTIONS route", async () => {
-    const res = await fetch(`http://127.0.0.1:${port}/hello`, {
+    const res = await fetch(buildUrl("/hello"), {
       method: "OPTIONS",
     });
     const body = await res.json();
@@ -139,7 +147,7 @@ describe("basics", () => {
 
   describe("middlewares", () => {
     it("should correctly pass through context from middleware", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/middleware`);
+      const res = await fetch(buildUrl("/middleware"));
       const body = await res.json();
 
       expect(res.status).to.equal(200);
@@ -151,7 +159,7 @@ describe("basics", () => {
     });
 
     it("should correctly respond from middleware", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/middleware_stop`);
+      const res = await fetch(buildUrl("/middleware_stop"));
       const body = await res.text();
       expect(body).to.have.lengthOf(0);
 
@@ -159,7 +167,7 @@ describe("basics", () => {
     });
 
     it("should correctly run middleware before input validation", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/middleware`, {
+      const res = await fetch(buildUrl("/middleware"), {
         method: "POST",
         body: "abw4abwbaw54",
       });
@@ -172,7 +180,7 @@ describe("basics", () => {
 
   describe("query", () => {
     it("should correctly get query", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/info?test=2&name=peter`);
+      const res = await fetch(buildUrl("/info?test=2&name=peter"));
       const body = await res.json();
 
       expect(res.status).to.equal(200);
@@ -191,7 +199,7 @@ describe("basics", () => {
 
   describe("status", () => {
     it("should set status", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/set_status`);
+      const res = await fetch(buildUrl("/set_status"));
 
       expect(res.status).to.equal(418);
     });
@@ -199,7 +207,7 @@ describe("basics", () => {
 
   describe("headers", () => {
     it("render some html", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/html`);
+      const res = await fetch(buildUrl("/html"));
       const body = await res.text();
 
       expect(res.status).to.equal(200);
@@ -212,7 +220,7 @@ describe("basics", () => {
     });
 
     it("should set header", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/set_header`);
+      const res = await fetch(buildUrl("/set_header"));
 
       expect(res.status).to.equal(200);
 
@@ -223,7 +231,7 @@ describe("basics", () => {
       const headerName = "x-custom-header";
       const headerValue = "123";
 
-      const res = await fetch(`http://127.0.0.1:${port}/get_headers`, {
+      const res = await fetch(buildUrl("/get_headers"), {
         headers: {
           [headerName]: headerValue,
         },
@@ -240,6 +248,23 @@ describe("basics", () => {
       expect(!!headers.find(([key, value]) => key === headerName && value === headerValue)).to.be
         .true;
     });
+
+    it("should set CORS", async () => {
+      const res = await fetch(buildUrl("/cors"));
+      const body = await res.json();
+
+      expect(res.status).to.equal(200);
+
+      expect(body).to.be.an("object").that.has.property("message").that.equals("Hello");
+      expect(res.headers.get("Access-Control-Allow-Origin")).to.equal(CORS_DEFAULTS.origin);
+      expect(res.headers.get("Access-Control-Allow-Methods")).to.equal(CORS_DEFAULTS.methods);
+      expect(res.headers.get("Access-Control-Allow-Allow-Headers")).to.equal(
+        CORS_DEFAULTS.allowHeaders,
+      );
+      expect(res.headers.get("Access-Control-Allow-Expose-Headers")).to.equal(
+        CORS_DEFAULTS.exposeHeaders,
+      );
+    });
   });
 
   describe("cookies", () => {
@@ -247,7 +272,7 @@ describe("basics", () => {
       const cookieName = "x-custom-header";
       const cookieValue = "123";
 
-      const res = await fetch(`http://127.0.0.1:${port}/cookies`, {
+      const res = await fetch(buildUrl("/cookies"), {
         headers: {
           Cookie: serialize(cookieName, cookieValue),
         },
@@ -272,7 +297,7 @@ describe("basics", () => {
 
   describe("body", () => {
     it("should handle invalid json", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/body`, {
+      const res = await fetch(buildUrl("/body"), {
         method: "POST",
         body: "{asda5wa}",
         headers: {
@@ -287,7 +312,7 @@ describe("basics", () => {
     });
 
     it("should handle invalid output", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/output`);
+      const res = await fetch(buildUrl("/output"));
       const body = await res.text();
 
       expect(res.status).to.equal(500);
@@ -296,7 +321,7 @@ describe("basics", () => {
     });
 
     it("should validate body", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/body`, {
+      const res = await fetch(buildUrl("/body"), {
         method: "POST",
         body: JSON.stringify({
           msg: "hello",
@@ -317,7 +342,7 @@ describe("basics", () => {
         message: "hello",
       };
 
-      const res = await fetch(`http://127.0.0.1:${port}/body`, {
+      const res = await fetch(buildUrl("/body"), {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -334,7 +359,7 @@ describe("basics", () => {
     });
 
     it("should get raw body", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/raw_body`);
+      const res = await fetch(buildUrl("/raw_body"));
       const body = await res.text();
 
       expect(res.status).to.equal(200);
@@ -343,7 +368,7 @@ describe("basics", () => {
     });
 
     it("should get yaml body", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/yaml`);
+      const res = await fetch(buildUrl("/yaml"));
       const textBody = await res.text();
       const body = YAML.parse(textBody);
 
@@ -356,7 +381,7 @@ describe("basics", () => {
 
   describe("params", () => {
     it("should correctly match param", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/some-other-route`);
+      const res = await fetch(buildUrl("/some-other-route"));
       const body = await res.json();
 
       expect(res.status).to.equal(200);
@@ -367,7 +392,7 @@ describe("basics", () => {
     });
 
     it("should correctly match param 2", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/yet-another-route`);
+      const res = await fetch(buildUrl("/yet-another-route"));
       const body = await res.json();
 
       expect(res.status).to.equal(200);
@@ -378,7 +403,7 @@ describe("basics", () => {
     });
 
     it("should correctly match multiple params", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/hello/peter`);
+      const res = await fetch(buildUrl("/hello/peter"));
       const body = await res.json();
 
       expect(res.status).to.equal(200);
@@ -390,7 +415,7 @@ describe("basics", () => {
     });
 
     it("should correctly match multiple params 2", async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/hi/miranda`);
+      const res = await fetch(buildUrl("/hi/miranda"));
       const body = await res.json();
 
       expect(res.status).to.equal(200);

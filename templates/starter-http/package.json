@@ -11,7 +11,7 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "@hono/node-server": "1.0.2",
+    "@hono/node-server": "1.1.0",
     "@svarta/adapter-standalone": "latest",
     "@svarta/cli": "latest",
     "@svarta/core": "latest",

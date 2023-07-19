@@ -17,6 +17,7 @@ export type {
   InvalidInputErrorHandlerFn,
   NotFoundErrorHandlerFn,
   /* UnknownErrorHandlerFn, */
+  MiddlewareResult,
 } from "./route";
 
 export { loadRoute, loadRoutes } from "./check_routes";

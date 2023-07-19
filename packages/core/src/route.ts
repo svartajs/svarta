@@ -52,48 +52,53 @@ export type InvalidInputErrorHandlerFn = (
   routeInput: Omit<HandlerEvent<never, unknown, unknown, unknown>, "input">,
 ) => MaybePromise<Response<any>>; */
 
-export type MiddlewareFn<
-  Output,
-  NewContext,
-  Context = {},
-  Params extends Record<string, string> | unknown = unknown,
-> = (
-  routeInput: Omit<HandlerEvent<null, Context, Params>, "input">,
-) => MaybePromise<Response<Output> | NewContext>;
+export type MiddlewareResult<Output, NewContext extends Record<string, unknown>> = MaybePromise<
+  Response<Output> | NewContext | void
+>;
 
-function buildMiddlewareStack<
-  Schema,
+export type MiddlewareFn<
+  Result extends MiddlewareResult<Output, NewContext>,
+  Context extends Record<string, unknown>,
   Output,
-  Context,
-  Params extends Record<string, string> | unknown,
->(middlewares: Function[]) {
+  NewContext extends Record<string, unknown>,
+  Params extends Record<string, string> | unknown = unknown,
+> = (routeInput: Omit<HandlerEvent<null, Context, Params>, "input">) => Result;
+
+function buildMiddlewareStack<Schema, Context, Params extends Record<string, string> | unknown>(
+  middlewares: Function[],
+) {
   return async (routeInput: HandlerEvent<Schema, Context, Params>) => {
     let transformedContext = routeInput.ctx;
+
     for (const mw of middlewares) {
       const mwInput = { ...routeInput, ctx: { ...transformedContext } };
       const result = await mw(mwInput);
 
-      if (result?.__svartaResponse) {
-        return result;
-      } else {
-        transformedContext = result;
+      if (result) {
+        // TODO: could use instanceof Response
+        if (result.__svartaResponse) {
+          return result;
+        } else {
+          transformedContext = result;
+        }
       }
     }
+
     return transformedContext;
   };
 }
 
 type RouteHandlerBuilder<
+  Context extends Record<string, unknown> = {},
   Input = unknown,
   Output = unknown,
-  Context = {},
   Params extends Record<string, string> | unknown = unknown,
-> = Omit<RouteBuilder<Input, Output, Context, Params>, "middleware">;
+> = Omit<RouteBuilder<Context, Input, Output, Params>, "middleware">;
 
 export class RouteBuilder<
+  Context extends Record<string, unknown> = {},
   Input = null,
   Output = unknown,
-  Context = {},
   Params extends Record<string, string> | unknown = unknown,
 > {
   protected _middlewares: Function[] = [];
@@ -101,25 +106,47 @@ export class RouteBuilder<
   protected _inputSchema?: zod.Schema<Input>;
   protected _outputSchema?: zod.Schema<Output>;
 
-  middleware<NewContext, Output>(
-    fn: MiddlewareFn<Output, NewContext, Context, Params>,
-  ): RouteBuilder<Input, Output, NewContext, Params> {
-    const newRouteBuilder = new RouteBuilder<Input, Output, NewContext, Params>();
+  middleware<
+    Result extends MiddlewareResult<Output, NewContext>,
+    NewContext extends Record<string, unknown>,
+    Output,
+  >(
+    fn: MiddlewareFn<Result, Context, Output, NewContext, Params>,
+  ): RouteBuilder<
+    Result extends void
+      ? Context
+      : Result extends Response<unknown>
+      ? never
+      : Extract<Result, NewContext>,
+    Input,
+    Output,
+    Params
+  > {
+    const newRouteBuilder = new RouteBuilder<
+      Result extends void
+        ? Context
+        : Result extends Response<unknown>
+        ? never
+        : Extract<Result, NewContext>,
+      Input,
+      Output,
+      Params
+    >();
     newRouteBuilder._middlewares.push(...this._middlewares, fn);
     return newRouteBuilder;
   }
 
   params<Params extends readonly string[]>(
     params: Params,
-  ): RouteHandlerBuilder<Input, Output, Context, ParamArrayToDict<Params>> {
-    const newRouteBuilder = new RouteBuilder<Input, Output, Context, ParamArrayToDict<Params>>();
+  ): RouteHandlerBuilder<Context, Input, Output, ParamArrayToDict<Params>> {
+    const newRouteBuilder = new RouteBuilder<Context, Input, Output, ParamArrayToDict<Params>>();
     newRouteBuilder._middlewares.push(...this._middlewares);
     newRouteBuilder._params = params;
     return newRouteBuilder;
   }
 
-  input<Schema>(schema: zod.Schema<Schema>): RouteHandlerBuilder<Schema, Output, Context, Params> {
-    const newRouteBuilder = new RouteBuilder<Schema, Output, Context, Params>();
+  input<Schema>(schema: zod.Schema<Schema>): RouteHandlerBuilder<Context, Schema, Output, Params> {
+    const newRouteBuilder = new RouteBuilder<Context, Schema, Output, Params>();
     newRouteBuilder._inputSchema = schema;
     newRouteBuilder._outputSchema = this._outputSchema;
     newRouteBuilder._middlewares.push(...this._middlewares);
@@ -127,8 +154,8 @@ export class RouteBuilder<
     return newRouteBuilder;
   }
 
-  output<Schema>(schema: zod.Schema<Schema>): RouteHandlerBuilder<Input, Schema, Context, Params> {
-    const newRouteBuilder = new RouteBuilder<Input, Schema, Context, Params>();
+  output<Schema>(schema: zod.Schema<Schema>): RouteHandlerBuilder<Context, Input, Schema, Params> {
+    const newRouteBuilder = new RouteBuilder<Context, Input, Schema, Params>();
     newRouteBuilder._inputSchema = this._inputSchema;
     newRouteBuilder._outputSchema = schema;
     newRouteBuilder._middlewares.push(...this._middlewares);
