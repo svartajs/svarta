@@ -31,7 +31,7 @@ importers:
       chalk: 5.2.0
       esbuild: 0.16.10
       eslint: 8.30.0
-      node-fetch: 3.3.0
+      node-fetch: 3.3.2
       tsup: 6.5.0
       typescript: 4.9.4
       vitest: 0.26.2
@@ -49,7 +49,7 @@ importers:
       '@tinyhttp/cookie': 2.0.5
       '@types/node': 18.11.17
       eslint: 8.30.0
-      node-fetch: 3.3.0
+      node-fetch: 3.3.2
       tsup: 6.5.0_typescript@4.9.4
       typescript: 4.9.4
       vitest: 0.26.2
@@ -126,7 +126,7 @@ importers:
       chalk: 5.2.0
       eslint: 8.30.0
       giget: 1.0.0
-      node-fetch: 3.3.0
+      node-fetch: 3.3.2
       prompts: 2.4.2
       tsup: 6.5.0
       typescript: 4.9.4
@@ -135,7 +135,7 @@ importers:
       '@svarta/core': link:../core
       chalk: 5.2.0
       giget: 1.0.0
-      node-fetch: 3.3.0
+      node-fetch: 3.3.2
       prompts: 2.4.2
     devDependencies:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
@@ -194,7 +194,7 @@ importers:
       '@typescript-eslint/parser': 5.47.0_lzzuuodtsqwxnvqeq4g4likcqa
       eslint: 8.30.0
       eslint-config-prettier: 8.5.0_eslint@8.30.0
-      eslint-config-turbo: 0.0.7_eslint@8.30.0
+      eslint-config-turbo: 1.10.11_eslint@8.30.0
       eslint-plugin-import: 2.26.0_tqyj5ytb5g6r5ett7xxedhk6eq
       eslint-plugin-simple-import-sort: 8.0.0_eslint@8.30.0
       typescript: 4.9.4
@@ -2164,7 +2164,6 @@ packages:
   /dotenv/16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
-    dev: false
 
   /duplexer/0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
@@ -2523,13 +2522,13 @@ packages:
       eslint: 8.30.0
     dev: true
 
-  /eslint-config-turbo/0.0.7_eslint@8.30.0:
-    resolution: {integrity: sha512-WbrGlyfs94rOXrhombi1wjIAYGdV2iosgJRndOZtmDQeq5GLTzYmBUCJQZWtLBEBUPCj96RxZ2OL7Cn+xv/Azg==}
+  /eslint-config-turbo/1.10.11_eslint@8.30.0:
+    resolution: {integrity: sha512-NMzy6Mabjag6yTo01MsOJjbZoz0FV58L3+vOPcHU2vFP/9fIGG8yY8dtBvo+GPdffCXDdbOwZrdHZmC+s5SGvg==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:
       eslint: 8.30.0
-      eslint-plugin-turbo: 0.0.7_eslint@8.30.0
+      eslint-plugin-turbo: 1.10.11_eslint@8.30.0
     dev: true
 
   /eslint-import-resolver-node/0.3.6:
@@ -2609,11 +2608,12 @@ packages:
       eslint: 8.30.0
     dev: true
 
-  /eslint-plugin-turbo/0.0.7_eslint@8.30.0:
-    resolution: {integrity: sha512-iajOH8eD4jha3duztGVBD1BEmvNrQBaA/y3HFHf91vMDRYRwH7BpHSDFtxydDpk5ghlhRxG299SFxz7D6z4MBQ==}
+  /eslint-plugin-turbo/1.10.11_eslint@8.30.0:
+    resolution: {integrity: sha512-horw5Ri7GScrB3yKYE7HUa34VhGCIPKKXmlAQDcvjLtMyrDytUD4/qVat4Ca3EQetk12wqoRdIEbMevby1PRNw==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:
+      dotenv: 16.0.3
       eslint: 8.30.0
     dev: true
 
@@ -4103,8 +4103,8 @@ packages:
       whatwg-url: 5.0.0
     dev: false
 
-  /node-fetch/3.3.0:
-    resolution: {integrity: sha512-BKwRP/O0UvoMKp7GNdwPlObhYGB5DQqwhEDQlNKuoqwVYSxkSZCSbHjnFFmUEtwSKRPU4kNK8PbDYYitwaE3QA==}
+  /node-fetch/3.3.2:
+    resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       data-uri-to-buffer: 4.0.0
