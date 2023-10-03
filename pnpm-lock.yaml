@@ -36,12 +36,12 @@ importers:
       typescript: 4.9.4
       vitest: 0.26.2
       yaml: 2.2.0
-      zod: 3.20.2
+      zod: 3.22.3
     dependencies:
       '@svarta/core': link:../core
       chalk: 5.2.0
       esbuild: 0.16.10
-      zod: 3.20.2
+      zod: 3.22.3
     devDependencies:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
       '@svarta/tsconfig': link:../tsconfig
@@ -70,13 +70,13 @@ importers:
       typescript: 4.9.4
       vitest: 0.26.2
       yargs: 17.6.2
-      zod: 3.20.2
+      zod: 3.22.3
     dependencies:
       '@svarta/core': link:../core
       '@svarta/dev-server': link:../dev-server
       chalk: 5.2.0
       yargs: 17.6.2
-      zod: 3.20.2
+      zod: 3.22.3
     devDependencies:
       '@svarta/adapter-standalone': link:../adapter-standalone
       '@svarta/eslint-config-custom': link:../eslint-config-custom
@@ -100,12 +100,12 @@ importers:
       typescript: 4.9.4
       vitest: 0.26.2
       walk-it: 1.1.1
-      zod: 3.20.2
+      zod: 3.22.3
     dependencies:
       '@tinyhttp/cookie': 2.0.5
       chalk: 5.2.0
       walk-it: 1.1.1
-      zod: 3.20.2
+      zod: 3.22.3
     devDependencies:
       '@svarta/eslint-config-custom': link:../eslint-config-custom
       '@svarta/tsconfig': link:../tsconfig
@@ -194,7 +194,7 @@ importers:
       '@typescript-eslint/parser': 5.47.0_lzzuuodtsqwxnvqeq4g4likcqa
       eslint: 8.30.0
       eslint-config-prettier: 8.5.0_eslint@8.30.0
-      eslint-config-turbo: 0.0.7_eslint@8.30.0
+      eslint-config-turbo: 1.10.14_eslint@8.30.0
       eslint-plugin-import: 2.26.0_tqyj5ytb5g6r5ett7xxedhk6eq
       eslint-plugin-simple-import-sort: 8.0.0_eslint@8.30.0
       typescript: 4.9.4
@@ -2164,7 +2164,6 @@ packages:
   /dotenv/16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
-    dev: false
 
   /duplexer/0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
@@ -2523,13 +2522,13 @@ packages:
       eslint: 8.30.0
     dev: true
 
-  /eslint-config-turbo/0.0.7_eslint@8.30.0:
-    resolution: {integrity: sha512-WbrGlyfs94rOXrhombi1wjIAYGdV2iosgJRndOZtmDQeq5GLTzYmBUCJQZWtLBEBUPCj96RxZ2OL7Cn+xv/Azg==}
+  /eslint-config-turbo/1.10.14_eslint@8.30.0:
+    resolution: {integrity: sha512-ZeB+IcuFXy1OICkLuAplVa0euoYbhK+bMEQd0nH9+Lns18lgZRm33mVz/iSoH9VdUzl/1ZmFmoK+RpZc+8R80A==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:
       eslint: 8.30.0
-      eslint-plugin-turbo: 0.0.7_eslint@8.30.0
+      eslint-plugin-turbo: 1.10.14_eslint@8.30.0
     dev: true
 
   /eslint-import-resolver-node/0.3.6:
@@ -2609,11 +2608,12 @@ packages:
       eslint: 8.30.0
     dev: true
 
-  /eslint-plugin-turbo/0.0.7_eslint@8.30.0:
-    resolution: {integrity: sha512-iajOH8eD4jha3duztGVBD1BEmvNrQBaA/y3HFHf91vMDRYRwH7BpHSDFtxydDpk5ghlhRxG299SFxz7D6z4MBQ==}
+  /eslint-plugin-turbo/1.10.14_eslint@8.30.0:
+    resolution: {integrity: sha512-sBdBDnYr9AjT1g4lR3PBkZDonTrMnR4TvuGv5W0OiF7z9az1rI68yj2UHJZvjkwwcGu5mazWA1AfB0oaagpmfg==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:
+      dotenv: 16.0.3
       eslint: 8.30.0
     dev: true
 
@@ -5841,6 +5841,6 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
-  /zod/3.20.2:
-    resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
+  /zod/3.22.3:
+    resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
     dev: false
