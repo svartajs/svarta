@@ -1,9 +1,8 @@
-import nodeFetch from "node-fetch";
 import type { Choice } from "prompts";
 
 export async function loadTemplates(): Promise<Choice[]> {
   console.log("Loading template list");
-  const response = await nodeFetch(
+  const response = await fetch(
     "https://raw.githubusercontent.com/svartajs/svarta/main/templates.json",
   );
   if (!response.ok) {

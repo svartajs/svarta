@@ -3,7 +3,6 @@ import { rmSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { parse, serialize } from "@tinyhttp/cookie";
-import fetch from "node-fetch";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import YAML from "yaml";
 import { DEFAULTS as CORS_DEFAULTS } from "./fixture/cors";
