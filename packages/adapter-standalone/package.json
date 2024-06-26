@@ -11,7 +11,7 @@
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
     "@tinyhttp/app": "2",
-    "@tinyhttp/cookie": "2.0.5",
+    "@tinyhttp/cookie": "2.1.1",
     "@types/node": "18.11.17",
     "eslint": "8.30.0",
     "node-fetch": "3.3.0",
