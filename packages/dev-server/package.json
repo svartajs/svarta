@@ -11,7 +11,7 @@
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
     "@types/lodash.debounce": "4.0.7",
-    "@types/node": "18.11.17",
+    "@types/node": "18.19.56",
     "eslint": "8.30.0",
     "tsup": "6.5.0",
     "typescript": "4.9.4",
