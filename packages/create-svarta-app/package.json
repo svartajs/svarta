@@ -10,7 +10,7 @@
   "devDependencies": {
     "@svarta/eslint-config-custom": "workspace:*",
     "@svarta/tsconfig": "workspace:*",
-    "@types/node": "18.11.17",
+    "@types/node": "18.19.56",
     "@types/prompts": "2.4.2",
     "@types/yargs": "17.0.17",
     "eslint": "8.30.0",
