@@ -20,7 +20,7 @@
     "node": "18 || 20"
   },
   "dependencies": {
-    "@tinyhttp/cookie": "2.0.5",
+    "@tinyhttp/cookie": "2.1.1",
     "chalk": "5.2.0",
     "walk-it": "1.1.1",
     "zod": "3.20.2"
