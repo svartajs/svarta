@@ -11,7 +11,7 @@
     "eslint-config-turbo": "latest",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-simple-import-sort": "8.0.0",
-    "typescript": "4.9.4"
+    "typescript": "4.9.5"
   },
   "publishConfig": {
     "access": "public"
