@@ -14,7 +14,7 @@
     "@types/node": "18.11.17",
     "eslint": "8.30.0",
     "tsup": "6.5.0",
-    "typescript": "4.9.4",
+    "typescript": "4.9.5",
     "vitest": "0.26.2"
   },
   "engines": {
